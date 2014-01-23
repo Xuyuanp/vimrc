@@ -1,9 +1,10 @@
 " vbundle {
     set nocompatible
     filetype off
+    filetype plugin indent off
 
     set rtp+=~/.vim/bundle/vundle/
-    set rtp+=$GOROOT/misc/vim
+    set rtp+=$GOROOT/misc/vim/
 
     call vundle#rc()
 
@@ -47,12 +48,11 @@
     Bundle 'html5.vim'
     Bundle 'c-standard-functions-highlight'
     Bundle 'Vim-Support'
-    Bundle 'fsouza/go.vim'
     Bundle 'fish.vim'
     Bundle 'itchyny/calendar.vim'
     Bundle 'majutsushi/tagbar'
-    Bundle 'cespare/vim-golang'
     Bundle 'dgryski/vim-godef'
+    Bundle 'cespare/vim-golang'
 
     filetype plugin indent on
 "}
