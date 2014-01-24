@@ -12,9 +12,10 @@
 
     Bundle 'rizzatti/funcoo.vim'
     Bundle 'rizzatti/dash.vim'
-    Bundle 'airblade/vim-gitgutter'
     Bundle 'tpope/vim-surround'
     Bundle 'Yggdroot/indentLine'
+    Bundle 'tpope/vim-git'
+    Bundle 'airblade/vim-gitgutter'
     Bundle 'gregsexton/gitv'
     Bundle 'tpope/vim-fugitive'
     Bundle 'bling/vim-airline'
@@ -25,6 +26,7 @@
     Bundle 'garbas/vim-snipmate'
     Bundle 'honza/vim-snippets'
     Bundle 'junegunn/goyo.vim'
+    Bundle 'Lokaltog/vim-easymotion'
     Bundle 'L9'
     Bundle 'FuzzyFinder'
     Bundle 'elzr/vim-json'
@@ -49,6 +51,7 @@
     Bundle 'c-standard-functions-highlight'
     Bundle 'Vim-Support'
     Bundle 'fish.vim'
+    Bundle 'terryma/vim-multiple-cursors'
     Bundle 'itchyny/calendar.vim'
     Bundle 'majutsushi/tagbar'
     Bundle 'dgryski/vim-godef'
@@ -78,7 +81,13 @@ set modifiable
 "Enable syntax
 syntax enable
 
-colorscheme softlight
+if has("gui_running") 
+    set background=dark
+    set guifont=Monaco\ for\ Powerline:h13
+    colorscheme solarized
+else
+    colorscheme softlight
+end
 
 "Highlight current {
     set cursorline
@@ -198,16 +207,16 @@ set tw=800
     endif
     set t_Co=256
     let g:airline_theme = 'simple'
-    "let g:airline_powerline_fonts = 1
+    let g:airline_powerline_fonts = 1
     let g:airline_enable_branch = 1
     let g:airline_enable_syntastic = 1
     let g:airline_detect_paste = 1
-    let g:airline_left_sep = '▶'
-    let g:airline_right_sep = '◀'
-    let g:airline_symbols.linenr = '¶'
-    let g:airline_symbols.branch = '⎇'
-    let g:airline_symbols.paste = 'Þ'
-    let g:airline_symbols.whitespace = 'Ξ'
+    "let g:airline_left_sep = '▶'
+    "let g:airline_right_sep = '◀'
+    "let g:airline_symbols.linenr = '¶'
+    "let g:airline_symbols.branch = '⎇'
+    "let g:airline_symbols.paste = 'Þ'
+    "let g:airline_symbols.whitespace = 'Ξ'
 "}
 
 " tab switch {
@@ -247,4 +256,8 @@ set tw=800
 " config for calendar {
     let g:calendar_google_calendar = 1
     let g:calendar_google_task = 1
+"}
+
+" config for easymotion {
+    let g:EasyMotion_leader_key = ';'
 "}
