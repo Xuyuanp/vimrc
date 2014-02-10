@@ -7,6 +7,8 @@ set modeline
 "Enable filetype plugin
 set completeopt=longest,menu
 
+set listchars=tab:▸\ ,trail:▫
+
 "Set to auto read when a file is changed from the outside
 set autoread
 set autochdir
@@ -89,6 +91,7 @@ set fdl=0
 set expandtab
 set shiftwidth=4
 set tabstop=4
+set backspace=indent,eol,start
 
 set smarttab
 set lbr
@@ -165,10 +168,8 @@ set tw=800
 "}
 
 " tab switch {
-    let mapleader = ','
     nnoremap <C-l> gt
     nnoremap <C-h> gT
-    nnoremap <leader>t :tabe<CR>
 "}
 
 " config for ctrlsf {

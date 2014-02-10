@@ -3,7 +3,6 @@
     filetype off
 
     set rtp+=~/.vim/bundle/vundle/
-    set rtp+=$GOROOT/misc/vim/
 
     call vundle#rc()
 
@@ -35,7 +34,6 @@
     Bundle 'scrooloose/nerdtree'
     Bundle 'tomtom/tcomment_vim'
     Bundle 'docunext/closetag.vim'
-    Bundle 'ervandew/supertab'
     Bundle 'c.vim'
     Bundle 'cpp.vim'
     Bundle 'vim-scripts/mru.vim'
@@ -55,6 +53,7 @@
     Bundle 'majutsushi/tagbar'
     Bundle 'dgryski/vim-godef'
     Bundle 'cespare/vim-golang'
+    Bundle 'msanders/cocoa.vim'
 
     filetype plugin indent on
 "}
