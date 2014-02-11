@@ -54,6 +54,7 @@
     Bundle 'dgryski/vim-godef'
     Bundle 'cespare/vim-golang'
     Bundle 'msanders/cocoa.vim'
+    Bundle 'spolu/dwm.vim'
 
     filetype plugin indent on
 "}
