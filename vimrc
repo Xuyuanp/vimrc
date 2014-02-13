@@ -89,7 +89,6 @@ set fdl=0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set expandtab
 set shiftwidth=4
-set listchars=tab:▸\ ,trail:▫
 set tabstop=4
 set backspace=indent,eol,start
 
