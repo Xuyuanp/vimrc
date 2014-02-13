@@ -2,15 +2,15 @@
 
 if [[ -s ~/.vimrc ]]; then
     mv ~/.vimrc ~/.vimrc-`date`.bak
-    ln -s vimrc ~/.vimrc
 fi
+ln -s vimrc ~/.vimrc
 
 if [[ -s ~/.vundle.vim ]]; then
    mv ~/.vundle.vim ~/.vundle.vim-`date`.bak
-   ln -s vundle.vim ~/.vundle.vim
 fi
+ln -s vundle.vim ~/.vundle.vim
 
 mkdir -p ~/.vim/bundle
-git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle
 
 vim +BundleInstall +qall
