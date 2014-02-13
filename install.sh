@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 
 if [[ -s ~/.vimrc ]]; then
-    mv ~/.vimrc ~/.vimrc-`date`.bak
+    mv ~/.vimrc ~/.vimrc.bak
 fi
 ln -s $PWD/vimrc ~/.vimrc
 
 if [[ -s ~/.vundle.vim ]]; then
-   mv ~/.vundle.vim ~/.vundle.vim-`date`.bak
+   mv ~/.vundle.vim ~/.vundle.vim.bak
 fi
 ln -s $PWD/vundle.vim ~/.vundle.vim
 
