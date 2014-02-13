@@ -11,6 +11,6 @@ if [[ -s ~/.vundle.vim ]]; then
 fi
 
 mkdir -p ~/.vim/bundle
-git clone https://github.com/gmarik/vundl://github.com/gmarik/Vundle.vim.git ~/.vim/bundle
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle
 
 vim +BundleInstall +qall
