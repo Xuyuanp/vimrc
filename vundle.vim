@@ -55,6 +55,7 @@
     Bundle 'cespare/vim-golang'
     Bundle 'msanders/cocoa.vim'
     Bundle 'spolu/dwm.vim'
+    Bundle 'Valloric/YouCompleteMe'
 
     filetype plugin indent on
 "}

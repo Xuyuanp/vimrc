@@ -26,7 +26,7 @@ syntax enable
 if has("gui_running") 
     set background=dark
     set guifont=Monaco\ for\ Powerline:h13
-    colorscheme solarized
+    colorscheme molokai
 else
     colorscheme softlight
 end
@@ -206,3 +206,9 @@ set tw=800
 " config for easymotion {
     " let g:EasyMotion_leader_key = ';'
 "}
+
+" config for golint {
+    set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
+    autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
+    let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+" }
