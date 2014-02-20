@@ -212,3 +212,8 @@ set tw=800
     autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
     let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 " }
+
+" config for lua {
+    " let g:lua_complete_dynamic = 1
+    let g:lua_complete_omni = 1
+" }

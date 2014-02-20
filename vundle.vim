@@ -42,7 +42,6 @@
     Bundle 'Dart'
     Bundle 'node.js'
     Bundle 'vim-diff'
-    Bundle 'vim-misc'
     Bundle 'lua.vim'
     Bundle 'html5.vim'
     Bundle 'c-standard-functions-highlight'
@@ -54,8 +53,9 @@
     Bundle 'dgryski/vim-godef'
     Bundle 'cespare/vim-golang'
     Bundle 'msanders/cocoa.vim'
-    Bundle 'spolu/dwm.vim'
     Bundle 'Valloric/YouCompleteMe'
+    Bundle 'xolox/vim-misc'
+    Bundle 'xolox/vim-lua-ftplugin'
 
     filetype plugin indent on
 "}
