@@ -182,11 +182,6 @@ set tw=800
     let g:gitgutter_realtime = 1
     let g:gitgutter_eager = 1
 "}
-"
-" config for indent guides {
-    let g:indent_guides_start_level = 2
-    let g:indent_guides_guide_size = 1
-"}
 
 " config for js {
     au FileType javascript call JavaScriptFold()
@@ -197,19 +192,11 @@ set tw=800
     autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
 "}
 
-
-" config for calendar {
-    let g:calendar_google_calendar = 1
-    let g:calendar_google_task = 1
-"}
-
 " config for easymotion {
     " let g:EasyMotion_leader_key = ';'
 "}
 
-" config for golint {
-    set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
-    autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
+" config for YCM {
     let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 " }
 
@@ -217,3 +204,4 @@ set tw=800
     " let g:lua_complete_dynamic = 1
     let g:lua_complete_omni = 1
 " }
+
