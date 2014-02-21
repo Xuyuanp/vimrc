@@ -106,6 +106,9 @@
    " Lua file type plug-in for the Vim text editor 
     Bundle 'xolox/vim-lua-ftplugin'                   
 
+    " Vim script for text filtering and alignment
+    Bundle 'godlygeek/tabular'
+
     Bundle 'c.vim'
     Bundle 'cpp.vim'
     Bundle 'Dart'
@@ -115,4 +118,4 @@
     Bundle 'fish.vim'
 
     filetype plugin indent on
-"}
+" }

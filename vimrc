@@ -1,18 +1,23 @@
 " bundle list
-source ~/.vundle.vim
+source ~/.vundle.vim 
 
-"Sets how many lines of history VIM har to remember
+" Sets how many lines of history VIM har to remember
 set history=5000
+
 set modeline
-"Enable filetype plugin
+
+" Enable filetype plugin
 set completeopt=longest,menu
 
+" enable fold
+set foldmethod=marker
+set foldmarker={,}
 
-"Set to auto read when a file is changed from the outside
+" Set to auto read when a file is changed from the outside
 set autoread
 set autochdir
 
-"Have the mouse enabled all the time:
+" Have the mouse enabled all the time:
 set mouse=a
 
 set modifiable
@@ -20,7 +25,7 @@ set modifiable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Enable syntax
+" Enable syntax
 syntax enable
 
 if has("gui_running") 
@@ -31,43 +36,43 @@ else
     colorscheme softlight
 end
 
-"Highlight current {
+" Highlight current {
     set cursorline
     highlight CursorLine ctermbg=243 ctermfg=NONE
     highlight Visual ctermbg=243 ctermfg=NONE
-"}
-"
-"Favorite filetypes
+" }
+
+" Favorite filetypes
 set ffs=unix,dos,mac
-"Always show current position
+" Always show current position
 set ruler
 
-"The commandbar is 2 high
+" The commandbar is 2 high
 set cmdheight=2
 
-"Show line number
+" Show line number
 set nu
 
-"Ignore case when searching
+" Ignore case when searching
 set ignorecase
 set incsearch
 
-"Set magic on
+" Set magic on
 set magic
 
-"No sound on errors.
+" No sound on errors.
 set noerrorbells
 set novisualbell
 set vb t_vb=
 
-"show matching bracets
+" show matching bracets
 set showmatch
 set showfulltag
 
-"How many tenths of a second to blink
+" How many tenths of a second to blink
 set mat=2
 
-"Highlight search things
+" Highlight search things
 set hlsearch
 
 set showcmd
@@ -75,14 +80,10 @@ set showcmd
 set cmdheight=1   " 设定命令行的行数为 1
 set laststatus=2  " 显示状态栏 (默认值为 1, 无法显示状态栏)
 
-"Turn backup off
+" Turn backup off
 set nobackup
 set nowb
 set noswapfile
-
-"Enable folding, I find it very useful
-set nofen
-set fdl=0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text options
@@ -99,7 +100,7 @@ set tw=800
 " indent {
     set ai
     set si
-"}
+" }
 
 " config for golang {
     filetype off
@@ -142,11 +143,11 @@ set tw=800
     let g:tagbar_show_linebumbers = 1
 
     autocmd BufWritePre *.go :Fmt
-"}
+" }
 
 " config for NERDTree {
     map <C-g> :NERDTreeToggle<CR>
-"}
+" }
 
 " config for airline {
     if !exists('g:airline_symbols')
@@ -164,37 +165,37 @@ set tw=800
     " let g:airline_symbols.branch = '⎇'
     " let g:airline_symbols.paste = 'Þ'
     " let g:airline_symbols.whitespace = 'Ξ'
-"}
+" }
 
 " tab switch {
     nnoremap <C-l> gt
     nnoremap <C-h> gT
-"}
+" }
 
 " config for ctrlsf {
     let g:ctrlsf_ackprg = 'ag'
     let g:ctrlsf_context = '-B 5 -A 3'
     let g:ctrlsf_width = '30%'
-"}
+" }
 
 " config for gitgutter {
     let g:gitgutter_highlight_lines = 0
     let g:gitgutter_realtime = 1
     let g:gitgutter_eager = 1
-"}
+" }
 
 " config for js {
     au FileType javascript call JavaScriptFold()
-"}
+" }
 
 " config for javascript-libraries-syntax {
     autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
     autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
-"}
+" }
 
 " config for easymotion {
     " let g:EasyMotion_leader_key = ';'
-"}
+" }
 
 " config for YCM {
     let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
@@ -209,3 +210,4 @@ set tw=800
     nnoremap <leader>e :FufLine<CR>
     nnoremap <leader>f :FufFile<CR>
 " }
+
