@@ -206,5 +206,6 @@ set tw=800
 " }
 
 " config for FuzzyFinder {
-    nnoremap <leader>f :FufLine<CR>
+    nnoremap <leader>e :FufLine<CR>
+    nnoremap <leader>f :FufFile<CR>
 " }
