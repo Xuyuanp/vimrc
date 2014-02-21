@@ -109,6 +109,9 @@
     " Vim script for text filtering and alignment
     Bundle 'godlygeek/tabular'
 
+    " Fuzzy file, buffer, mru, tag, etc finder.
+    Bundle 'kien/ctrlp.vim'
+
     Bundle 'c.vim'
     Bundle 'cpp.vim'
     Bundle 'Dart'

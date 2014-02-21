@@ -1,6 +1,9 @@
 " bundle list
 source ~/.vundle.vim 
 
+" redefine leader key
+let mapleader = ','
+
 " Sets how many lines of history VIM har to remember
 set history=5000
 
@@ -12,6 +15,8 @@ set completeopt=longest,menu
 " enable fold
 set foldmethod=marker
 set foldmarker={,}
+set foldlevel=1
+set foldlevelstart=99
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -27,7 +32,8 @@ set modifiable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax
 syntax enable
-
+ 
+" coloscheme
 if has("gui_running") 
     set background=dark
     set guifont=Monaco\ for\ Powerline:h13
@@ -154,16 +160,17 @@ set tw=800
         let g:airline_symbols = {}
     endif
     set t_Co=256
-    let g:airline_theme = 'simple'
-    let g:airline_powerline_fonts = 1
-    let g:airline_enable_branch = 1
-    let g:airline_enable_syntastic = 1
-    let g:airline_detect_paste = 1
-    " let g:airline_left_sep = '▶'
-    " let g:airline_right_sep = '◀'
-    " let g:airline_symbols.linenr = '¶'
-    " let g:airline_symbols.branch = '⎇'
-    " let g:airline_symbols.paste = 'Þ'
+    
+    let g:airline_theme                = 'simple'
+    let g:airline_powerline_fonts      = 1
+    let g:airline_enable_branch        = 1
+    let g:airline_enable_syntastic     = 1
+    let g:airline_detect_paste         = 1
+    " let g:airline_left_sep           = '▶'
+    " let g:airline_right_sep          = '◀'
+    " let g:airline_symbols.linenr     = '¶'
+    " let g:airline_symbols.branch     = '⎇'
+    " let g:airline_symbols.paste      = 'Þ'
     " let g:airline_symbols.whitespace = 'Ξ'
 " }
 
@@ -173,15 +180,15 @@ set tw=800
 " }
 
 " config for ctrlsf {
-    let g:ctrlsf_ackprg = 'ag'
+    let g:ctrlsf_ackprg  = 'ag'
     let g:ctrlsf_context = '-B 5 -A 3'
-    let g:ctrlsf_width = '30%'
+    let g:ctrlsf_width   = '30%'
 " }
 
 " config for gitgutter {
     let g:gitgutter_highlight_lines = 0
-    let g:gitgutter_realtime = 1
-    let g:gitgutter_eager = 1
+    let g:gitgutter_realtime        = 1
+    let g:gitgutter_eager           = 1
 " }
 
 " config for js {
@@ -189,7 +196,7 @@ set tw=800
 " }
 
 " config for javascript-libraries-syntax {
-    autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
+    autocmd BufReadPre *.js let b:javascript_lib_use_jquery    = 1
     autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
 " }
 
