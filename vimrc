@@ -205,3 +205,6 @@ set tw=800
     let g:lua_complete_omni = 1
 " }
 
+" config for FuzzyFinder {
+    nnoremap <leader>f :FufLine<CR>
+" }
