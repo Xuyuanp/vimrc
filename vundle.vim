@@ -93,7 +93,9 @@
 
     " Vim compiler plugin for Go (golang)
     Bundle 'rjohnsondev/vim-compiler-go'              
-    " Bundle 'cespare/vim-golang'
+
+    " A Go bundle for Vundle or Pathogen
+    Bundle 'Blackrush/vim-gocode'
 
     " Vim plugin for Cocoa/Objective-C development
     Bundle 'msanders/cocoa.vim'                       
