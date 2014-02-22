@@ -12,11 +12,12 @@ set modeline
 " Enable filetype plugin
 set completeopt=longest,menu
 
-" enable fold
+" enable fold {
 set foldmethod=marker
 set foldmarker={,}
 set foldlevel=1
 set foldlevelstart=99
+" }
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -46,6 +47,13 @@ end
     set cursorline
     highlight CursorLine ctermbg=243 ctermfg=NONE
     highlight Visual ctermbg=243 ctermfg=NONE
+" }
+
+" Navigation between split windows {
+    nnoremap <c-j> <c-w>j
+    nnoremap <c-k> <c-w>k
+    nnoremap <c-h> <c-w>h
+    nnoremap <c-l> <c-w>l
 " }
 
 " Favorite filetypes
@@ -104,8 +112,8 @@ set lbr
 set tw=800
 
 " indent {
-    set ai
-    set si
+    " set ai
+    " set si
 " }
 
 " config for golang {
@@ -148,7 +156,10 @@ set tw=800
 
     let g:tagbar_show_linebumbers = 1
 
-    autocmd BufWritePre *.go :Fmt
+    if executable('goimports') 
+        let g:gofmt_command = "goimports"
+        autocmd BufWritePre *.go :Fmt
+    endif
 " }
 
 " config for NERDTree {
@@ -172,11 +183,6 @@ set tw=800
     " let g:airline_symbols.branch     = '⎇'
     " let g:airline_symbols.paste      = 'Þ'
     " let g:airline_symbols.whitespace = 'Ξ'
-" }
-
-" tab switch {
-    nnoremap <C-l> gt
-    nnoremap <C-h> gT
 " }
 
 " config for ctrlsf {
