@@ -114,6 +114,9 @@
     " Fuzzy file, buffer, mru, tag, etc finder.
     Bundle 'kien/ctrlp.vim'
 
+    " Open file under cursor when pressing gf (if the text under the cursor is a path)
+    Bundle 'amix/open_file_under_cursor.vim'
+
     Bundle 'c.vim'
     Bundle 'cpp.vim'
     Bundle 'Dart'
