@@ -100,8 +100,8 @@
     " Vim plugin for Cocoa/Objective-C development
     Bundle 'msanders/cocoa.vim'                       
 
-    " A code-completion engine for Vim
-    Bundle 'Valloric/YouCompleteMe'                   
+    " Next generation completion framework after neocomplcache
+    Bundle 'Shougo/neocomplete.vim'
 
     " required by vim-lua-ftplugin
     Bundle 'xolox/vim-misc'                           
@@ -116,6 +116,9 @@
 
     " Open file under cursor when pressing gf (if the text under the cursor is a path)
     Bundle 'amix/open_file_under_cursor.vim'
+
+    " A simple, easy-to-use Vim alignment plugin.
+    Bundle 'junegunn/vim-easy-align'
 
     Bundle 'c.vim'
     Bundle 'cpp.vim'
