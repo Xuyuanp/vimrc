@@ -13,10 +13,10 @@ set modeline
 set completeopt=longest,menu
 
 " enable fold {
-set foldmethod=marker
-set foldmarker={,}
-set foldlevel=1
-set foldlevelstart=99
+    set foldmethod=marker
+    set foldmarker={,}
+    set foldlevel=1
+    set foldlevelstart=99
 " }
 
 " Set to auto read when a file is changed from the outside
@@ -43,6 +43,17 @@ else
     colorscheme softlight
 end
 
+" guioptions {
+    if has('gui_running') 
+        set guioptions-=m
+        set guioptions-=T
+        set guioptions-=L
+        set guioptions-=r
+        set guioptions-=b
+        set showtabline=0
+    endif
+" }
+
 " Highlight current {
     set cursorline
     highlight CursorLine ctermbg=243 ctermfg=NONE
@@ -50,10 +61,10 @@ end
 " }
 
 " Navigation between split windows {
-    nnoremap <c-j> <c-w>j
-    nnoremap <c-k> <c-w>k
-    nnoremap <c-h> <c-w>h
-    nnoremap <c-l> <c-w>l
+    nnoremap <C-j> <C-w>j
+    nnoremap <C-k> <C-w>k
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-l> <C-w>l
 " }
 
 " Favorite filetypes
@@ -163,7 +174,7 @@ set tw=800
 " }
 
 " config for NERDTree {
-    map <C-g> :NERDTreeToggle<CR>
+    map <C-E> :NERDTreeToggle<CR>
 " }
 
 " config for airline {
@@ -186,9 +197,13 @@ set tw=800
 " }
 
 " config for ctrlsf {
-    let g:ctrlsf_ackprg  = 'ag'
-    let g:ctrlsf_context = '-B 5 -A 3'
-    let g:ctrlsf_width   = '30%'
+    if executable('ag')
+        let g:ctrlsf_ackprg = 'ag'
+    elseif executable('ack')
+        let g:ctrlsf_ackprg = 'ack'
+    endif
+    let g:ctrlsf_context    = '-B 5 -A 3'
+    let g:ctrlsf_width      = '30%'
 " }
 
 " config for gitgutter {
@@ -204,14 +219,6 @@ set tw=800
 " config for javascript-libraries-syntax {
     autocmd BufReadPre *.js let b:javascript_lib_use_jquery    = 1
     autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
-" }
-
-" config for easymotion {
-    " let g:EasyMotion_leader_key = ';'
-" }
-
-" config for YCM {
-    let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 " }
 
 " config for lua {
@@ -233,17 +240,17 @@ set tw=800
 
 " config for neocomplete {
    " Disable AutoComplPop.
-    let g:acp_enableAtStartup = 0
+    let g:acp_enableAtStartup                           = 0
     " Use neocomplete.
-    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_at_startup                 = 1
     " Use smartcase.
-    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#enable_smart_case                 = 1
     " Set minimum syntax keyword length.
     let g:neocomplete#sources#syntax#min_keyword_length = 3
-    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+    let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
 
     " Define dictionary.
-    let g:neocomplete#sources#dictionary#dictionaries = {
+    let g:neocomplete#sources#dictionary#dictionaries   = {
         \ 'default' : '',
         \ 'vimshell' : $HOME.'/.vimshell_hist',
         \ 'scheme' : $HOME.'/.gosh_completions'
