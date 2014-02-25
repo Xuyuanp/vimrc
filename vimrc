@@ -50,7 +50,7 @@ end
         set guioptions-=L
         set guioptions-=r
         set guioptions-=b
-        set showtabline=0
+        " set showtabline=0
     endif
 " }
 
@@ -65,6 +65,37 @@ end
     nnoremap <C-k> <C-w>k
     nnoremap <C-h> <C-w>h
     nnoremap <C-l> <C-w>l
+" }
+
+" Mapping for tab management {
+    nnoremap <Leader>tc :tabc<CR>
+    nnoremap <Leader>tn :tabn<CR>
+    nnoremap <Leader>tp :tabp<CR>
+    nnoremap <Leader>te :tabe<CR>
+" }
+
+" Reselect visual block after indent/outdent {
+    vnoremap < <gv
+    vnoremap > >gv
+" }
+
+" Improve up/down movement on wrapped lines {
+    nnoremap j gj
+    nnoremap k gk
+" }
+
+" Clear search highlight 
+nnoremap <silent><Leader>/ :nohls<CR>
+
+" Auto reload vimrc when it's saved
+autocmd BufWritePost ~/.vimrc source ~/.vimrc
+
+" Keep search pattern at the center of the screen {
+    nnoremap <silent>n nzz
+    nnoremap <silent>N Nzz
+    nnoremap <silent>* *zz
+    nnoremap <silent># #zz
+    nnoremap <silent>g* g*zz
 " }
 
 " Favorite filetypes

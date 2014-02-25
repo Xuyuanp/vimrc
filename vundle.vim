@@ -40,7 +40,7 @@
     " required by vim-snipmate
     Bundle 'MarcWeber/vim-addon-mw-utils'             
     Bundle 'tomtom/tlib_vim'                          
-    " a concise vim script that implements some of TextMate's snippets features in Vim (conflct with YouCompleteMe)
+    " a concise vim script that implements some of TextMate's snippets features in Vim 
     Bundle 'garbas/vim-snipmate'                      
 
     " vim-snipmate default snippets (Previously snipmate-snippets)
@@ -119,6 +119,9 @@
 
     " A simple, easy-to-use Vim alignment plugin.
     Bundle 'junegunn/vim-easy-align'
+
+    " Replace tool
+    Bundle 'osyo-manga/vim-over'
 
     Bundle 'c.vim'
     Bundle 'cpp.vim'
