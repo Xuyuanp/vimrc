@@ -11,9 +11,6 @@
     " required by dash.vim
     Bundle 'rizzatti/funcoo.vim'                      
 
-    " searcg Dash.app from vim
-    Bundle 'rizzatti/dash.vim'                        
-
     " display the indent levels with thin vertical lines
     Bundle 'Yggdroot/indentLine'                      
 
@@ -37,15 +34,6 @@
     " one colorscheme pack to rule them all!
     Bundle 'flazz/vim-colorschemes'                   
 
-    " required by vim-snipmate
-    Bundle 'MarcWeber/vim-addon-mw-utils'             
-    Bundle 'tomtom/tlib_vim'                          
-    " a concise vim script that implements some of TextMate's snippets features in Vim 
-    Bundle 'garbas/vim-snipmate'                      
-
-    " vim-snipmate default snippets (Previously snipmate-snippets)
-    Bundle 'honza/vim-snippets'                       
-
     " Distraction-free writing in Vim
     Bundle 'junegunn/goyo.vim'                        
 
@@ -54,12 +42,8 @@
 
     " required by FuzzyFinder
     Bundle 'L9'                                       
-
     " buffer/file/command/tag/etc explorer with fuzzy matching
     Bundle 'FuzzyFinder'                              
-
-    " Syntax highlighting for JSON in Vim
-    Bundle 'leshill/vim-json'                         
 
     " Enhanced javascript syntax file for Vim
     Bundle 'jelera/vim-javascript-syntax'             
@@ -105,14 +89,16 @@
 
     " required by vim-lua-ftplugin
     Bundle 'xolox/vim-misc'                           
-   " Lua file type plug-in for the Vim text editor 
-    Bundle 'xolox/vim-lua-ftplugin'                   
+    " Lua file type plug-in for the Vim text editor 
+    " Bundle 'xolox/vim-lua-ftplugin'                   
 
     " Vim script for text filtering and alignment
     Bundle 'godlygeek/tabular'
 
-    " Fuzzy file, buffer, mru, tag, etc finder.
-    Bundle 'kien/ctrlp.vim'
+    " Unite and create user interfaces
+    Bundle 'Shougo/unite.vim'
+    " MRU plugin of unite 
+    Bundle 'Shougo/neomru.vim'
 
     " Open file under cursor when pressing gf (if the text under the cursor is a path)
     Bundle 'amix/open_file_under_cursor.vim'
@@ -123,13 +109,16 @@
     " Replace tool
     Bundle 'osyo-manga/vim-over'
 
+    " Gundo.vim is Vim plugin to visualize your Vim undo tree.
+    Bundle 'sjl/gundo.vim'
+
+    Bundle 'techlivezheng/vim-plugin-minibufexpl'
+
     Bundle 'c.vim'
     Bundle 'cpp.vim'
     Bundle 'Dart'
+    Bundle 'leshill/vim-json'                         
     Bundle 'node.js'
-    Bundle 'lua.vim'
-    Bundle 'html5.vim'
-    Bundle 'fish.vim'
 
     filetype plugin indent on
 " }
