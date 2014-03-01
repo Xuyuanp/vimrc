@@ -354,3 +354,8 @@ set tw=800
     " https://github.com/c9s/perlomni.vim
     let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::' 
 " }
+
+" config for gundo {
+    nnoremap <Leader>us :GundoShow<CR>
+    nnoremap <Leader>ur :GundoRenderGraph<CR>
+" }

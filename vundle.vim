@@ -112,6 +112,7 @@
     " Gundo.vim is Vim plugin to visualize your Vim undo tree.
     Bundle 'sjl/gundo.vim'
 
+    " Elegant buffer explorer
     Bundle 'techlivezheng/vim-plugin-minibufexpl'
 
     Bundle 'c.vim'
