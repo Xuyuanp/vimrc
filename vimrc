@@ -21,7 +21,7 @@ set completeopt=longest,menu
 
 " Set to auto read when a file is changed from the outside
 set autoread
-set autochdir
+" set autochdir
 
 " Have the mouse enabled all the time:
 set mouse=a
@@ -38,10 +38,8 @@ syntax enable
 if has("gui_running") 
     set background=dark
     set guifont=Monaco\ for\ Powerline:h13
-    colorscheme molokai
-else
-    colorscheme softlight
 end
+colorscheme molokai
 
 " guioptions {
     if has('gui_running') 
@@ -87,8 +85,10 @@ end
 " Clear search highlight 
 nnoremap <silent><Leader>/ :nohls<CR>
 
-" Auto reload vimrc when it's saved
+" Auto reload vimrc/zshrc when it's saved
 autocmd BufWritePost ~/.vimrc source ~/.vimrc
+autocmd BufWritePost ~/.shared_profile.sh source ~/.zshrc
+autocmd BufWritePost ~/.zshrc source ~/.zshrc
 
 " Keep search pattern at the center of the screen {
     nnoremap <silent>n nzz
@@ -356,6 +356,6 @@ set tw=800
 " }
 
 " config for gundo {
-    nnoremap <Leader>us :GundoShow<CR>
+    nnoremap <Leader>ut :GundoToggle<CR>
     nnoremap <Leader>ur :GundoRenderGraph<CR>
 " }

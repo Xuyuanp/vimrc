@@ -8,9 +8,6 @@
 
     Bundle 'gmarik/vundle'
 
-    " required by dash.vim
-    Bundle 'rizzatti/funcoo.vim'                      
-
     " display the indent levels with thin vertical lines
     Bundle 'Yggdroot/indentLine'                      
 
@@ -84,9 +81,6 @@
     " Vim plugin for Cocoa/Objective-C development
     Bundle 'msanders/cocoa.vim'                       
 
-    " Next generation completion framework after neocomplcache
-    Bundle 'Shougo/neocomplete.vim'
-
     " required by vim-lua-ftplugin
     Bundle 'xolox/vim-misc'                           
     " Lua file type plug-in for the Vim text editor 
@@ -94,11 +88,6 @@
 
     " Vim script for text filtering and alignment
     Bundle 'godlygeek/tabular'
-
-    " Unite and create user interfaces
-    Bundle 'Shougo/unite.vim'
-    " MRU plugin of unite 
-    Bundle 'Shougo/neomru.vim'
 
     " Open file under cursor when pressing gf (if the text under the cursor is a path)
     Bundle 'amix/open_file_under_cursor.vim'
@@ -114,6 +103,20 @@
 
     " Elegant buffer explorer
     Bundle 'techlivezheng/vim-plugin-minibufexpl'
+
+    " Interactive command execution in Vim
+    Bundle 'Shougo/vimproc.vim'
+
+    " Powerful shell implemented by vim.
+    Bundle 'Shougo/vimshell.vim'
+
+    " Next generation completion framework after neocomplcache
+    Bundle 'Shougo/neocomplete.vim'
+
+    " Unite and create user interfaces
+    Bundle 'Shougo/unite.vim'
+    " MRU plugin of unite 
+    Bundle 'Shougo/neomru.vim'
 
     Bundle 'c.vim'
     Bundle 'cpp.vim'
