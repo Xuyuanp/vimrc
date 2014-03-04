@@ -27,6 +27,7 @@ if [[ `which go` ]]; then
         go get -u code.google.com/p/rog-go/exp/cmd/godef
         go install code.google.com/p/rog-go/exp/cmd/godef
         go get -u github.com/golang/lint/golint
+        go get -u code.google.com/p/go.tools/cmd/gotype
     else
         echo "Please setup GOPATH environment virable."
     fi
