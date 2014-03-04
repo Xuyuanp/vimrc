@@ -72,19 +72,11 @@
     " vim plugin providing godef support
     Bundle 'dgryski/vim-godef'                        
 
-    " Vim compiler plugin for Go (golang)
-    Bundle 'rjohnsondev/vim-compiler-go'              
-
     " A Go bundle for Vundle or Pathogen
     Bundle 'Blackrush/vim-gocode'
 
     " Vim plugin for Cocoa/Objective-C development
     Bundle 'msanders/cocoa.vim'                       
-
-    " required by vim-lua-ftplugin
-    Bundle 'xolox/vim-misc'                           
-    " Lua file type plug-in for the Vim text editor 
-    " Bundle 'xolox/vim-lua-ftplugin'                   
 
     " Vim script for text filtering and alignment
     Bundle 'godlygeek/tabular'

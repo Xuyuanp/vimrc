@@ -214,11 +214,19 @@ set tw=800
     endif
     set t_Co=256
     
-    let g:airline_theme                = 'simple'
-    let g:airline_powerline_fonts      = 1
-    let g:airline_enable_branch        = 1
-    let g:airline_enable_syntastic     = 1
-    let g:airline_detect_paste         = 1
+    let g:airline_theme                        = 'simple'
+    let g:airline_powerline_fonts              = 1
+    let g:airline_enable_branch                = 1
+    let g:airline_enable_syntastic             = 1
+    let g:airline_detect_paste                 = 1
+    let g:airline_detect_whitespace            = 0
+    let g:airline_detect_modified              = 1
+    let g:airline#extensions#syntastic#enabled = 1
+    let g:airline#extensions#tagbar#enabled    = 1
+    let g:airline#extensions#tagbar#flags      = ''  "default
+    let g:airline#extensions#tagbar#flags      = 'f'
+    let g:airline#extensions#tagbar#flags      = 's'
+    let g:airline#extensions#tagbar#flags      = 'p'
     " let g:airline_left_sep           = '▶'
     " let g:airline_right_sep          = '◀'
     " let g:airline_symbols.linenr     = '¶'
@@ -378,4 +386,14 @@ set tw=800
     if has('conceal')
       set conceallevel=2 concealcursor=i
     endif
+" }
+
+" config for syntastic {
+    let g:syntastic_error_symbol         = '✗'
+    let g:syntastic_warning_symbol       = '⚠'
+    let g:syntastic_style_error_symbol   = 'S✗'
+    let g:syntastic_style_warning_symbol = 'S⚠'
+    let g:syntastic_go_checkers          = ['go', 'golint']
+    let g:syntastic_auto_jump            = 2
+    set shell=zsh
 " }
