@@ -393,7 +393,7 @@ set tw=800
     let g:syntastic_warning_symbol       = '⚠'
     let g:syntastic_style_error_symbol   = 'S✗'
     let g:syntastic_style_warning_symbol = 'S⚠'
-    let g:syntastic_go_checkers          = ['go', 'golint']
+    let g:syntastic_go_checkers          = ['gotype', 'golint']
     let g:syntastic_auto_jump            = 2
     set shell=zsh
 " }
