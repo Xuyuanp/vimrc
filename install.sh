@@ -19,7 +19,7 @@ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle
 vim +BundleInstall +qall
 
 if [[ `which go` ]]; then
-    if [[ -z $GOPATH ]]; then
+    if [[ ! -z $GOPATH ]]; then
         echo "Install gocode, gotags, goimports, godef tools..."
         go get -u github.com/nsf/gocode
         go get -u github.com/jstemmer/gotags
