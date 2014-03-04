@@ -118,6 +118,10 @@
     " MRU plugin of unite 
     Bundle 'Shougo/neomru.vim'
 
+    " neo-snippet plugin contains neocomplcache snippets source
+    Bundle 'Shougo/neosnippet'
+    Bundle 'Shougo/neosnippet-snippets'
+
     Bundle 'c.vim'
     Bundle 'cpp.vim'
     Bundle 'Dart'
