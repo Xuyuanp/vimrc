@@ -28,19 +28,14 @@
     " An ack/ag powered code search and view tool, in an intuitive way with fairly more context.
     Bundle 'dyng/ctrlsf.vim'                          
 
-    " one colorscheme pack to rule them all!
-    Bundle 'flazz/vim-colorschemes'                   
+    " custom molokai colorscheme
+    Bundle 'Xuyuanp/molokai'
 
     " Distraction-free writing in Vim
     Bundle 'junegunn/goyo.vim'                        
 
     " Vim motions on speed!
     Bundle 'Lokaltog/vim-easymotion'                  
-
-    " required by FuzzyFinder
-    Bundle 'L9'                                       
-    " buffer/file/command/tag/etc explorer with fuzzy matching
-    Bundle 'FuzzyFinder'                              
 
     " Enhanced javascript syntax file for Vim
     Bundle 'jelera/vim-javascript-syntax'             
@@ -93,8 +88,10 @@
     " Gundo.vim is Vim plugin to visualize your Vim undo tree.
     Bundle 'sjl/gundo.vim'
 
-    " Elegant buffer explorer
-    Bundle 'techlivezheng/vim-plugin-minibufexpl'
+    " Miscellaneous auto-load Vim scripts
+    Bundle 'xolox/vim-misc'
+    " Extended session management for Vim (:mksession on steroids) 
+    Bundle 'xolox/vim-session'
 
     " Interactive command execution in Vim
     Bundle 'Shougo/vimproc.vim'

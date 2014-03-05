@@ -65,6 +65,13 @@ colorscheme molokai
     nnoremap <C-l> <C-w>l
 " }
 
+" Remap arrow keys {
+    nnoremap <Up> :bprev<CR>
+    nnoremap <Down> :bnext<CR>
+    nnoremap <Left> :tabprev<CR>
+    nnoremap <Right> :tabnext<CR>
+" }
+
 " Mapping for tab management {
     nnoremap <Leader>tc :tabc<CR>
     nnoremap <Leader>tn :tabn<CR>
@@ -227,6 +234,9 @@ set tw=800
     let g:airline#extensions#tagbar#flags      = 'f'
     let g:airline#extensions#tagbar#flags      = 's'
     let g:airline#extensions#tagbar#flags      = 'p'
+    " let g:airline#extensions#tabline#enabled      = 1
+    " let g:airline#extensions#tabline#left_sep     = ' '
+    " let g:airline#extensions#tabline#left_alt_sep = '|'
     " let g:airline_left_sep           = '▶'
     " let g:airline_right_sep          = '◀'
     " let g:airline_symbols.linenr     = '¶'
@@ -391,9 +401,51 @@ set tw=800
 " config for syntastic {
     let g:syntastic_error_symbol         = '✗'
     let g:syntastic_warning_symbol       = '⚠'
-    let g:syntastic_style_error_symbol   = 'S✗'
-    let g:syntastic_style_warning_symbol = 'S⚠'
+    let g:syntastic_style_error_symbol   = '✠'
+    let g:syntastic_style_warning_symbol = '≈'
     let g:syntastic_go_checkers          = ['gotype', 'golint']
     let g:syntastic_auto_jump            = 2
     set shell=zsh
+" }
+
+" config for vim-session {
+    let g:session_default_overwrite = 1
+    let g:session_autoload          = "no"
+    let g:session_autosave          = "no"
+    let g:session_command_aliases   = 1
+" }
+
+" config for unite {
+    let g:unite_source_history_yank_enable    = 1
+    let g:unite_source_rec_max_cache_files    = 5000
+    let g:unite_data_directory                = '~/.vim/.cache/unite'
+
+    if executable('ag')
+        let g:unite_source_grep_command       = 'ag'
+        let g:unite_source_grep_default_opts  = '--nocolor --nogroup -S -C4'
+        let g:unite_source_grep_recursive_opt = ''
+    elseif executable('ack')
+        let g:unite_source_grep_command       = 'ack'
+        let g:unite_source_grep_default_opts  = '--no-heading --no-color -a -C4'
+        let g:unite_source_grep_recursive_opt = ''
+    endif
+
+    function! s:unit_settings()
+        nmap <buffer> Q <Plug>(unite_exit)
+        nmap <buffer> <Esc> <Plug>(unite_exit)
+    endfunction
+    autocmd FileType unite call s:unit_settings()
+
+    nmap <Space> [unite]
+    nnoremap [unite] <Nop>
+    nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file buffer file_mru bookmark file_rec/async:!<cr><c-u>
+    nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
+
+    nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
+    nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
+    nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
+    nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
+    nnoremap <silent> [unite]/ :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
+    nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+    nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
 " }
