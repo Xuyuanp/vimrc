@@ -212,7 +212,8 @@ set tw=800
 " }
 
 " config for NERDTree {
-    map <C-E> :NERDTreeToggle<CR>
+    map <C-E> :NERDTreeTabsToggle<CR>
+    let g:nerdtree_tabs_open_on_gui_startup = '1'
 " }
 
 " config for airline {
@@ -268,17 +269,6 @@ set tw=800
 " config for javascript-libraries-syntax {
     autocmd BufReadPre *.js let b:javascript_lib_use_jquery    = 1
     autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
-" }
-
-" config for lua {
-    " let g:lua_complete_dynamic = 1
-    let g:lua_complete_omni = 1
-" }
-
-" config for FuzzyFinder {
-    nnoremap <leader>e :FufLine<CR>
-    nnoremap <leader>f :FufFile<CR>
-    let g:fuf_ignoreCase = 1
 " }
 
 " config for vim-easy-align {
@@ -409,6 +399,7 @@ set tw=800
 " }
 
 " config for vim-session {
+    let g:session_directory         = '~/.vim_sessions'
     let g:session_default_overwrite = 1
     let g:session_autoload          = "no"
     let g:session_autosave          = "no"
@@ -438,7 +429,7 @@ set tw=800
 
     nmap <Space> [unite]
     nnoremap [unite] <Nop>
-    nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file buffer file_mru bookmark file_rec/async:!<cr><c-u>
+    nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed buffer file_mru file bookmark file_rec/async:!<cr><c-u>
     nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
 
     nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>

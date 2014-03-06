@@ -46,8 +46,11 @@
     " Syntax checking hacks for vim
     Bundle 'scrooloose/syntastic'                     
 
-    " A tree explorer plugin for vim
-    Bundle 'scrooloose/nerdtree'                      
+    " A tree explorer plugin for vim.
+    Bundle 'scrooloose/nerdtree'
+
+    " NERDTree and tabs together in Vim, painlessly
+    Bundle 'jistr/vim-nerdtree-tabs'
 
     " An extensible & universal comment vim-plugin that also handles embedded filetypes
     Bundle 'tomtom/tcomment_vim'                      
