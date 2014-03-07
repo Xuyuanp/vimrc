@@ -109,6 +109,9 @@
     Bundle 'Shougo/unite.vim'
     " MRU plugin of unite 
     Bundle 'Shougo/neomru.vim'
+    " outline source for unite.vim
+    Bundle 'Shougo/unite-outline'
+    Bundle 'soh335/unite-outline-go'
 
     " neo-snippet plugin contains neocomplcache snippets source
     Bundle 'Shougo/neosnippet'

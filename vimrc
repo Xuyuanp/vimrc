@@ -13,7 +13,10 @@ set modeline
 set completeopt=longest,menu
 
 " enable fold {
-    set foldmethod=marker
+    " set foldmethod=marker
+    autocmd FileType lua,go,c,cpp set foldmethod=syntax
+    autocmd FileType python set foldmethod=indent
+    autocmd FileType vim set foldmethod=marker
     set foldmarker={,}
     set foldlevel=1
     set foldlevelstart=99
@@ -393,7 +396,14 @@ set tw=800
     let g:syntastic_warning_symbol       = '⚠'
     let g:syntastic_style_error_symbol   = '✠'
     let g:syntastic_style_warning_symbol = '≈'
-    let g:syntastic_go_checkers          = ['gotype', 'golint']
+    let g:syntastic_go_checkers = ['go']
+    if executable('gotype')
+        let g:syntastic_go_checkers = ['gotype']
+    endif 
+    if executable('golint')
+        call insert(g:syntastic_go_checkers, 'golint')
+    endif 
+    " let g:syntastic_go_checkers          = ['gotype', 'golint']
     let g:syntastic_auto_jump            = 2
     set shell=zsh
 " }
@@ -438,5 +448,8 @@ set tw=800
     nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
     nnoremap <silent> [unite]/ :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
     nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
-    nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
+    nnoremap <silent> [unite]o :<C-u>Unite -auto-resize -buffer-name=outline outline<cr>
+
+    call unite#set_profile('outline', 'ignorecase', 1)
+    call unite#set_profile('outline', 'smartcase', 1)
 " }
