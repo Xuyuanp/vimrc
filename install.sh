@@ -13,6 +13,9 @@ fi
 ln -s $PWD/vundle.vim ~/.vundle.vim
 
 mkdir -p ~/.vim/bundle
+
+ln -s $PWD/colors/ $HOME/.vim/
+
 echo "Clone vundle frome github.com."
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle
 

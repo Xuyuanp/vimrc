@@ -11,6 +11,9 @@
     " display the indent levels with thin vertical lines
     Bundle 'Yggdroot/indentLine'                      
 
+    " Quickly locate files, buffers, mrus, ... in large project.
+    Bundle 'Yggdroot/LeaderF'
+
     Bundle 'tpope/vim-git'                             
 
     " a Git wrapper 
@@ -27,9 +30,6 @@
     
     " An ack/ag powered code search and view tool, in an intuitive way with fairly more context.
     Bundle 'dyng/ctrlsf.vim'                          
-
-    " custom molokai colorscheme
-    Bundle 'Xuyuanp/molokai'
 
     " Distraction-free writing in Vim
     Bundle 'junegunn/goyo.vim'                        

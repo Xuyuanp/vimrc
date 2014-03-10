@@ -263,6 +263,10 @@ set tw=800
     let g:gitgutter_eager           = 1
 " }
 
+" config for indentline {
+    let g:indentLine_char = '┆'
+" }
+
 " config for js {
     au FileType javascript call JavaScriptFold()
 " }
@@ -438,13 +442,13 @@ set tw=800
     nmap <Space> [unite]
     nnoremap [unite] <Nop>
     nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed buffer file_mru file bookmark file_rec/async:!<cr><c-u>
-    nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
+    nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file<cr><c-u>
 
-    nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
-    nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
+    nnoremap <silent> [unite]e :<C-u>Unite -auto-resize -buffer-name=recent file_mru<cr>
+    nnoremap <silent> [unite]y :<C-u>Unite -auto-resize -buffer-name=yanks history/yank<cr>
     nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
     nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
-    nnoremap <silent> [unite]/ :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
+    nnoremap <silent> [unite]/ :<C-u>Unite -auto-resize -no-quit -buffer-name=search grep:.<cr>
     nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
     nnoremap <silent> [unite]o :<C-u>Unite -auto-resize -buffer-name=outline outline<cr>
 
