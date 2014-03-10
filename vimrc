@@ -51,14 +51,13 @@ colorscheme molokai
         set guioptions-=L
         set guioptions-=r
         set guioptions-=b
-        " set showtabline=0
     endif
 " }
 
 " Highlight current {
-    set cursorline
-    highlight CursorLine ctermbg=243 ctermfg=NONE
-    highlight Visual ctermbg=243 ctermfg=NONE
+    " set cursorline
+    " highlight CursorLine ctermbg=243 ctermfg=NONE
+    " highlight Visual ctermbg=243 ctermfg=NONE
 " }
 
 " Navigation between split windows {
@@ -245,6 +244,10 @@ set tw=800
     " let g:airline_symbols.branch     = '⎇'
     " let g:airline_symbols.paste      = 'Þ'
     " let g:airline_symbols.whitespace = 'Ξ'
+" }
+
+" config for bufferline {
+    let g:bufferline_echo = 0
 " }
 
 " config for ctrlsf {

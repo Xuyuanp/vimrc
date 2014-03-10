@@ -27,6 +27,9 @@
 
     " lean & mean status/tabline for vim that's light as air
     Bundle 'bling/vim-airline'                        
+
+    " super simple vim plugin to show the list of buffers in the command bar
+    Bundle 'bling/vim-bufferline'
     
     " An ack/ag powered code search and view tool, in an intuitive way with fairly more context.
     Bundle 'dyng/ctrlsf.vim'                          
@@ -116,6 +119,9 @@
     " neo-snippet plugin contains neocomplcache snippets source
     Bundle 'Shougo/neosnippet'
     Bundle 'Shougo/neosnippet-snippets'
+
+    " Alternate Files quickly (.c --> .h etc)
+    Bundle 'a.vim'
 
     Bundle 'c.vim'
     Bundle 'cpp.vim'
