@@ -7,7 +7,7 @@ My vimrc backup
 
 ## Mac OS X / Linux
 
-1. Clone resposity.
+1. Clone repository.
     
     `git clone https://github.com/Xuyuanp/vimrc.git`
 2. Execute the `install.sh` file.
