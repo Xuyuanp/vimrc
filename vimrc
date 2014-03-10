@@ -97,8 +97,6 @@ nnoremap <silent><Leader>/ :nohls<CR>
 
 " Auto reload vimrc/zshrc when it's saved
 autocmd BufWritePost ~/.vimrc source ~/.vimrc
-autocmd BufWritePost ~/.shared_profile.sh source ~/.zshrc
-autocmd BufWritePost ~/.zshrc source ~/.zshrc
 
 " Keep search pattern at the center of the screen {
     nnoremap <silent>n nzz
