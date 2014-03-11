@@ -296,7 +296,21 @@ set tw=800
     " Set minimum syntax keyword length.
     let g:neocomplete#sources#syntax#min_keyword_length = 3
     let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
+    let g:neocomplete#enable_auto_delimiter             = 1
+    let g:neocomplete#enable_refresh_always             = 1
 
+    " for vim-lua-plugin
+    let g:neocomplete#force_overwrite_completefunc      = 1
+    if !exists('g:neocomplete#sources#omni#functions')
+        let g:neocomplete#sources#omni#functions        = {}
+    endif 
+    if !exists('g:neocomplete#force_omni_input_patterns')
+        let g:neocomplete#force_omni_input_patterns     = {}
+    endif 
+    let g:neocomplete#sources#omni#functions.lua        = 'xolox#lua#omnifunc'
+    " let g:neocomplete#sources#omni#input_patterns.lua = '\w\+[.:]\|require\s*(\?["'']\w*'
+    let g:neocomplete#force_omni_input_patterns.lua     = '\w\+[.:]\|require\s*(\?["'']\w*'
+          
     " Define dictionary.
     let g:neocomplete#sources#dictionary#dictionaries   = {
         \ 'default' : '',
@@ -306,9 +320,9 @@ set tw=800
 
     " Define keyword.
     if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
+        let g:neocomplete#keyword_patterns              = {}
     endif
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+    let g:neocomplete#keyword_patterns['default']       = '\h\w*'
 
     " Plugin key-mappings.
     inoremap <expr><C-g>     neocomplete#undo_completion()
@@ -457,4 +471,10 @@ set tw=800
 
     call unite#set_profile('outline', 'ignorecase', 1)
     call unite#set_profile('outline', 'smartcase', 1)
+" }
+
+" config for vim-lua-plugin {
+    let g:lua_check_syntax = 0
+    let g:lua_complete_omni = 1
+    let g:lua_complete_dynamic = 0
 " }

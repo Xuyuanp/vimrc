@@ -99,6 +99,9 @@
     " Extended session management for Vim (:mksession on steroids) 
     Bundle 'xolox/vim-session'
 
+    " Lua file type plug-in for the Vim text editor
+    Bundle 'xolox/vim-lua-ftplugin'
+
     " Interactive command execution in Vim
     Bundle 'Shougo/vimproc.vim'
 
