@@ -105,6 +105,9 @@ autocmd BufWritePost ~/.vimrc source ~/.vimrc
     nnoremap <silent>g* g*zz
 " }
 
+" Ctrl-C to copy text to system clipboard
+inoremap <C-c> y:e ~/.vim/cliptmp<CR>P:w !pbcopy<CR><CR>:bdelete!<CR>
+
 " Favorite filetypes
 set ffs=unix,dos,mac
 " Always show current position
@@ -160,10 +163,7 @@ set smarttab
 set lbr
 set tw=800
 
-" indent {
-    " set ai
-    " set si
-" }
+set si
 
 " config for golang {
     filetype off
