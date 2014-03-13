@@ -217,6 +217,7 @@ if &t_Co > 255
 
    hi Typedef         ctermfg=81
    hi Type            ctermfg=81                cterm=none
+   hi CCClass         ctermfg=69
    hi Underlined      ctermfg=244               cterm=underline
 
    hi VertSplit       ctermfg=244 ctermbg=232   cterm=bold

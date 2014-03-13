@@ -40,12 +40,6 @@
     " Vim motions on speed!
     Bundle 'Lokaltog/vim-easymotion'                  
 
-    " Enhanced javascript syntax file for Vim
-    Bundle 'jelera/vim-javascript-syntax'             
-
-    " Syntax for JavaScript libraries
-    Bundle 'othree/javascript-libraries-syntax.vim'   
-
     " Syntax checking hacks for vim
     Bundle 'scrooloose/syntastic'                     
 
@@ -60,9 +54,6 @@
 
     " Functions and mappings to close open HTML/XML tags
     Bundle 'docunext/closetag.vim'                    
-
-    " Plugin to manage Most Recently Used (MRU) files
-    Bundle 'vim-scripts/mru.vim'                      
 
     " True Sublime Text style multiple selections for Vim 
     Bundle 'terryma/vim-multiple-cursors'             
@@ -123,14 +114,15 @@
     Bundle 'Shougo/neosnippet'
     Bundle 'Shougo/neosnippet-snippets'
 
+    " vim-cc2dx plugin is for cocos2dx development
+    Bundle 'Xuyuanp/vim-cc2dx'
+
     " Alternate Files quickly (.c --> .h etc)
     Bundle 'a.vim'
 
     Bundle 'c.vim'
     Bundle 'cpp.vim'
-    Bundle 'Dart'
     Bundle 'leshill/vim-json'                         
-    Bundle 'node.js'
 
     filetype plugin indent on
 " }
