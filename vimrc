@@ -101,9 +101,9 @@ nnoremap <silent>g* g*zz
 " }}}
 
 " Ctrl-C to copy text to system clipboard
-inoremap <C-c> y:e ~/.vim/cliptmp<CR>P:w !pbcopy<CR><CR>:bdelete!<CR>
+vnoremap <C-c> y:e ~/.vim/cliptmp<CR>P:w !pbcopy<CR><CR>:bdelete!<CR>
 
-set tags+=/Users/xuyuanp/Documents/Work/git/kytv_cc2dx/quick-cocos2d-x/lib/cocos2d-x/tags
+set tags+=$QUICK_COCOS2DX_ROOT/lib/cocos2d-x/tags
 
 " Favorite filetypes
 set ffs=unix,dos,mac
@@ -396,7 +396,7 @@ if executable('gotype')
     let g:syntastic_go_checkers = ['gotype']
 endif 
 if executable('golint')
-    call insert(g:syntastic_go_checkers, 'golint')
+    call add(g:syntastic_go_checkers, 'golint')
 endif 
 " let g:syntastic_go_checkers          = ['gotype', 'golint']
 let g:syntastic_auto_jump            = 2

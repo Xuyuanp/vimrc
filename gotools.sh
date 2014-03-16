@@ -15,7 +15,7 @@ if which go > /dev/null 2>&1; then
         for package in ${packages[@]}; do
             key=${package%%:*}
             value=${package##*:}
-            echo "Install ${key}..."
+            echo "Installing ${key}..."
             go get -u ${value}
         done
     else
