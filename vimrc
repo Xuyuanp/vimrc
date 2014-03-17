@@ -100,6 +100,10 @@ nnoremap <silent># #zz
 nnoremap <silent>g* g*zz
 " }}}
 
+" make ctrl-] center {{{
+nnoremap <C-]> <C-]>zz
+" }}}
+
 " Ctrl-C to copy text to system clipboard
 vnoremap <C-c> y:e ~/.vim/cliptmp<CR>P:w !pbcopy<CR><CR>:bdelete!<CR>
 
@@ -160,7 +164,8 @@ set smarttab
 set lbr
 set tw=800
 
-set si
+set smartindent
+set autoindent
 
 " config for golang {{{
 filetype off
