@@ -141,6 +141,9 @@ set mat=2
 
 " Highlight search things
 set hlsearch
+set incsearch
+
+set cursorline
 
 set showcmd
 
@@ -174,6 +177,7 @@ filetype plugin indent on
 
 autocmd BufRead,BufNewFile *.go set filetype=go
 autocmd BufRead,BufNewFile *.tpl set filetype=html
+autocmd FileType go nnoremap <buffer> <C-]> :call GodefUnderCursor()<cr>
 
 nmap <C-t> :TagbarToggle<CR>
 
@@ -211,6 +215,8 @@ if executable('goimports')
     let g:gofmt_command = "goimports"
     autocmd BufWritePre *.go :Fmt
 endif
+
+let g:godef_same_file_in_same_window = 1
 " }}}
 
 " config for NERDTree {{{
@@ -397,11 +403,8 @@ let g:syntastic_warning_symbol       = '⚠'
 let g:syntastic_style_error_symbol   = '✠'
 let g:syntastic_style_warning_symbol = '≈'
 let g:syntastic_go_checkers = ['go']
-if executable('gotype')
-    let g:syntastic_go_checkers = ['gotype']
-endif 
 if executable('golint')
-    call add(g:syntastic_go_checkers, 'golint')
+    let g:syntastic_go_checkers = ['go', 'golint']
 endif 
 " let g:syntastic_go_checkers          = ['gotype', 'golint']
 let g:syntastic_auto_jump            = 2
