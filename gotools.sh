@@ -6,7 +6,6 @@ declare packages=(
     "goimports:code.google.com/p/go.tools/cmd/goimports"
     "godef:code.google.com/p/rog-go/exp/cmd/godef"
     "golint:github.com/golang/lint/golint"
-    "gotype:code.google.com/p/go.tools/cmd/gotype"
 )
 
 

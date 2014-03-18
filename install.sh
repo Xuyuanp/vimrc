@@ -26,4 +26,4 @@ cd ~/.vim/bundle/vimproc.vim/
 make > /dev/null 2>&1
 popd
 
-echo "\nInstallation complete! (Optional:run gotools.sh script to install go tools required by some plugins.)"
+echo "Installation complete! (Optional:run gotools.sh script to install go tools required by some plugins.)"
