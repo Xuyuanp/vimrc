@@ -278,10 +278,6 @@ let g:gitgutter_eager           = 1
 let g:indentLine_char = '┆'
 " }}}
 
-" config for js {{{
-au FileType javascript call JavaScriptFold()
-" }}}
-
 " config for javascript-libraries-syntax {{{
 autocmd BufReadPre *.js let b:javascript_lib_use_jquery    = 1
 autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
@@ -402,11 +398,9 @@ let g:syntastic_error_symbol         = '✗'
 let g:syntastic_warning_symbol       = '⚠'
 let g:syntastic_style_error_symbol   = '✠'
 let g:syntastic_style_warning_symbol = '≈'
-let g:syntastic_go_checkers = ['go']
 if executable('golint')
     let g:syntastic_go_checkers = ['go', 'golint']
 endif 
-" let g:syntastic_go_checkers          = ['gotype', 'golint']
 let g:syntastic_auto_jump            = 2
 set shell=zsh
 " }}}
