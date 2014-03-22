@@ -21,9 +21,7 @@ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle
 
 vim +BundleInstall +qall
 
-pushd
 cd ~/.vim/bundle/vimproc.vim/
 make > /dev/null 2>&1
-popd
 
 echo "Installation complete! (Optional:run gotools.sh script to install go tools required by some plugins.)"

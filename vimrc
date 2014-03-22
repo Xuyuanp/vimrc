@@ -49,12 +49,6 @@ if has('gui_running')
 endif
 " }}}
 
-" Highlight current {{{
-" set cursorline
-" highlight CursorLine ctermbg=243 ctermfg=NONE
-" highlight Visual ctermbg=243 ctermfg=NONE
-" }}}
-
 " Navigation between split windows {{{
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -221,6 +215,12 @@ let g:godef_same_file_in_same_window = 1
 
 " config for NERDTree {{{
 map <C-E> :NERDTreeTabsToggle<CR>
+let NERDTreeShowBookmarks               = 1
+let NERDTreeIgnore                      =
+    \ ['\.pyc', '\~$', '\.swo$', '\.git', '\.hg', '\.svn', '\.bzr']
+let NERDTreeShowHidden                  = 1
+let NERDTreeChDirMode                   = 0
+let NERDTreeMouseMode                   = 2
 let g:nerdtree_tabs_open_on_gui_startup = '1'
 " }}}
 
@@ -259,11 +259,6 @@ let g:bufferline_echo = 0
 " }}}
 
 " config for ctrlsf {{{
-if executable('ag')
-    let g:ctrlsf_ackprg = 'ag'
-elseif executable('ack')
-    let g:ctrlsf_ackprg = 'ack'
-endif
 let g:ctrlsf_context    = '-B 5 -A 3'
 let g:ctrlsf_width      = '30%'
 " }}}
@@ -446,9 +441,6 @@ nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<
 nnoremap <silent> [unite]/ :<C-u>Unite -auto-resize -no-quit -buffer-name=search grep:.<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
 nnoremap <silent> [unite]o :<C-u>Unite -auto-resize -buffer-name=outline outline<cr>
-
-call unite#set_profile('outline', 'ignorecase', 1)
-call unite#set_profile('outline', 'smartcase', 1)
 " }}}
 
 " config for vim-lua-plugin {{{
