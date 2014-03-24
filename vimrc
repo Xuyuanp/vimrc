@@ -1,6 +1,3 @@
-" bundle list
-source ~/.vim/vundle.vim
-
 " redefine leader key
 let mapleader = ','
 
@@ -163,3 +160,20 @@ set tw=800
 
 set smartindent
 set autoindent
+
+" vundle {
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
+for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
+    execute 'source' fpath
+endfor
+
+filetype plugin indent on
+" }
