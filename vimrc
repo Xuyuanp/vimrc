@@ -1,3 +1,9 @@
+" User vimrc.before if available {{{
+    if filereadable(expand("~/.vimrc.before"))
+        source ~/.vimrc.before
+    endif
+" }}}
+
 " redefine leader key
 let mapleader = ','
 
@@ -10,11 +16,11 @@ set modeline
 set completeopt=longest,menu
 
 " enable fold {{{
-autocmd FileType lua,go,c,cpp setlocal foldmethod=syntax
-autocmd FileType python       setlocal foldmethod=indent
-autocmd FileType vim          setlocal foldmethod=marker
-set foldlevel=1
-set foldlevelstart=99
+    autocmd FileType lua,go,c,cpp setlocal foldmethod=syntax
+    autocmd FileType python       setlocal foldmethod=indent
+    autocmd FileType vim          setlocal foldmethod=marker
+    set foldlevel=1
+    set foldlevelstart=99
 " }}}
 
 " Set to auto read when a file is changed from the outside
@@ -37,44 +43,44 @@ end
 colorscheme molokai
 
 " guioptions {{{
-if has('gui_running') 
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=L
-    set guioptions-=r
-    set guioptions-=b
-endif
+    if has('gui_running') 
+        set guioptions-=m
+        set guioptions-=T
+        set guioptions-=L
+        set guioptions-=r
+        set guioptions-=b
+    endif
 " }}}
 
 " Navigation between split windows {{{
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
+    nnoremap <C-j> <C-w>j
+    nnoremap <C-k> <C-w>k
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-l> <C-w>l
 " }}}
 
 " Remap arrow keys {{{
-nnoremap <Up> :bprev<CR>
-nnoremap <Down> :bnext<CR>
-nnoremap <Left> :tabprev<CR>
-nnoremap <Right> :tabnext<CR>
+    nnoremap <Up> :bprev<CR>
+    nnoremap <Down> :bnext<CR>
+    nnoremap <Left> :tabprev<CR>
+    nnoremap <Right> :tabnext<CR>
 " }}}
 
 " Mapping for tab management {{{
-nnoremap <Leader>tc :tabc<CR>
-nnoremap <Leader>tn :tabn<CR>
-nnoremap <Leader>tp :tabp<CR>
-nnoremap <Leader>te :tabe<CR>
+    nnoremap <Leader>tc :tabc<CR>
+    nnoremap <Leader>tn :tabn<CR>
+    nnoremap <Leader>tp :tabp<CR>
+    nnoremap <Leader>te :tabe<CR>
 " }}}
 
 " Reselect visual block after indent/outdent {{{
-vnoremap < <gv
-vnoremap > >gv
+    vnoremap < <gv
+    vnoremap > >gv
 " }}}
 
 " Improve up/down movement on wrapped lines {{{
-nnoremap j gj
-nnoremap k gk
+    nnoremap j gj
+    nnoremap k gk
 " }}}
 
 " Clear search highlight 
@@ -84,15 +90,15 @@ nnoremap <silent><Leader>/ :nohls<CR>
 autocmd BufWritePost ~/.vimrc source ~/.vimrc
 
 " Keep search pattern at the center of the screen {{{
-nnoremap <silent>n nzz
-nnoremap <silent>N Nzz
-nnoremap <silent>* *zz
-nnoremap <silent># #zz
-nnoremap <silent>g* g*zz
+    nnoremap <silent>n nzz
+    nnoremap <silent>N Nzz
+    nnoremap <silent>* *zz
+    nnoremap <silent># #zz
+    nnoremap <silent>g* g*zz
 " }}}
 
 " make ctrl-] center {{{
-nnoremap <C-]> <C-]>zz
+    nnoremap <C-]> <C-]>zz
 " }}}
 
 " Ctrl-C to copy text to system clipboard
@@ -161,19 +167,25 @@ set tw=800
 set smartindent
 set autoindent
 
-" vundle {
-set nocompatible
-filetype off
+" vundle {{{
+    set nocompatible
+    filetype off
 
-set rtp+=~/.vim/bundle/vundle/
+    set rtp+=~/.vim/bundle/vundle/
 
-call vundle#rc()
+    call vundle#rc()
 
-Bundle 'gmarik/vundle'
+    Bundle 'gmarik/vundle'
 
-for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
-    execute 'source' fpath
-endfor
+    for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
+        execute 'source' fpath
+    endfor
 
-filetype plugin indent on
-" }
+    filetype plugin indent on
+" }}}
+
+" User vimrc.after if available {{{
+    if filereadable(expand("~/.vimrc.after"))
+        source ~/.vimrc.after
+    endif
+" }}}
