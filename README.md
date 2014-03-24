@@ -10,12 +10,15 @@ My vimrc backup
 1. Clone repository.
     
     `git clone https://github.com/Xuyuanp/vimrc.git`
+
+    or
+
+    `git clone https://github.com/Xuyuanp/vimrc.git ~/.vim`
+
 2. Execute the `install.sh` file.
 
-    `cd vimrc`
-    
-    `./install.sh`
+    `source install.sh`
 
 ## Windows
 
-Fuck Windows.
+* Fuck Windows.
