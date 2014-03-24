@@ -15,7 +15,7 @@ My vimrc backup
     `cd vimrc`
     
     `./install.sh`
- 
+
 ## Windows
 
 Fuck Windows.
