@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
 if [ $PWD != $HOME/.vim ]; then
-    mv ~/.vim ~/.vim.bak
+    if [ -d $HOME/.vim ]; then
+        mv ~/.vim ~/.vim.bak
+    fi
     ln -s $PWD $HOME/.vim
 fi
 
