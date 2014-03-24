@@ -8,7 +8,6 @@ Bundle 'soh335/unite-outline-go'
 
 let g:unite_source_history_yank_enable    = 1
 let g:unite_source_rec_max_cache_files    = 5000
-let g:unite_data_directory                = '~/.vim/.cache/unite'
 
 if executable('ag')
     let g:unite_source_grep_command       = 'ag'
