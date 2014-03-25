@@ -19,6 +19,44 @@ elseif executable('ack')
     let g:unite_source_grep_recursive_opt = ''
 endif
 
+if !exists('g:unite_source_menu_menus')
+    let g:unite_source_menu_menus = {}
+endif
+let g:unite_source_menu_menus.git = {
+    \ 'description' : '            gestionar repositorios git
+        \                            ⌘ [espacio]g',
+    \}
+let g:unite_source_menu_menus.git.command_candidates = [
+    \['▷ tig                                                        ⌘ ,gt',
+        \'normal ,gt'],
+    \['▷ git status       (Fugitive)                                ⌘ ,gs',
+        \'Gstatus'],
+    \['▷ git diff         (Fugitive)                                ⌘ ,gd',
+        \'Gdiff'],
+    \['▷ git commit       (Fugitive)                                ⌘ ,gc',
+        \'Gcommit'],
+    \['▷ git log          (Fugitive)                                ⌘ ,gl',
+        \'exe "silent Glog | Unite quickfix"'],
+    \['▷ git blame        (Fugitive)                                ⌘ ,gb',
+        \'Gblame'],
+    \['▷ git stage        (Fugitive)                                ⌘ ,gw',
+        \'Gwrite'],
+    \['▷ git checkout     (Fugitive)                                ⌘ ,go',
+        \'Gread'],
+    \['▷ git rm           (Fugitive)                                ⌘ ,gr',
+        \'Gremove'],
+    \['▷ git mv           (Fugitive)                                ⌘ ,gm',
+        \'exe "Gmove " input("destino: ")'],
+    \['▷ git push         (Fugitive, salida por buffer)             ⌘ ,gp',
+        \'Git! push'],
+    \['▷ git pull         (Fugitive, salida por buffer)             ⌘ ,gP',
+        \'Git! pull'],
+    \['▷ git prompt       (Fugitive, salida por buffer)             ⌘ ,gi',
+        \'exe "Git! " input("comando git: ")'],
+    \['▷ git cd           (Fugitive)',
+        \'Gcd'],
+    \]
+
 function! s:unit_settings()
     nmap <buffer> Q <Plug>(unite_exit)
     nmap <buffer> <Esc> <Plug>(unite_exit)
@@ -27,13 +65,13 @@ autocmd FileType unite call s:unit_settings()
 
 nmap <Space> [unite]
 nnoremap [unite] <Nop>
-nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed buffer file_mru file bookmark file_rec/async:!<cr><c-u>
-nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file<cr><c-u>
-
-nnoremap <silent> [unite]e :<C-u>Unite -auto-resize -buffer-name=recent file_mru<cr>
-nnoremap <silent> [unite]y :<C-u>Unite -auto-resize -buffer-name=yanks history/yank<cr>
-nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
-nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
-nnoremap <silent> [unite]/ :<C-u>Unite -auto-resize -no-quit -buffer-name=search grep:.<cr>
-nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
-nnoremap <silent> [unite]o :<C-u>Unite -auto-resize -buffer-name=outline outline<cr>
+nnoremap <silent> [unite]<space> :<C-U>Unite -auto-resize -buffer-name=mixed -toggle buffer file_mru file bookmark file_rec/async:!<CR><C-U>
+nnoremap <silent> [unite]f :<C-U>Unite -auto-resize -silent -buffer-name=files -toggle file<CR><C-U>
+nnoremap <silent> [unite]e :<C-U>Unite -auto-resize -silent -buffer-name=recent file_mru<CR>
+nnoremap <silent> [unite]y :<C-U>Unite -auto-resize -silent -buffer-name=yanks history/yank<CR>
+nnoremap <silent> [unite]l :<C-U>Unite -auto-resize -silent -buffer-name=line -start-insert line<CR>
+nnoremap <silent> [unite]b :<C-U>Unite -auto-resize -silent -buffer-name=buffers buffer<CR>
+nnoremap <silent> [unite]/ :<C-U>Unite -auto-resize -silent -buffer-name=search -no-quit grep:.<CR>
+nnoremap <silent> [unite]m :<C-U>Unite -auto-resize -silent -buffer-name=mappings mapping<CR>
+nnoremap <silent> [unite]o :<C-U>Unite -auto-resize -silent -buffer-name=outline outline<CR>
+nnoremap <silent> [unite]g :<C-U>Unite -auto-resize -silent -buffer-name=menu -start-insert menu<CR>
