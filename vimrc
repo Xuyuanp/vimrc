@@ -144,8 +144,8 @@ set cursorline
 
 set showcmd
 
-set cmdheight=1   " 设定命令行的行数为 1
-set laststatus=2  " 显示状态栏 (默认值为 1, 无法显示状态栏)
+set cmdheight=1   
+set laststatus=2  
 
 " Turn backup off
 set nobackup
