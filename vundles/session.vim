@@ -1,7 +1,7 @@
 " Miscellaneous auto-load Vim scripts
-Bundle 'xolox/vim-misc'
+Plugin 'xolox/vim-misc'
 " Extended session management for Vim (:mksession on steroids) 
-Bundle 'xolox/vim-session'
+Plugin 'xolox/vim-session'
 
 let g:session_directory         = '~/.vim_sessions'
 let g:session_default_overwrite = 1

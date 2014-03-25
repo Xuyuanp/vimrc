@@ -1,1 +1,1 @@
-Bundle 'c.vim'
+Plugin 'c.vim'

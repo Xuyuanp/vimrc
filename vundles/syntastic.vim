@@ -1,5 +1,5 @@
 " Syntax checking hacks for vim
-Bundle 'scrooloose/syntastic'                     
+Plugin 'scrooloose/syntastic'                     
 
 let g:syntastic_error_symbol         = '✗'
 let g:syntastic_warning_symbol       = '⚠'

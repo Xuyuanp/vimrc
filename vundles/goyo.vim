@@ -1,4 +1,4 @@
 " Distraction-free writing in Vim
-Bundle 'junegunn/goyo.vim'                        
+Plugin 'junegunn/goyo.vim'                        
 
 

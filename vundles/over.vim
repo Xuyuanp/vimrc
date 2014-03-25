@@ -1,2 +1,2 @@
 " Replace tool
-Bundle 'osyo-manga/vim-over'
+Plugin 'osyo-manga/vim-over'

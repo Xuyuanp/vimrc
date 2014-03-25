@@ -1,8 +1,8 @@
 " vim plugin providing godef support
-Bundle 'dgryski/vim-godef'                        
+Plugin 'dgryski/vim-godef'                        
 
 " A Go bundle for Vundle or Pathogen
-Bundle 'Blackrush/vim-gocode'
+Plugin 'Blackrush/vim-gocode'
 
 autocmd BufRead,BufNewFile *.go set filetype=go
 autocmd BufRead,BufNewFile *.tpl set filetype=html

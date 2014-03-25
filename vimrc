@@ -144,8 +144,8 @@ set cursorline
 
 set showcmd
 
-set cmdheight=1   " 设定命令行的行数为 1
-set laststatus=2  " 显示状态栏 (默认值为 1, 无法显示状态栏)
+set cmdheight=1   
+set laststatus=2  
 
 " Turn backup off
 set nobackup
@@ -171,15 +171,34 @@ set autoindent
     set nocompatible
     filetype off
 
+    let iCanHazVundle = 1
+    let vundle_readme = expand('~/.vim/bundle/vundle/README.md')
+    if !filereadable(vundle_readme)
+        echo "Instaling Vundle..."
+        echo ""
+        silent !mkdir -p ~/.vim/bundle/
+        silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+        let iCanHazVundle = 0
+    endif
+
     set rtp+=~/.vim/bundle/vundle/
 
     call vundle#rc()
 
-    Bundle 'gmarik/vundle'
+    Plugin 'gmarik/vundle'
 
     for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
         execute 'source' fpath
     endfor
+
+    if iCanHazVundle == 0 
+        echo "Installing plugins, please ignore key map error message"
+        echo ""
+        :PluginInstall
+    endif
+
+    unlet iCanHazVundle
+    unlet vundle_readme
 
     filetype plugin indent on
 " }}}
