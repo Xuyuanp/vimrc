@@ -19,6 +19,8 @@ My vimrc configuration.
 
     `source install.sh`
 
+**warning** Only tested in Mac OS X and Archlinux
+
 ## Windows
 
 * Fuck Windows.
