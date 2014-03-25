@@ -1,1 +1,1 @@
-Bundle 'tpope/vim-git'                             
+Plugin 'tpope/vim-git'                             

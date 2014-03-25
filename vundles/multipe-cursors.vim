@@ -1,2 +1,2 @@
 " True Sublime Text style multiple selections for Vim 
-Bundle 'terryma/vim-multiple-cursors'             
+Plugin 'terryma/vim-multiple-cursors'             

@@ -1,3 +1,3 @@
 " Alternate Files quickly (.c --> .h etc)
-Bundle 'a.vim'
+Plugin 'a.vim'
 

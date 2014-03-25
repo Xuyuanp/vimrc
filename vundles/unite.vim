@@ -1,10 +1,10 @@
 " Unite and create user interfaces
-Bundle 'Shougo/unite.vim'
+Plugin 'Shougo/unite.vim'
 " MRU plugin of unite 
-Bundle 'Shougo/neomru.vim'
+Plugin 'Shougo/neomru.vim'
 " outline source for unite.vim
-Bundle 'Shougo/unite-outline'
-Bundle 'soh335/unite-outline-go'
+Plugin 'Shougo/unite-outline'
+Plugin 'soh335/unite-outline-go'
 
 let g:unite_source_history_yank_enable    = 1
 let g:unite_source_rec_max_cache_files    = 5000

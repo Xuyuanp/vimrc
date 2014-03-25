@@ -175,7 +175,7 @@ set autoindent
 
     call vundle#rc()
 
-    Bundle 'gmarik/vundle'
+    Plugin 'gmarik/vundle'
 
     for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
         execute 'source' fpath

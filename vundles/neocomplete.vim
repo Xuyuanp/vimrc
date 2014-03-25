@@ -2,7 +2,7 @@ if !has('lua')
     finish
 endif
 " Next generation completion framework after neocomplcache
-Bundle 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neocomplete.vim'
 
 " Disable AutoComplPop.
 let g:acp_enableAtStartup                           = 0
