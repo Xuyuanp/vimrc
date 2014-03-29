@@ -222,7 +222,8 @@ if &t_Co > 255
 
    hi VertSplit       ctermfg=244 ctermbg=232   cterm=bold
    hi VisualNOS                   ctermbg=238
-   hi Visual                      ctermbg=235
+   " hi Visual                      ctermbg=235
+   hi Visual          cterm=reverse
    hi WarningMsg      ctermfg=231 ctermbg=238   cterm=bold
    hi WildMenu        ctermfg=81  ctermbg=16
 
@@ -264,7 +265,8 @@ if &t_Co > 255
        hi Statement       ctermfg=197               cterm=bold
        hi Tag             ctermfg=197
        hi Title           ctermfg=203
-       hi Visual                      ctermbg=238
+       " hi Visual                      ctermbg=238
+       hi Visual          cterm=reverse
 
        hi Comment         ctermfg=244
        hi LineNr          ctermfg=239 ctermbg=235
