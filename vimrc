@@ -97,6 +97,9 @@ autocmd BufWritePost ~/.vimrc source ~/.vimrc
     nnoremap <silent>g* g*zz
 " }}}
 
+" Force saving files that require root permission
+cmap w!! %!sudo tee > /dev/null %
+
 " make ctrl-] center {{{
     nnoremap <C-]> <C-]>zz
 " }}}
