@@ -1,1 +1,1 @@
-Bundle 'leshill/vim-json'
+Plugin 'leshill/vim-json'

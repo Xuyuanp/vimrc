@@ -1,1 +1,1 @@
-Bundle 'cpp.vim'
+Plugin 'cpp.vim'

@@ -2,7 +2,7 @@
 Bundle 'Xuyuanp/nerdtree'
 
 " NERDTree and tabs together in Vim, painlessly
-Bundle 'jistr/vim-nerdtree-tabs'
+Plugin 'jistr/vim-nerdtree-tabs'
 
 map <C-E> :NERDTreeTabsToggle<CR>
 let NERDTreeShowBookmarks               = 1
