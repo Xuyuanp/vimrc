@@ -1,5 +1,5 @@
 " A tree explorer plugin for vim.
-Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/nerdtree'
 
 " NERDTree and tabs together in Vim, painlessly
 Bundle 'jistr/vim-nerdtree-tabs'
@@ -12,3 +12,5 @@ let NERDTreeShowHidden                  = 1
 let NERDTreeChDirMode                   = 0
 let NERDTreeMouseMode                   = 2
 let g:nerdtree_tabs_open_on_gui_startup = '1'
+
+let g:nerdtree_show_git_status          = 1
