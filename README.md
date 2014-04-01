@@ -44,9 +44,11 @@ Plugins managed using [Vundle](https://github.com/gmarik/Vundle.vim). You can ea
   
   * `<C-K>`:complete snippets.
 
-## [NERDTree](https://github.com/scrooloose/nerdtree)
+## [NERDTree](https://github.com/Xuyuanp/nerdtree)
 
 The NERD tree allows you to explore your filesystem and to open files and directories. It presents the filesystem to you in the form of a tree which you manipulate with the keyboard and/or mouse. It also allows you to perform simple filesystem operations.
+
+  **Note:** This is my forked version. I add git status support for it. Set `let g:nerdtree_show_git_status = 1` to enable it.
 
   **Key-map**
 
