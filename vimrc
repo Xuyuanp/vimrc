@@ -150,6 +150,13 @@ set showcmd
 set cmdheight=1   
 set laststatus=2  
 
+" Turn on wild menu, try typing :h and press <Tab>
+set wildmenu
+" Display incomplete commands
+set showcmd 
+" Shortens messages to avoid 'press a key' prompt
+set shortmess=aoOtTI 
+
 " Turn backup off
 set nobackup
 set nowb
