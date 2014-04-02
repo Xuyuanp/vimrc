@@ -15,3 +15,7 @@ let g:nerdtree_tabs_open_on_gui_startup = '1'
 
 " Auto open NERDTree when vim startup if no files were specified
 autocmd vimenter * if !argc() | NERDTree | endif
+
+
+" let g:NERDTreeMapNextHunk = ">c"
+" let g:NERDTreeMapPrevHunk = "<c"
