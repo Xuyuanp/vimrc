@@ -36,14 +36,14 @@ set modifiable
 syntax enable
 
 " coloscheme
-if has("gui_running") 
+if has("gui_running")
     set background=dark
     set guifont=Monaco\ for\ Powerline:h13
 end
 colorscheme molokai
 
 " guioptions {{{
-    if has('gui_running') 
+    if has('gui_running')
         set guioptions-=m
         set guioptions-=T
         set guioptions-=L
@@ -83,7 +83,7 @@ colorscheme molokai
     nnoremap k gk
 " }}}
 
-" Clear search highlight 
+" Clear search highlight
 nnoremap <silent><Leader>/ :nohls<CR>
 
 " Auto reload vimrc/zshrc when it's saved
@@ -99,6 +99,9 @@ autocmd BufWritePost ~/.vimrc source ~/.vimrc
 
 " Force saving files that require root permission
 cmap w!! %!sudo tee > /dev/null %
+
+" Delete space at end of lines
+nnoremap <silent><Leader><Space> :%s/\ \+$//g<CR>
 
 " make ctrl-] center {{{
     nnoremap <C-]> <C-]>zz
@@ -147,15 +150,15 @@ set cursorline
 
 set showcmd
 
-set cmdheight=1   
-set laststatus=2  
+set cmdheight=1
+set laststatus=2
 
 " Turn on wild menu, try typing :h and press <Tab>
 set wildmenu
 " Display incomplete commands
-set showcmd 
+set showcmd
 " Shortens messages to avoid 'press a key' prompt
-set shortmess=aoOtTI 
+set shortmess=aoOtTI
 
 " Turn backup off
 set nobackup
@@ -201,7 +204,7 @@ set autoindent
         execute 'source' fpath
     endfor
 
-    if iCanHazVundle == 0 
+    if iCanHazVundle == 0
         echo "Installing plugins, please ignore key map error message"
         echo ""
         :PluginInstall
