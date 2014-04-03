@@ -8,7 +8,7 @@ My vimrc configuration.
 ## Mac OS X / Linux
 
 1. Clone repository.
-    
+
     `git clone https://github.com/Xuyuanp/vimrc.git`
 
     or
@@ -41,18 +41,20 @@ Plugins managed using [Vundle](https://github.com/gmarik/Vundle.vim). You can ea
   * `<TAB>`:autoselect.
 
   * `<C-N>/<C-P>`:select next/prev.
-  
+
   * `<C-K>`:complete snippets.
 
-## [NERDTree](https://github.com/Xuyuanp/nerdtree)
+## [git-NERDTree](https://github.com/Xuyuanp/git-nerdtree)
 
 The NERD tree allows you to explore your filesystem and to open files and directories. It presents the filesystem to you in the form of a tree which you manipulate with the keyboard and/or mouse. It also allows you to perform simple filesystem operations.
 
-  **Note:** This is my forked version. I add git status support for it. Set `let g:nerdtree_show_git_status = 1` to enable it.
+  **Note:** This is my forked version. I add git status support for it. Set `let g:NERDTreeShowGitStatus = 0` to disable it.
 
   **Key-map**
 
   * `<C-E>`:toggle nerdtree
+  * `]c`: jump to next change
+  * `[c`: jump to prev change
 
 ## [Fugitive](https://github.com/tpope/vim-fugitive)
 
