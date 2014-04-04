@@ -20,10 +20,10 @@ let g:neocomplete#enable_refresh_always             = 1
 let g:neocomplete#force_overwrite_completefunc      = 1
 if !exists('g:neocomplete#sources#omni#functions')
     let g:neocomplete#sources#omni#functions        = {}
-endif 
+endif
 if !exists('g:neocomplete#force_omni_input_patterns')
     let g:neocomplete#force_omni_input_patterns     = {}
-endif 
+endif
 let g:neocomplete#sources#omni#functions.lua        = 'xolox#lua#omnifunc'
 " let g:neocomplete#sources#omni#input_patterns.lua = '\w\+[.:]\|require\s*(\?["'']\w*'
 let g:neocomplete#force_omni_input_patterns.lua     = '\w\+[.:]\|require\s*(\?["'']\w*'
@@ -78,4 +78,4 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::' 
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'

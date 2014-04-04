@@ -1,5 +1,5 @@
 " vim plugin providing godef support
-Plugin 'dgryski/vim-godef'                        
+Plugin 'dgryski/vim-godef'
 
 " A Go bundle for Vundle or Pathogen
 Plugin 'Blackrush/vim-gocode'
@@ -14,7 +14,7 @@ autocmd BufRead,BufNewFile *.tpl set filetype=html
 autocmd FileType go nnoremap <buffer> <C-]> :call GodefUnderCursor()<cr>
 autocmd FileType go compiler golang
 
-if executable('goimports') 
+if executable('goimports')
     let g:gofmt_command = "goimports"
     autocmd BufWritePre *.go :Fmt
 endif

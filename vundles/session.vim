@@ -1,6 +1,6 @@
 " Miscellaneous auto-load Vim scripts
 Plugin 'xolox/vim-misc'
-" Extended session management for Vim (:mksession on steroids) 
+" Extended session management for Vim (:mksession on steroids)
 Plugin 'xolox/vim-session'
 
 let g:session_directory         = '~/.vim_sessions'

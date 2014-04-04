@@ -1,6 +1,6 @@
 " Unite and create user interfaces
 Plugin 'Shougo/unite.vim'
-" MRU plugin of unite 
+" MRU plugin of unite
 Plugin 'Shougo/neomru.vim'
 " outline source for unite.vim
 Plugin 'Shougo/unite-outline'

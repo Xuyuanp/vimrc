@@ -1,2 +1,2 @@
-" a Git wrapper 
-Plugin 'tpope/vim-fugitive'                       
+" a Git wrapper
+Plugin 'tpope/vim-fugitive'

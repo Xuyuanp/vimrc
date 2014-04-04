@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-declare packages=( 
+declare packages=(
     "gocode:github.com/nsf/gocode"
     "gotags:github.com/jstemmer/gotags"
     "goimports:code.google.com/p/go.tools/cmd/goimports"

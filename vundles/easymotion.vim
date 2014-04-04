@@ -1,3 +1,3 @@
 " Vim motions on speed!
-Plugin 'Lokaltog/vim-easymotion'                  
+Plugin 'Lokaltog/vim-easymotion'
 

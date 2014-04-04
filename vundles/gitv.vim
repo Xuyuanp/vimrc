@@ -1,2 +1,2 @@
 " gitk for vim
-Plugin 'gregsexton/gitv'                          
+Plugin 'gregsexton/gitv'
