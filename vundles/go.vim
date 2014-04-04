@@ -2,7 +2,7 @@
 Plugin 'dgryski/vim-godef'
 
 " A Go bundle for Vundle or Pathogen
-Plugin 'Blackrush/vim-gocode'
+Plugin 'Xuyuanp/vim-gocode'
 
 " Vim compiler plugin for Go (golang)
 Plugin 'rjohnsondev/vim-compiler-go'
