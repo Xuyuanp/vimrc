@@ -66,12 +66,12 @@ autocmd FileType unite call s:unit_settings()
 nmap <Space> [unite]
 nnoremap [unite] <Nop>
 nnoremap <silent> [unite]<space> :<C-U>Unite -auto-resize -buffer-name=mixed -toggle buffer file_mru file bookmark file_rec/async:!<CR><C-U>
-nnoremap <silent> [unite]f :<C-U>Unite -auto-resize -silent -buffer-name=files -toggle file<CR><C-U>
-nnoremap <silent> [unite]e :<C-U>Unite -auto-resize -silent -buffer-name=recent file_mru<CR>
+nnoremap <silent> [unite]f :<C-U>Unite -auto-resize -silent -buffer-name=files -start-insert -toggle file<CR><C-U>
+nnoremap <silent> [unite]e :<C-U>Unite -auto-resize -silent -buffer-name=recent -start-insert file_mru<CR>
 nnoremap <silent> [unite]y :<C-U>Unite -auto-resize -silent -buffer-name=yanks history/yank<CR>
 nnoremap <silent> [unite]l :<C-U>Unite -auto-resize -silent -buffer-name=line -start-insert line<CR>
 nnoremap <silent> [unite]b :<C-U>Unite -auto-resize -silent -buffer-name=buffers buffer<CR>
 nnoremap <silent> [unite]/ :<C-U>Unite -auto-resize -silent -buffer-name=search -no-quit grep:.<CR>
 nnoremap <silent> [unite]m :<C-U>Unite -auto-resize -silent -buffer-name=mappings mapping<CR>
-nnoremap <silent> [unite]o :<C-U>Unite -auto-resize -silent -buffer-name=outline outline<CR>
+nnoremap <silent> [unite]o :<C-U>Unite -auto-resize -silent -buffer-name=outline -start-insert outline<CR>
 nnoremap <silent> [unite]g :<C-U>Unite -auto-resize -silent -buffer-name=menu -start-insert menu:git<CR>
