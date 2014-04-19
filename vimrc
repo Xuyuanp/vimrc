@@ -100,8 +100,25 @@ autocmd BufWritePost ~/.vimrc source ~/.vimrc
 " Force saving files that require root permission
 cmap w!! %!sudo tee > /dev/null %
 
-" Delete space at end of lines
-nnoremap <silent><Leader><Space> :%s/\ \+$//g<CR>
+" via: http://rails-bestpractices.com/posts/60-remove-trailing-whitespace
+" Strip trailing whitespace
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
+nmap <silent><Leader><Space> :StripTrailingWhitespaces<CR>
+
+" Stolen from Steve Losh vimrc: https://bitbucket.org/sjl/dotfiles/src/tip/vim/.vimrc
+" Open a Quickfix window for the last search.
+nnoremap <silent> <leader>q/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
 " make ctrl-] center {{{
     nnoremap <C-]> <C-]>zz
