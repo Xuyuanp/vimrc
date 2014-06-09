@@ -1,0 +1,1 @@
+Plugin 'thinca/vim-quickrun'
