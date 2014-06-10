@@ -182,6 +182,17 @@ set nobackup
 set nowb
 set noswapfile
 
+" auto add header for new python file
+function! s:PythonHeader()
+    normal i#! /usr/bin/env python
+    normal o# -*- coding:utf-8 -*-
+    let fullname = split(system("finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //'"), '\n')[0]
+    let @o = "# by " . fullname . " " . strftime("%Y-%m-%d %H:%M:%S")
+    put o
+endfunction
+
+autocmd BufNewFile *.py call s:PythonHeader()
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
