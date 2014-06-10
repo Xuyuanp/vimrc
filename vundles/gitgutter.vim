@@ -1,3 +1,4 @@
+finish
 " show a git diff in the gutter(sign column) and stages/reverts hunks'
 Plugin 'airblade/vim-gitgutter'
 
