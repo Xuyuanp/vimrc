@@ -6,6 +6,8 @@ Plugin 'Shougo/neomru.vim'
 Plugin 'Shougo/unite-outline'
 Plugin 'soh335/unite-outline-go'
 
+let g:unite_abbr_highlight = 'Comment' 
+
 let g:unite_source_history_yank_enable    = 1
 let g:unite_source_rec_max_cache_files    = 5000
 
@@ -73,5 +75,5 @@ nnoremap <silent> [unite]l :<C-U>Unite -auto-resize -silent -buffer-name=line -s
 nnoremap <silent> [unite]b :<C-U>Unite -auto-resize -silent -buffer-name=buffers buffer<CR>
 nnoremap <silent> [unite]/ :<C-U>Unite -auto-resize -silent -buffer-name=search -no-quit grep:.<CR>
 nnoremap <silent> [unite]m :<C-U>Unite -auto-resize -silent -buffer-name=mappings mapping<CR>
-nnoremap <silent> [unite]o :<C-U>Unite -auto-resize -silent -buffer-name=outline -start-insert outline<CR>
+nnoremap <silent> [unite]o :<C-U>Unite -auto-resize -silent -buffer-name=outline outline<CR>
 nnoremap <silent> [unite]g :<C-U>Unite -auto-resize -silent -buffer-name=menu -start-insert menu:git<CR>
