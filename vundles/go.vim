@@ -1,11 +1,14 @@
 " vim plugin providing godef support
-Plugin 'dgryski/vim-godef'
+" Plugin 'dgryski/vim-godef'
+NeoBundle 'dgryski/vim-godef'
 
 " A Go bundle for Vundle or Pathogen
-Plugin 'Xuyuanp/vim-gocode'
+" Plugin 'Xuyuanp/vim-gocode'
+NeoBundle 'Xuyuanp/vim-gocode'
 
 " Vim compiler plugin for Go (golang)
-Plugin 'rjohnsondev/vim-compiler-go'
+" Plugin 'rjohnsondev/vim-compiler-go'
+NeoBundle 'rjohnsondev/vim-compiler-go'
 
 let g:golang_goroot=$GOROOT
 

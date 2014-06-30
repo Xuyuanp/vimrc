@@ -1,6 +1,8 @@
 " neo-snippet plugin contains neocomplcache snippets source
-Plugin 'Shougo/neosnippet'
-Plugin 'Shougo/neosnippet-snippets'
+" Plugin 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet'
+" Plugin 'Shougo/neosnippet-snippets'
+NeoBundle 'Shougo/neosnippet-snippets'
 
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)

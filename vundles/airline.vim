@@ -1,5 +1,6 @@
 " lean & mean status/tabline for vim that's light as air
-Plugin 'bling/vim-airline'
+" Plugin 'bling/vim-airline'
+NeoBundle 'bling/vim-airline'
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}

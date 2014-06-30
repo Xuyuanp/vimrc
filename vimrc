@@ -208,44 +208,23 @@ set tw=800
 set smartindent
 set autoindent
 
-" vundle {{{
+if has('vim_starting')
     set nocompatible
     filetype off
 
-    let iCanHazVundle = 1
-    let vundle_readme = expand('~/.vim/bundle/vundle/README.md')
-    if !filereadable(vundle_readme)
-        echo "Instaling Vundle..."
-        echo ""
-        silent !mkdir -p ~/.vim/bundle/
-        silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-        let iCanHazVundle = 0
-    endif
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
 
-    set rtp+=~/.vim/bundle/vundle/
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-    call vundle#rc()
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-    Plugin 'gmarik/vundle'
+for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
+    execute 'source' fpath
+endfor
 
-    for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
-        execute 'source' fpath
-    endfor
+call neobundle#end()
 
-    if iCanHazVundle == 0
-        echo "Installing plugins, please ignore key map error message"
-        echo ""
-        :PluginInstall
-    endif
+filetype plugin indent on
 
-    unlet iCanHazVundle
-    unlet vundle_readme
-
-    filetype plugin indent on
-" }}}
-
-" User vimrc.after if available {{{
-    if filereadable(expand("~/.vimrc.after"))
-        source ~/.vimrc.after
-    endif
-" }}}
+NeoBundleCheck

@@ -1,4 +1,5 @@
-Plugin 'mhinz/vim-signify'
+" Plugin 'mhinz/vim-signify'
+NeoBundle 'mhinz/vim-signify'
 nmap ]c <Plug>(signify-next-hunk)
 nmap [c <Plug>(signify-prev-hunk)
 

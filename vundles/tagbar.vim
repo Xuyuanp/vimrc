@@ -1,5 +1,6 @@
 " Vim plugin that displays tags in a window, ordered by class etc
-Plugin 'majutsushi/tagbar'
+" Plugin 'majutsushi/tagbar'
+NeoBundle 'majutsushi/tagbar'
 
 nmap <C-t> :TagbarToggle<CR>
 

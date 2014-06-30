@@ -1,10 +1,14 @@
 " Unite and create user interfaces
-Plugin 'Shougo/unite.vim'
+" Plugin 'Shougo/unite.vim'
+NeoBundle 'Shougo/unite.vim'
 " MRU plugin of unite
-Plugin 'Shougo/neomru.vim'
+" Plugin 'Shougo/neomru.vim'
+NeoBundle 'Shougo/neomru.vim'
 " outline source for unite.vim
-Plugin 'Shougo/unite-outline'
-Plugin 'soh335/unite-outline-go'
+" Plugin 'Shougo/unite-outline'
+NeoBundle 'Shougo/unite-outline'
+" Plugin 'soh335/unite-outline-go'
+NeoBundle 'soh335/unite-outline-go'
 
 let g:unite_abbr_highlight = 'Comment' 
 

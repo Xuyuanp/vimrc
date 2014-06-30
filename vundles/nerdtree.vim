@@ -1,8 +1,10 @@
 " A tree explorer plugin for vim.
-Plugin 'Xuyuanp/git-nerdtree'
+" Plugin 'Xuyuanp/git-nerdtree'
+NeoBundle 'Xuyuanp/git-nerdtree'
 
 " NERDTree and tabs together in Vim, painlessly
-Plugin 'jistr/vim-nerdtree-tabs'
+" Plugin 'jistr/vim-nerdtree-tabs'
+NeoBundle 'jistr/vim-nerdtree-tabs'
 
 map <C-E> :NERDTreeTabsToggle<CR>
 let NERDTreeShowBookmarks               = 1

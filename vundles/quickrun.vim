@@ -1,1 +1,2 @@
-Plugin 'thinca/vim-quickrun'
+" Plugin 'thinca/vim-quickrun'
+NeoBundle 'thinca/vim-quickrun'

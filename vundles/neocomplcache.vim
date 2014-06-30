@@ -3,7 +3,8 @@ if has('lua')
 endif
 
 " Ultimate auto-completion system for Vim.
-Plugin 'Shougo/neocomplcache'
+" Plugin 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neocomplcache'
 
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
