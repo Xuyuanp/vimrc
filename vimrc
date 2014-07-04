@@ -83,6 +83,8 @@ colorscheme molokai
     nnoremap k gk
 " }}}
 
+set nowrap
+
 " Clear search highlight
 nnoremap <silent><Leader>/ :nohls<CR>
 
