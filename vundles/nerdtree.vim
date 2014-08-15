@@ -1,5 +1,6 @@
 " A tree explorer plugin for vim.
-Plugin 'Xuyuanp/git-nerdtree'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 " NERDTree and tabs together in Vim, painlessly
 Plugin 'jistr/vim-nerdtree-tabs'
