@@ -1,15 +1,15 @@
 " A tree explorer plugin for vim.
-" Plugin 'Xuyuanp/git-nerdtree'
-NeoBundle 'Xuyuanp/git-nerdtree'
+NeoBundle 'scrooloose/nerdtree'
+" NeoBundle 'Xuyuanp/git-nerdtree'
+NeoBundle 'Xuyuanp/nerdtree-git-plugin'
 
 " NERDTree and tabs together in Vim, painlessly
-" Plugin 'jistr/vim-nerdtree-tabs'
 NeoBundle 'jistr/vim-nerdtree-tabs'
 
-map <C-E> :NERDTreeTabsToggle<CR>
+map <C-E> :NERDTreeToggle<CR>
 let NERDTreeShowBookmarks               = 1
 let NERDTreeIgnore                      =
-            \ ['\.pyc', '\~$', '\.swo$', '\.git', '\.hg', '\.svn', '\.bzr', '\.DS_Store']
+            \ ['\.idea','\.pyc', '\~$', '\.swo$', '\.git', '\.hg', '\.svn', '\.bzr', '\.DS_Store', 'tmp', 'gin-bin']
 let NERDTreeShowHidden                  = 1
 let NERDTreeChDirMode                   = 2
 let NERDTreeMouseMode                   = 2
