@@ -59,13 +59,6 @@ colorscheme molokai
     nnoremap <C-l> <C-w>l
 " }}}
 
-" Remap arrow keys {{{
-    nnoremap <Up> :bprev<CR>
-    nnoremap <Down> :bnext<CR>
-    nnoremap <Left> :tabprev<CR>
-    nnoremap <Right> :tabnext<CR>
-" }}}
-
 " Mapping for tab management {{{
     nnoremap <Leader>tc :tabc<CR>
     nnoremap <Leader>tn :tabn<CR>
@@ -87,9 +80,6 @@ set nowrap
 
 " Clear search highlight
 nnoremap <silent><Leader>/ :nohls<CR>
-
-" Auto reload vimrc/zshrc when it's saved
-autocmd BufWritePost ~/.vimrc source ~/.vimrc
 
 " Keep search pattern at the center of the screen {{{
     nnoremap <silent>n nzz
@@ -128,8 +118,6 @@ nnoremap <silent> <leader>q/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
 " Ctrl-C to copy text to system clipboard
 vnoremap <C-c> y:e ~/.vim/cliptmp<CR>P:w !pbcopy<CR><CR>:bdelete!<CR>
-
-set tags+=$QUICK_COCOS2DX_ROOT/lib/cocos2d-x/tags
 
 " Favorite filetypes
 set ffs=unix,dos,mac
