@@ -35,13 +35,6 @@ set modifiable
 " Enable syntax
 syntax enable
 
-" coloscheme
-if has("gui_running")
-    set background=dark
-    set guifont=Monaco\ for\ Powerline:h13
-end
-colorscheme molokai
-
 " guioptions {{{
     if has('gui_running')
         set guioptions-=m
@@ -232,3 +225,10 @@ call neobundle#end()
 filetype plugin indent on
 
 NeoBundleCheck
+
+" coloscheme
+if has("gui_running")
+    set background=dark
+    set guifont=Monaco\ for\ Powerline:h13
+end
+colorscheme molokai
