@@ -3,7 +3,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 " NERDTree and tabs together in Vim, painlessly
-Plugin 'jistr/vim-nerdtree-tabs'
+ Plugin 'jistr/vim-nerdtree-tabs'
 
 map <C-E> :NERDTreeTabsToggle<CR>
 let NERDTreeShowBookmarks               = 1
