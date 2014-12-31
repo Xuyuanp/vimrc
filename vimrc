@@ -109,9 +109,6 @@ nnoremap <silent> <leader>q/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
     nnoremap <C-]> <C-]>zz
 " }}}
 
-" Ctrl-C to copy text to system clipboard
-vnoremap <C-c> y:e ~/.vim/cliptmp<CR>P:w !pbcopy<CR><CR>:bdelete!<CR>
-
 " Favorite filetypes
 set ffs=unix,dos,mac
 " Always show current position
