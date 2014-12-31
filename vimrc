@@ -229,3 +229,7 @@ if has("gui_running")
     set guifont=Monaco\ for\ Powerline:h13
 end
 colorscheme molokai
+
+" Auto close {{{
+    inoremap <C-c> <CR>}<Esc>O
+" }}}
