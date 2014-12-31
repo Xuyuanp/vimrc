@@ -16,3 +16,5 @@ NeoBundle 'gregsexton/gitv'
 " a Git wrapper
 " Plugin 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-fugitive'
+
+autocmd Filetype gitcommit setlocal spell textwidth=72
