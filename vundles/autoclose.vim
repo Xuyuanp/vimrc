@@ -1,1 +1,0 @@
-NeoBundle 'Townk/vim-autoclose'
