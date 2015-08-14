@@ -97,6 +97,9 @@ autocmd BufWritePost ~/.vimrc source ~/.vimrc
     nnoremap <silent>g* g*zz
 " }}}
 
+autocmd BufWinLeave * silent mkview
+autocmd BufWinEnter * silent loadview
+
 " Force saving files that require root permission
 cmap w!! %!sudo tee > /dev/null %
 
