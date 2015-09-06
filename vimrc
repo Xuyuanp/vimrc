@@ -1,5 +1,5 @@
 " User vimrc.before if available {{{
-    if filereadable(expand("~/.vimrc.before"))
+    if filereadable(expand('~/.vimrc.before'))
         source ~/.vimrc.before
     endif
 " }}}
@@ -16,9 +16,12 @@ set modeline
 set completeopt=longest,menu
 
 " enable fold {{{
-    autocmd FileType lua,go,c,cpp setlocal foldmethod=syntax
-    autocmd FileType python       setlocal foldmethod=indent
-    autocmd FileType vim          setlocal foldmethod=marker
+    augroup foldoption
+        autocmd!
+        autocmd FileType lua,go,c,cpp setlocal foldmethod=syntax
+        autocmd FileType python       setlocal foldmethod=indent
+        autocmd FileType vim          setlocal foldmethod=marker
+    augroup END
     set foldlevel=1
     set foldlevelstart=99
 " }}}
@@ -36,7 +39,7 @@ set modifiable
 syntax enable
 
 " coloscheme
-if has("gui_running")
+if has('gui_running')
     set background=dark
     set guifont=Monaco\ for\ Powerline:h13
 end
@@ -87,7 +90,10 @@ colorscheme molokai
 nnoremap <silent><Leader>/ :nohls<CR>
 
 " Auto reload vimrc/zshrc when it's saved
-autocmd BufWritePost ~/.vimrc source ~/.vimrc
+augroup autosource
+    autocmd!
+    autocmd BufWritePost ~/.vimrc source ~/.vimrc
+augroup END
 
 " Keep search pattern at the center of the screen {{{
     nnoremap <silent>n nzz
@@ -108,8 +114,8 @@ cmap w!! %!sudo tee > /dev/null %
 function! <SID>StripTrailingWhitespaces()
     " Preparation: save last search, and cursor position.
     let _s=@/
-    let l = line(".")
-    let c = col(".")
+    let l = line('.')
+    let c = col('.')
     " Do the business:
     %s/\s\+$//e
     " Clean up: restore previous search history, and cursor position
@@ -133,7 +139,7 @@ vnoremap <C-c> y:e ~/.vim/cliptmp<CR>P:w !pbcopy<CR><CR>:bdelete!<CR>
 set tags+=$QUICK_COCOS2DX_ROOT/lib/cocos2d-x/tags
 
 " Favorite filetypes
-set ffs=unix,dos,mac
+set fileformats=unix,dos,mac
 " Always show current position
 set ruler
 
@@ -141,7 +147,7 @@ set ruler
 set cmdheight=2
 
 " Show line number
-set nu
+set number
 
 " Ignore case when searching
 set ignorecase
@@ -153,14 +159,14 @@ set magic
 " No sound on errors.
 set noerrorbells
 set novisualbell
-set vb t_vb=
+set visualbell t_vb=
 
 " show matching bracets
 set showmatch
 set showfulltag
 
 " How many tenths of a second to blink
-set mat=2
+set matchtime=2
 
 " Highlight search things
 set hlsearch
@@ -182,19 +188,8 @@ set shortmess=aoOtTI
 
 " Turn backup off
 set nobackup
-set nowb
+set nowritebackup
 set noswapfile
-
-" auto add header for new python file
-function! s:PythonHeader()
-    normal i#! /usr/bin/env python
-    normal o# -*- coding:utf-8 -*-
-    let fullname = split(system("finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //'"), '\n')[0]
-    let @o = "# by " . fullname . " " . strftime("%Y-%m-%d %H:%M:%S")
-    put o
-endfunction
-
-autocmd BufNewFile *.py call s:PythonHeader()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text options
@@ -205,8 +200,8 @@ set tabstop=4
 set backspace=indent,eol,start
 
 set smarttab
-set lbr
-set tw=800
+set linebreak
+set textwidth=800
 
 set smartindent
 set autoindent
@@ -218,26 +213,26 @@ set autoindent
     let iCanHazVundle = 1
     let vundle_readme = expand('~/.vim/bundle/vundle/README.md')
     if !filereadable(vundle_readme)
-        echo "Instaling Vundle..."
-        echo ""
+        echo 'Instaling Vundle...'
+        echo ''
         silent !mkdir -p ~/.vim/bundle/
         silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
         let iCanHazVundle = 0
     endif
 
-    set rtp+=~/.vim/bundle/vundle/
+    set runtimepath+=~/.vim/bundle/vundle/
 
     call vundle#rc()
 
     Plugin 'gmarik/vundle'
 
-    for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
+    for fpath in split(globpath('~/.vim/vundles', '*.vim'), '\n')
         execute 'source' fpath
     endfor
 
     if iCanHazVundle == 0
-        echo "Installing plugins, please ignore key map error message"
-        echo ""
+        echo 'Installing plugins, please ignore key map error message'
+        echo ''
         :PluginInstall
     endif
 
@@ -248,7 +243,7 @@ set autoindent
 " }}}
 
 " User vimrc.after if available {{{
-    if filereadable(expand("~/.vimrc.after"))
+    if filereadable(expand('~/.vimrc.after'))
         source ~/.vimrc.after
     endif
 " }}}

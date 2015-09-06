@@ -9,6 +9,5 @@ if executable('golint')
     let g:syntastic_go_checkers = ['golint']
 endif
 let g:syntastic_auto_jump            = 2
-if executable('zsh')
-    set shell=zsh
-endif
+
+set shell=/bin/bash

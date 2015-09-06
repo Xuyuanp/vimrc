@@ -1,0 +1,1 @@
+Plugin 'tpope/vim-fireplace'
