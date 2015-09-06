@@ -103,8 +103,9 @@ augroup END
     nnoremap <silent>g* g*zz
 " }}}
 
-autocmd BufWinLeave * silent mkview
-autocmd BufWinEnter * silent loadview
+set viewdir=~/.vimviews
+autocmd BufWinLeave *.* silent mkview
+autocmd BufWinEnter *.* silent loadview
 
 " Force saving files that require root permission
 cmap w!! %!sudo tee > /dev/null %
