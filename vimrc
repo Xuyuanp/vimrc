@@ -231,6 +231,10 @@ colorscheme molokai
 " Auto close {{{
     inoremap <C-c> <CR>}<Esc>O
 " }}}
+
+
+hi Visual term=reverse cterm=reverse guibg=Grey
+
 " User vimrc.after if available {{{
     if filereadable(expand("~/.vimrc.after"))
         source ~/.vimrc.after
