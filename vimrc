@@ -240,7 +240,7 @@ if has("gui_running")
     set background=dark
     set guifont=Monaco\ for\ Powerline:h13
 end
-colorscheme molokai
+silent! colorscheme molokai
 
 " Auto close {{{
     inoremap <C-c> <CR>}<Esc>O
