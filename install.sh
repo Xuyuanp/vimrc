@@ -1,23 +1,41 @@
 #!/usr/bin/env sh
 
-if [ $PWD != $HOME/.vim ]; then
-    if [ -d $HOME/.vim ]; then
-        mv ~/.vim ~/.vim.bak
-    fi
-    ln -s $PWD $HOME/.vim
+# Installation directory
+VIM_DIR=~/.vim
+BUNDLE_DIR=$VIM_DIR/bundle/neobundle.vim
+NOW=`date "+%m%d%H%M%Y"`
+
+if [ -e $VIM_DIR ]; then
+    echo "$VIM_DIR already exists"
+    echo "Backup $VIM_DIR"
+    mv $VIM_DIR $VIM_DIR.bak.$NOW
 fi
+
+# check git command
+if type git; then
+    : # You have git command. No Problem.
+else
+    echo 'Please install git or update your path to include the git executable!'
+    exit 1;
+fi
+
+# make bundle dir and fetch neobundle
+echo "Begin fetching vimrc"
+mkdir -p $VIM_DIR
+git clone https://github.com/Xuyuanp/vimrc $VIM_DIR
+(cd $VIM_DIR && git checkout -b simple origin/simple)
+echo "Done."
 
 if [ -s ~/.vimrc ]; then
     echo "Backup old ~/.vimrc file."
-    mv ~/.vimrc ~/.vimrc.bak
+    mv ~/.vimrc ~/.vimrc.bak.$NOW
 fi
 ln -s ~/.vim/vimrc ~/.vimrc
 
-echo "Clone vundle frome github.com."
-git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle
+echo "Clone neobundle frome github.com."
+mkdir -p $BUNDLE_DIR
+git clone https://github.com/Shougo/neobundle.vim $BUNDLE_DIR
 
-vim +BundleInstall +qall
+vim +NeoBundleInstall +qall
 
-(cd ~/.vim/bundle/vimproc.vim/; make > /dev/null 2>&1)
-
-echo "Installation complete! (Optional:run gotools.sh script to install go tools required by some plugins.)"
+echo "OK! Happy hacking"
