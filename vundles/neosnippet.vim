@@ -1,7 +1,5 @@
 " neo-snippet plugin contains neocomplcache snippets source
-" Plugin 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet'
-" Plugin 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/neosnippet-snippets'
 
 " Plugin key-mappings.
