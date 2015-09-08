@@ -231,3 +231,8 @@ colorscheme molokai
 " Auto close {{{
     inoremap <C-c> <CR>}<Esc>O
 " }}}
+" User vimrc.after if available {{{
+    if filereadable(expand("~/.vimrc.after"))
+        source ~/.vimrc.after
+    endif
+" }}}
