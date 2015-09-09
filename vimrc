@@ -5,23 +5,23 @@ endif
 " }}}
 
 " Basic setting {{{
-source set.vim
+source ~/.vim/set.vim
 " }}}
 
 " Autocmd {{{
-source cmd.vim
+source ~/.vim/cmd.vim
 " }}}
 
 " Map-binding {{{
-source map.vim
+source ~/.vim/map.vim
 " }}}
 
 " NeoBundle {{{
-source neobundle.vim
+source ~/.vim/neobundle.vim
 " }}}
 
 " Colorscheme {{{
-source color.vim
+source ~/.vim/color.vim
 " }}}
 
 " User vimrc.after if available {{{
