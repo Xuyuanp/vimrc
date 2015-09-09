@@ -1,5 +1,5 @@
 " User vimrc.before if available {{{
-    if filereadable(expand('~/.vimrc.before'))
+    if filereadable(expand("~/.vimrc.before"))
         source ~/.vimrc.before
     endif
 " }}}
@@ -16,12 +16,9 @@ set modeline
 set completeopt=longest,menu
 
 " enable fold {{{
-    augroup foldoption
-        autocmd!
-        autocmd FileType lua,go,c,cpp setlocal foldmethod=syntax
-        autocmd FileType python       setlocal foldmethod=indent
-        autocmd FileType vim          setlocal foldmethod=marker
-    augroup END
+    autocmd FileType lua,go,c,cpp setlocal foldmethod=syntax
+    autocmd FileType python       setlocal foldmethod=indent
+    autocmd FileType vim          setlocal foldmethod=marker
     set foldlevel=1
     set foldlevelstart=99
 " }}}
@@ -38,13 +35,6 @@ set modifiable
 " Enable syntax
 syntax enable
 
-" coloscheme
-if has('gui_running')
-    set background=dark
-    set guifont=Monaco\ for\ Powerline:h13
-end
-colorscheme molokai
-
 " guioptions {{{
     if has('gui_running')
         set guioptions-=m
@@ -60,13 +50,6 @@ colorscheme molokai
     nnoremap <C-k> <C-w>k
     nnoremap <C-h> <C-w>h
     nnoremap <C-l> <C-w>l
-" }}}
-
-" Remap arrow keys {{{
-    nnoremap <Up> :bprev<CR>
-    nnoremap <Down> :bnext<CR>
-    nnoremap <Left> :tabprev<CR>
-    nnoremap <Right> :tabnext<CR>
 " }}}
 
 " Mapping for tab management {{{
@@ -86,14 +69,16 @@ colorscheme molokai
     nnoremap k gk
 " }}}
 
+set nowrap
+
+" Auto s/l view {{{
+    set viewdir=~/.vimviews
+    autocmd BufWinLeave * silent! mkview
+    autocmd BufWinEnter * silent! loadview
+" }}}
+
 " Clear search highlight
 nnoremap <silent><Leader>/ :nohls<CR>
-
-" Auto reload vimrc/zshrc when it's saved
-augroup autosource
-    autocmd!
-    autocmd BufWritePost ~/.vimrc source ~/.vimrc
-augroup END
 
 " Keep search pattern at the center of the screen {{{
     nnoremap <silent>n nzz
@@ -103,10 +88,6 @@ augroup END
     nnoremap <silent>g* g*zz
 " }}}
 
-set viewdir=~/.vimviews
-autocmd BufWinLeave *.* silent mkview
-autocmd BufWinEnter *.* silent loadview
-
 " Force saving files that require root permission
 cmap w!! %!sudo tee > /dev/null %
 
@@ -115,8 +96,8 @@ cmap w!! %!sudo tee > /dev/null %
 function! <SID>StripTrailingWhitespaces()
     " Preparation: save last search, and cursor position.
     let _s=@/
-    let l = line('.')
-    let c = col('.')
+    let l = line(".")
+    let c = col(".")
     " Do the business:
     %s/\s\+$//e
     " Clean up: restore previous search history, and cursor position
@@ -134,13 +115,8 @@ nnoremap <silent> <leader>q/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
     nnoremap <C-]> <C-]>zz
 " }}}
 
-" Ctrl-C to copy text to system clipboard
-vnoremap <C-c> y:e ~/.vim/cliptmp<CR>P:w !pbcopy<CR><CR>:bdelete!<CR>
-
-set tags+=$QUICK_COCOS2DX_ROOT/lib/cocos2d-x/tags
-
 " Favorite filetypes
-set fileformats=unix,dos,mac
+set ffs=unix,dos,mac
 " Always show current position
 set ruler
 
@@ -148,7 +124,7 @@ set ruler
 set cmdheight=2
 
 " Show line number
-set number
+set nu
 
 " Ignore case when searching
 set ignorecase
@@ -160,14 +136,14 @@ set magic
 " No sound on errors.
 set noerrorbells
 set novisualbell
-set visualbell t_vb=
+set vb t_vb=
 
 " show matching bracets
 set showmatch
 set showfulltag
 
 " How many tenths of a second to blink
-set matchtime=2
+set mat=2
 
 " Highlight search things
 set hlsearch
@@ -189,8 +165,31 @@ set shortmess=aoOtTI
 
 " Turn backup off
 set nobackup
-set nowritebackup
+set nowb
 set noswapfile
+
+set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
+
+" Display tabs and trailing spaces visually
+set list listchars=tab:\ \ ,trail:·
+
+" auto add header for new python file
+function! s:PythonHeader()
+    normal i#! /usr/bin/env python
+    normal o# -*- coding:utf-8 -*-
+    put o
+endfunction
+
+autocmd BufNewFile *.py call s:PythonHeader()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text options
@@ -201,50 +200,63 @@ set tabstop=4
 set backspace=indent,eol,start
 
 set smarttab
-set linebreak
-set textwidth=800
+set lbr
+set tw=800
 
 set smartindent
 set autoindent
 
-" vundle {{{
-    set nocompatible
-    filetype off
+" NeoBundle
+" Note: Skip initialization for vim-tiny or vim-small.
+if 0 | endif
 
-    let iCanHazVundle = 1
-    let vundle_readme = expand('~/.vim/bundle/vundle/README.md')
-    if !filereadable(vundle_readme)
-        echo 'Instaling Vundle...'
-        echo ''
-        silent !mkdir -p ~/.vim/bundle/
-        silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-        let iCanHazVundle = 0
+let bundle_readme = expand('~/.vim/bundle/neobundle.vim/README.md')
+if !filereadable(bundle_readme)
+    echo 'Instaling NeoBundle...'
+    echo ''
+    silent !mkdir -p ~/.vim/bundle/
+    silent !git clone https://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim
+endif
+unlet bundle_readme
+
+if has('vim_starting')
+    if &compatible
+        set nocompatible
+        filetype off
     endif
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
 
-    set runtimepath+=~/.vim/bundle/vundle/
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-    call vundle#rc()
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-    Plugin 'gmarik/vundle'
+for fpath in split(globpath("~/.vim/vundles", "*.vim"), "\n")
+    execute 'source' fpath
+endfor
 
-    for fpath in split(globpath('~/.vim/vundles', '*.vim'), '\n')
-        execute 'source' fpath
-    endfor
+call neobundle#end()
 
-    if iCanHazVundle == 0
-        echo 'Installing plugins, please ignore key map error message'
-        echo ''
-        :PluginInstall
-    endif
+filetype plugin indent on
 
-    unlet iCanHazVundle
-    unlet vundle_readme
+NeoBundleCheck
 
-    filetype plugin indent on
+" coloscheme
+if has("gui_running")
+    set background=dark
+    set guifont=Monaco\ for\ Powerline:h13
+end
+silent! colorscheme molokai
+
+" Auto close {{{
+    inoremap <C-c> <CR>}<Esc>O
 " }}}
 
+
+hi Visual term=reverse cterm=reverse guibg=Grey
+
 " User vimrc.after if available {{{
-    if filereadable(expand('~/.vimrc.after'))
+    if filereadable(expand("~/.vimrc.after"))
         source ~/.vimrc.after
     endif
 " }}}

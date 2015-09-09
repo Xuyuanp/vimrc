@@ -1,1 +1,1 @@
-Plugin 'tpope/vim-fireplace'
+NeoBundle 'tpope/vim-fireplace'
