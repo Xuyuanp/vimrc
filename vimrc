@@ -71,6 +71,12 @@ syntax enable
 
 set nowrap
 
+" Auto s/l view {{{
+    set viewdir=~/.vimviews
+    autocmd BufWinLeave * silent! mkview
+    autocmd BufWinEnter * silent! loadview
+" }}}
+
 " Clear search highlight
 nnoremap <silent><Leader>/ :nohls<CR>
 
