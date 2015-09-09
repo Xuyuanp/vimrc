@@ -23,7 +23,6 @@ fi
 echo "Begin fetching vimrc."
 mkdir -p $VIM_DIR
 git clone https://github.com/Xuyuanp/vimrc $VIM_DIR
-(cd $VIM_DIR && git checkout -b simple origin/simple)
 echo "Done."
 
 if [ -s ~/.vimrc ]; then

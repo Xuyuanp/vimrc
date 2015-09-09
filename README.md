@@ -7,7 +7,7 @@ My vimrc configuration.
 
 ## Mac OS X / Linux
 
-`curl https://raw.githubusercontent.com/Xuyuanp/vimrc/simple/install.sh | sh`
+`curl https://raw.githubusercontent.com/Xuyuanp/vimrc/master/install.sh | sh`
 
 **warning** Only tested in Mac OS X and Archlinux
 
