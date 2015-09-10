@@ -1,1 +1,1 @@
-NeoBundle 'tpope/vim-fireplace'
+NeoBundleLazy 'tpope/vim-fireplace'
