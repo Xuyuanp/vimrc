@@ -6,16 +6,12 @@ if !exists('g:airline_symbols')
 endif
 set t_Co=256
 
-let g:airline_theme                         = 'simple'
+let g:airline_theme                         = 'jellybeans'
 let g:airline_powerline_fonts               = 1
 let g:airline#extensions#branch#enabled     = 1
 let g:airline#extensions#syntastic#enabled  = 1
 let g:airline_detect_paste                  = 1
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline_detect_modified               = 1
-let g:airline#extensions#syntastic#enabled  = 1
 let g:airline#extensions#tagbar#enabled     = 1
-let g:airline#extensions#tagbar#flags       = ''  "default
-let g:airline#extensions#tagbar#flags       = 'f'
-let g:airline#extensions#tagbar#flags       = 's'
 let g:airline#extensions#tagbar#flags       = 'p'

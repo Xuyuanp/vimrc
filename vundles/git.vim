@@ -11,6 +11,6 @@ let g:gitgutter_eager           = 1
 NeoBundle 'gregsexton/gitv'
 
 " a Git wrapper
-NeoBundleLazy 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-fugitive'
 
 autocmd Filetype gitcommit setlocal spell textwidth=72
