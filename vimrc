@@ -1,5 +1,5 @@
 " User vimrc.before if available {{{
-if filereadable(expand("~/.vimrc.before"))
+if filereadable(expand('~/.vimrc.before'))
     source ~/.vimrc.before
 endif
 " }}}
@@ -25,7 +25,7 @@ source ~/.vim/color.vim
 " }}}
 
 " User vimrc.after if available {{{
-if filereadable(expand("~/.vimrc.after"))
+if filereadable(expand('~/.vimrc.after'))
     source ~/.vimrc.after
 endif
 " }}}

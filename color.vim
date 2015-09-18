@@ -3,7 +3,7 @@ hi Visual term=reverse cterm=reverse guibg=Grey
 set background=dark
 
 " coloscheme
-if has("gui_running")
+if has('gui_running')
     set guifont=Monaco\ for\ Powerline:h13
 end
 
