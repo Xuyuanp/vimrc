@@ -37,6 +37,10 @@ for fpath in split(globpath('~/.vim/vundles', '**/*.vim'), '\n')
     execute 'source' fpath
 endfor
 
+for fpath in split(globpath('~/.vim/vundles/custom/', '*.vim'), '\n') 
+    execute 'source' fpath
+endfor
+
 call neobundle#end()
 
 filetype plugin indent on
