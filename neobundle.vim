@@ -33,7 +33,7 @@ NeoBundle 'Shougo/vimproc.vim', {
       \    },
       \ }
 
-for fpath in split(globpath('~/.vim/vundles', '*.vim'), '\n')
+for fpath in split(globpath('~/.vim/vundles', '**/*.vim'), '\n')
     execute 'source' fpath
 endfor
 
