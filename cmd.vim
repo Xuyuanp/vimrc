@@ -25,5 +25,7 @@ function! s:PythonHeader()
     put o
 endfunction
 
-autocmd BufNewFile *.py call s:PythonHeader()
+augroup PythonHeader
+    autocmd BufNewFile *.py call s:PythonHeader()
+augroup END
 " }}}
