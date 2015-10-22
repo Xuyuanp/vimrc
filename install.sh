@@ -39,7 +39,7 @@ info "Install NeoBundle"
 info "Don't worry to see some warning like: not found in 'runtimepath': \"autoload/vimproc.vim\""
 mkdir -p $BUNDLE_DIR
 git clone https://github.com/Shougo/neobundle.vim $BUNDLE_DIR
-source $BUNDLE_DIR/bin/neoinstall
+. $BUNDLE_DIR/bin/neoinstall
 info "Done."
 
 echo ""
