@@ -1,6 +1,9 @@
 " Sets how many lines of history VIM har to remember
 set history=5000
 
+" Use UTF-8 without BOM
+set encoding=utf8 nobomb
+
 set modeline
 
 " Enable filetype plugin
