@@ -6,3 +6,5 @@ autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 let g:necoghc_enable_detailed_browse = 1
 
 NeoBundle 'dag/vim2hs'
+
+autocmd FileType haskell set tabstop=8
