@@ -10,12 +10,12 @@ set foldlevelstart=99
 " }}}
 
 " Auto s/l view {{{
-set viewdir=~/.vimviews
-augroup slview
-    autocmd!
-    autocmd BufWinLeave * silent! mkview
-    autocmd BufWinEnter * silent! loadview
-augroup END
+" set viewdir=~/.vimviews
+" augroup slview
+"     autocmd!
+"     autocmd BufWinLeave * silent! mkview
+"     autocmd BufWinEnter * silent! loadview
+" augroup END
 " }}}
 
 " auto add header for new python file {{{
