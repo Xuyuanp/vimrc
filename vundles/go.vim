@@ -7,6 +7,9 @@ let g:go_fmt_command         = "goimports"
 let g:go_snippet_engine      = "neosnippet"
 let g:go_fmt_fail_silently   = 1
 let g:go_autodetect_gopath   = 1
+let g:go_def_mapping_enabled = 0
+
+nnoremap gd :GoDef<CR>
 
 au FileType go nmap <Leader>s <Plug>(go-def-split)
 au FileType go nmap <Leader>v <Plug>(go-def-vertical)
