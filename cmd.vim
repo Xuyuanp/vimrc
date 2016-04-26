@@ -22,7 +22,16 @@ set foldlevelstart=99
 function! s:PythonHeader()
     normal i#! /usr/bin/env python
     normal o# -*- coding:utf-8 -*-
-    put o
+    let fullname = ''
+    if has('macunix')
+        let fullname = split(system("finger `whoami` | awk -F: '{ print $3  }' | head -n1 | sed 's/^ //'"), '\n')[0]
+    elseif has('unix')
+        let fullname = split(system('whoami | head -n1'), '\n')[0]
+    endif
+    if fullname != ''
+        let @o = "# by " . fullname . " " . strftime("%Y-%m-%d %H:%M:%S")
+        put o
+    endif
 endfunction
 
 augroup PythonHeader
