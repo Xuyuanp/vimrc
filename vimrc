@@ -1,9 +1,3 @@
-" User vimrc.before if available {{{
-if filereadable(expand('~/.vimrc.before'))
-    source ~/.vimrc.before
-endif
-" }}}
-
 " Basic setting {{{
 source ~/.vim/set.vim
 " }}}
@@ -17,15 +11,9 @@ source ~/.vim/map.vim
 " }}}
 
 " NeoBundle {{{
-source ~/.vim/neobundle.vim
+source ~/.vim/dein.vim
 " }}}
 
 " Colorscheme {{{
 source ~/.vim/color.vim
-" }}}
-
-" User vimrc.after if available {{{
-if filereadable(expand('~/.vimrc.after'))
-    source ~/.vimrc.after
-endif
 " }}}

@@ -1,1 +1,0 @@
-NeoBundle 'tpope/vim-fireplace'

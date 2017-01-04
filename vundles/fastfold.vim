@@ -1,1 +1,0 @@
-NeoBundle 'Konfekt/FastFold'

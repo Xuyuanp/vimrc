@@ -1,1 +1,0 @@
-NeoBundle 'leshill/vim-json'
