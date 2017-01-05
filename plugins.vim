@@ -46,7 +46,6 @@ let g:airline#extensions#tagbar#flags       = 'p'
 " }}}
 
 " Go {{{
-au! BufReadPre *.go set ft=go
 call dein#add('fatih/vim-go', {'on_ft': ['go']})
 
 let g:go_highlight_operators = 1
@@ -101,11 +100,12 @@ call dein#add('tpope/vim-surround')
 " Completion {{{
 if has('nvim')
     call dein#add('Shougo/deoplete.nvim', {'on_i': 1})
-    call dein#add('zchee/deoplete-go', {'on_ft': ['go']})
-    call dein#add('Shougo/neco-vim', {'on_ft': ['vim']})
+    call dein#add('zchee/deoplete-go', {'on_ft': 'go'})
+    call dein#add('Shougo/neco-vim', {'on_ft': 'vim'})
 
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#max_menu_width = 200
+    let g:deoplete#max_list = 15
 elseif has('lua')
     " TODO: neocomplete
 else
@@ -160,7 +160,7 @@ call dein#add('Shougo/neomru.vim')
 call dein#add('Shougo/unite-outline')
 call dein#add('soh335/unite-outline-go')
 
-let g:unite_abbr_highlight = 'Comment' 
+let g:unite_abbr_highlight = 'Comment'
 
 let g:unite_source_history_yank_enable    = 1
 let g:unite_source_rec_max_cache_files    = 5000
