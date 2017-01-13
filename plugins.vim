@@ -378,6 +378,6 @@ let g:rbpt_colorpairs = [
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
 
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
+silent! au VimEnter * RainbowParenthesesToggle
+silent! au Syntax * RainbowParenthesesLoadRound
 " }}}
