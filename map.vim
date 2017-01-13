@@ -7,10 +7,6 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
-if has('nvim')
-    nmap <BS> <C-W>h
-endif
-
 nnoremap <Up> <C-w>+
 nnoremap <Down> <C-w>-
 nnoremap <Left> <C-w><
