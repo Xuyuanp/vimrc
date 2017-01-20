@@ -100,7 +100,7 @@ call dein#add('tpope/vim-surround')
 " Completion {{{
 if has('nvim')
     call dein#add('Shougo/deoplete.nvim', {'on_i': 1})
-    call dein#add('zchee/deoplete-go', {'on_ft': 'go'})
+    call dein#add('zchee/deoplete-go', {'build': 'make', 'on_ft': 'go'})
     call dein#add('Shougo/neco-vim', {'on_ft': 'vim'})
 
     let g:deoplete#enable_at_startup = 1
@@ -367,28 +367,6 @@ endif
 " }}}
 
 " rainbow parenthesizing {{{
-call dein#add('kien/rainbow_parentheses.vim')
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-
-silent! au VimEnter * RainbowParenthesesToggle
-silent! au Syntax * RainbowParenthesesLoadRound
+call dein#add('luochen1990/rainbow')
+let g:rainbow_active = 1
 " }}}

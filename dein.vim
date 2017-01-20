@@ -20,17 +20,11 @@ execute 'set rtp+=' . dein_path
 
 call dein#begin(expand('~/.vim/dein'))
 call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/vimproc.vim', {
-            \ 'build': {
-            \   'windows': 'tools\\update-dll-mingw',
-            \   'cygwin': 'make -f make_cygwin.mak',
-            \   'mac': 'make -f make_mac.mak',
-            \   'linux': 'make',
-            \   'unix': 'gmake',
-            \   },
-            \ })
+call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
+
 source ~/.vim/plugins.vim
 
 call dein#end()
 
 filetype plugin indent on
+
