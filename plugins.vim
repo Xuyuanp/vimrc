@@ -56,6 +56,7 @@ let g:go_snippet_engine      = "neosnippet"
 let g:go_fmt_fail_silently   = 1
 let g:go_autodetect_gopath   = 1
 let g:go_def_mapping_enabled = 0
+let g:go_auto_type_info      = 1
 
 nnoremap gd :GoDef<CR>
 
@@ -66,31 +67,8 @@ au FileType go nmap <Leader>d <Plug>(go-doc)
 au FileType go set completeopt+=preview
 " }}}
 
-" Neomake {{{
-call dein#add('neomake/neomake')
-
-autocmd! BufWritePost * Neomake
-
-let g:neomake_serialize = 1
-let g:neomake_serialize_abort_on_error = 1
-" }}}
-
-" Syntastic {{{
-call dein#add('scrooloose/syntastic')
-
-let g:syntastic_error_symbol         = '✗'
-let g:syntastic_warning_symbol       = '⚠'
-let g:syntastic_style_error_symbol   = '✠'
-let g:syntastic_style_warning_symbol = '≈'
-let g:syntastic_auto_jump            = 2
-let g:syntastic_go_checkers          = ['golint']
-
-" Disable inherited syntastic
-let g:syntastic_mode_map = {
-            \ "mode": "passive",
-            \ "active_filetypes": [],
-            \ "passive_filetypes": []
-            \ }
+" ale {{{
+call dein#add('w0rp/ale')
 " }}}
 
 " Surround - quoting/parenthesizing made simple {{{
@@ -369,4 +347,12 @@ endif
 " rainbow parenthesizing {{{
 call dein#add('luochen1990/rainbow')
 let g:rainbow_active = 1
+" }}}
+
+" vim-kubernetes {{{
+call dein#add('andrewstuart/vim-kubernetes')
+" }}}
+
+" vim-yaml {{{
+call dein#add('avakhov/vim-yaml')
 " }}}
