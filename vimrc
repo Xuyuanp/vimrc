@@ -1,3 +1,6 @@
+set encoding=utf-8
+scriptencoding utf-8
+
 function! s:log_err(msg)
     echohl ErrorMsg
     echomsg a:msg
