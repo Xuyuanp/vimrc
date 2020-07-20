@@ -41,8 +41,6 @@ if v:true " NERDTree and plugins
                 \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
     map <C-E> :NERDTreeToggle<CR>
-    map <C-F> :NERDTreeFind<CR>
-
     let g:NERDTreeShowHidden            = 1
     let g:NERDTreeChDirMode             = 2
     let g:NERDTreeMouseMode             = 2
