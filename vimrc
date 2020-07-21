@@ -1,3 +1,7 @@
+" redefine leader key
+let mapleader = ','
+
+" set encoding
 set encoding=utf-8
 scriptencoding utf-8
 
@@ -37,6 +41,7 @@ catch /Unknown\ function/
 endtry
 
 if v:true " NERDTree and plugins
+    Plug 'mhinz/vim-startify'             " 🔗 The fancy start screen for Vim.
     Plug 'preservim/nerdtree', {'on': 'NERDTreeToggle'} |
                 \ Plug 'jistr/vim-nerdtree-tabs' |
                 \ Plug 'Xuyuanp/nerdtree-git-plugin' |
@@ -82,8 +87,6 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'tomtom/tcomment_vim'          " Tcomment - An extensible & universal comment vim-plugin that also handles embedded filetypes
     Plug 'tpope/vim-surround'           " Surround - quoting/parenthesizing made simple
     Plug 'dyng/ctrlsf.vim'              " ctrlsf - An ack/ag powered code search and view tool, in an intuitive way with fairly more context.
-    Plug 'junegunn/fzf',
-                \ { 'do': './install --all' }
 
     vnoremap <CR><Space>   :EasyAlign\<CR>
     vnoremap <CR>2<Space>  :EasyAlign2\<CR>
@@ -98,10 +101,94 @@ if v:true " Productive tools (align, comment, tabular...)
     let g:ctrlsf_width      = '30%'
 endif
 
+if v:true " FZF
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() }  }
+    Plug 'junegunn/fzf.vim'
+
+    let $FZF_DEFAULT_OPTS .= ' --inline-info'
+
+    " All files
+    command! -nargs=? -complete=dir AF
+                \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+                \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+                \ })))
+
+    let g:fzf_colors = {
+                \ 'fg':      ['fg', 'Normal'],
+                \ 'bg':      ['bg', 'Normal'],
+                \ 'hl':      ['fg', 'Comment'],
+                \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+                \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+                \ 'hl+':     ['fg', 'Statement'],
+                \ 'info':    ['fg', 'PreProc'],
+                \ 'border':  ['fg', 'Ignore'],
+                \ 'prompt':  ['fg', 'Conditional'],
+                \ 'pointer': ['fg', 'Exception'],
+                \ 'marker':  ['fg', 'Keyword'],
+                \ 'spinner': ['fg', 'Label'],
+                \ 'header':  ['fg', 'Comment']
+                \ }
+
+    " Terminal buffer options for fzf
+    autocmd! FileType fzf
+    autocmd  FileType fzf set noshowmode noruler nonu
+
+    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+    nnoremap <silent> <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+    nnoremap <silent> <Leader>C        :Colors<CR>
+    nnoremap <silent> <Leader><Enter>  :Buffers<CR>
+    nnoremap <silent> <Leader>L        :Lines<CR>
+    nnoremap <silent> <Leader>ag       :Ag<CR>
+    nnoremap <silent> <Leader>`        :Marks<CR>
+
+    inoremap <expr> <c-x><c-t> fzf#complete('tmuxwords.rb --all-but-current --scroll 500 --min 5')
+    imap <c-x><c-k> <plug>(fzf-complete-word)
+    imap <c-x><c-f> <plug>(fzf-complete-path)
+    inoremap <expr> <c-x><c-d> fzf#vim#complete#path('blsd')
+    imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+    imap <c-x><c-l> <plug>(fzf-complete-line)
+
+    function! s:plug_help_sink(line)
+        let dir = g:plugs[a:line].dir
+        for pat in ['doc/*.txt', 'README.md']
+            let match = get(split(globpath(dir, pat), "\n"), 0, '')
+            if len(match)
+                execute 'tabedit' match
+                return
+            endif
+        endfor
+        tabnew
+        execute 'Explore' dir
+    endfunction
+
+    command! PlugHelp call fzf#run(fzf#wrap({
+                \ 'source': sort(keys(g:plugs)),
+                \ 'sink':   function('s:plug_help_sink')}))
+
+    function! RipgrepFzf(query, fullscreen)
+        let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+        let initial_command = printf(command_fmt, shellescape(a:query))
+        let reload_command = printf(command_fmt, '{q}')
+        let options = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+        let options = fzf#vim#with_preview(options, 'right', 'ctrl-/')
+        call fzf#vim#grep(initial_command, 1, options, a:fullscreen)
+    endfunction
+
+    command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+    command! -bang -nargs=* Rg
+                \ call fzf#vim#grep(
+                \   "rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1,
+                \   fzf#vim#with_preview('right', 'ctrl-/'), <bang>0)
+
+    command! -bang -nargs=* Ag
+                \ call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right', 'ctrl-/'), <bang>0)
+endif
+
 if v:true " UI
     Plug 'luochen1990/rainbow'            " help you read complex code by showing diff level of parentheses in diff color !!
     Plug 'Yggdroot/indentLine'            " indentLine - display the indent levels with thin vertical lines
-    Plug 'mhinz/vim-startify'             " 🔗 The fancy start screen for Vim.
     Plug 'vim-airline/vim-airline'        " Airline - lean & mean status/tabline for vim that's light as air
     Plug 'vim-airline/vim-airline-themes' " airline themes
     Plug 'bling/vim-bufferline'           " bufferline - super simple vim plugin to show the list of buffers in the command bar
@@ -418,8 +505,6 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" redefine leader key
-let mapleader = ','
 
 " Navigation between split windows {{{
 nnoremap <C-j> <C-w>j
