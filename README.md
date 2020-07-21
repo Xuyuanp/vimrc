@@ -8,12 +8,13 @@ My vimrc configuration.
 ## Mac OS X / Linux
 
 1. Clone this repo to your `~/.vim`.
-2. Start vim or nvim, it will download dein automatically
-3. Execute `:call dein#install()` to download plugins
-4. Close vim
+2. Start vim or nvim, it will download plug automatically
+3. Execute `:PlugInstall` to download plugins
+4. Restart vim
+5. Source `~/.vim/vimrc` in `init.vim` (for neovim)
 
 That's all. Happy hacking!
 
 ## Windows
 
-Fuck Windows.
+Fuck Windows. (But I love WSL)
