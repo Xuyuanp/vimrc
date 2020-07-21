@@ -58,14 +58,14 @@ if v:true " NERDTree and plugins
     let g:NERDTreeIndicatorMapCustom = {
                 \ 'Modified'  : '',
                 \ 'Staged'    : '',
-                \ 'Untracked' : '',
-                \ 'Renamed'   : '',
+                \ 'Untracked' : '',
+                \ 'Renamed'   : '',
                 \ 'Unmerged'  : '',
                 \ 'Deleted'   : '',
                 \ 'Dirty'     : '',
                 \ 'Clean'     : '',
-                \ 'Ignored'   : '',
-                \ 'Unknown'   : ''
+                \ 'Ignored'   : '',
+                \ 'Unknown'   : ''
                 \ }
 
     let g:nerdtree_tabs_open_on_gui_startup = '1'
@@ -291,14 +291,14 @@ endif
 
 call plug#end()
 
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set to auto read when a file is changed from the outside
 set autoread
 set autochdir
 
 set scrolloff=10
-
-set incsearch
 
 " Have the mouse enabled all the time:
 set mouse=a
@@ -312,7 +312,7 @@ set ruler
 set cmdheight=2
 
 " Show line number
-set nu
+set number
 
 " Ignore case when searching
 set ignorecase
@@ -324,14 +324,13 @@ set magic
 " No sound on errors.
 set noerrorbells
 set novisualbell
-set vb t_vb=
+set visualbell t_vb=
 
 " show matching bracets
 set showmatch
 set showfulltag
-
 " How many tenths of a second to blink
-set mat=2
+set matchtime=2
 
 " Highlight search things
 set hlsearch
@@ -354,7 +353,7 @@ set shortmess+=c
 
 " Turn backup off
 set nobackup
-set nowb
+set nowritebackup
 set noswapfile
 
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
@@ -371,23 +370,54 @@ set wildignore+=*.png,*.jpg,*.gif
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text options
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Text options
 set expandtab
 set shiftwidth=4
 set tabstop=4
-set backspace=indent,eol,start
 
 set smarttab
-set lbr
-set tw=800
+set linebreak
+set textwidth=800
 
 set smartindent
 set autoindent
 
+if has('nvim')
+  " https://github.com/neovim/neovim/issues/2897#issuecomment-115464516
+  let g:terminal_color_0 = '#4e4e4e'
+  let g:terminal_color_1 = '#d68787'
+  let g:terminal_color_2 = '#5f865f'
+  let g:terminal_color_3 = '#d8af5f'
+  let g:terminal_color_4 = '#85add4'
+  let g:terminal_color_5 = '#d7afaf'
+  let g:terminal_color_6 = '#87afaf'
+  let g:terminal_color_7 = '#d0d0d0'
+  let g:terminal_color_8 = '#626262'
+  let g:terminal_color_9 = '#d75f87'
+  let g:terminal_color_10 = '#87af87'
+  let g:terminal_color_11 = '#ffd787'
+  let g:terminal_color_12 = '#add4fb'
+  let g:terminal_color_13 = '#ffafaf'
+  let g:terminal_color_14 = '#87d7d7'
+  let g:terminal_color_15 = '#e4e4e4'
 
-"===================================================================
+  set fillchars=vert:\|,fold:-
+  autocmd BufReadPost *
+    \ if line("'\"") >= 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+else
+  let g:terminal_ansi_colors = [
+    \ '#4e4e4e', '#d68787', '#5f865f', '#d8af5f',
+    \ '#85add4', '#d7afaf', '#87afaf', '#d0d0d0',
+    \ '#626262', '#d75f87', '#87af87', '#ffd787',
+    \ '#add4fb', '#ffafaf', '#87d7d7', '#e4e4e4']
+endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " redefine leader key
 let mapleader = ','
 
@@ -450,8 +480,4 @@ endfunction
 command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
 nmap <silent><Leader><Space> :StripTrailingWhitespaces<CR>
 
-
-" Reverse visual mode color
-hi Visual term=reverse cterm=reverse guibg=Grey
-
-colorscheme molokai
+silent! colorscheme molokai
