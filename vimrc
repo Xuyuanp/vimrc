@@ -35,7 +35,7 @@ try
 catch /Unknown\ function/
     call s:log_err("Plug not found, installing...")
     call s:install_plug()
-    echomsg "Plug installed, going on"
+    echomsg "Plug installed, please run :PlugInstall and restart vim/neovim"
 
     call plug#begin()
 endtry
