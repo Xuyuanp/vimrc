@@ -278,6 +278,7 @@ if v:true " Languages
     Plug 'fatih/vim-go', { 'tag': '*' }                     " go
     Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
     Plug 'spacewander/openresty-vim'                        " openrestry script syntax highlight
+    Plug 'neoclide/jsonc.vim', {'for': 'jsonc'}             " jsonc
 
     let g:go_highlight_build_constraints = 1
     let g:go_highlight_extra_types       = 1
@@ -298,6 +299,11 @@ if v:true " Languages
         au FileType go nmap <Leader>ii <Plug>(go-implements)
         au FileType go nmap <Leader>d <Plug>(go-doc)
         au FileType go set completeopt+=preview
+    augroup end
+
+    augroup jsonc
+        autocmd!
+        autocmd BufRead,BufNewFile settings.json set filetype=jsonc
     augroup end
 endif
 
