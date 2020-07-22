@@ -40,44 +40,40 @@ catch /Unknown\ function/
     call plug#begin()
 endtry
 
-if v:true " NERDTree and plugins
-    Plug 'mhinz/vim-startify'             " 🔗 The fancy start screen for Vim.
-    Plug 'preservim/nerdtree', {'on': 'NERDTreeToggle'} |
-                \ Plug 'jistr/vim-nerdtree-tabs' |
-                \ Plug 'Xuyuanp/nerdtree-git-plugin' |
-                \ Plug 'ryanoasis/vim-devicons' |
-                \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+if v:true " Languages
+    Plug 'fatih/vim-go', { 'tag': '*' }                     " go
+    Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
+    Plug 'spacewander/openresty-vim'                        " openrestry script syntax highlight
+    Plug 'neoclide/jsonc.vim', {'for': 'jsonc'}             " jsonc
+    Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
 
-    map <C-E> :NERDTreeToggle<CR>
-    let g:NERDTreeShowHidden            = 1
-    let g:NERDTreeChDirMode             = 2
-    let g:NERDTreeMouseMode             = 2
-    let g:NERDTreeNodeDelimiter         = "\u00a0"
-    let g:NERDTreeStatusline            = ''
-    let g:NERDTreeCascadeSingleChildDir = 0
-    let g:NERDTreeShowBookmarks         = 1
-    let g:NERDTreeIgnore                = ['\.idea', '\.iml', '\.pyc', '\~$', '\.swo$', '\.git', '\.hg', '\.svn', '\.bzr', '\.DS_Store', 'tmp', 'gin-bin']
-    let g:NERDTreeDirArrowExpandable    = " "
-    let g:NERDTreeDirArrowCollapsible   = " "
+    let g:go_highlight_build_constraints = 1
+    let g:go_highlight_extra_types       = 1
+    let g:go_highlight_fields            = 1
+    let g:go_highlight_methods           = 1
+    let g:go_highlight_functions         = 1
+    let g:go_highlight_operators         = 1
+    let g:go_highlight_structs           = 1
+    let g:go_highlight_types             = 1
+    let g:go_auto_type_info              = 1
+    let g:go_fmt_command                 = "goimports"
+    let g:go_fmt_fail_silently           = 1
+    let g:go_def_mapping_enabled         = 0
+    augroup vimgo
+        autocmd!
+        au FileType go nmap <Leader>s <Plug>(go-def-split)
+        au FileType go nmap <Leader>v <Plug>(go-def-vertical)
+        au FileType go nmap <Leader>ii <Plug>(go-implements)
+        au FileType go nmap <Leader>d <Plug>(go-doc)
+        au FileType go set completeopt+=preview
+    augroup end
 
-    let g:NERDTreeIndicatorMapCustom = {
-                \ 'Modified'  : '',
-                \ 'Staged'    : '',
-                \ 'Untracked' : '',
-                \ 'Renamed'   : '',
-                \ 'Unmerged'  : '',
-                \ 'Deleted'   : '',
-                \ 'Dirty'     : '',
-                \ 'Clean'     : '',
-                \ 'Ignored'   : '',
-                \ 'Unknown'   : ''
-                \ }
-
-    let g:nerdtree_tabs_open_on_gui_startup = '1'
-
-    let g:DevIconsEnableFoldersOpenClose  = 1
-    let g:DevIconsDefaultFolderOpenSymbol = ''
+    augroup jsonc
+        autocmd!
+        autocmd BufRead,BufNewFile settings.json set filetype=jsonc
+    augroup end
 endif
+
 
 if v:true " Productive tools (align, comment, tabular...)
     Plug 'godlygeek/tabular'            " tabular - Vim script for text filtering and alignment
@@ -187,12 +183,13 @@ if v:true " FZF
 endif
 
 if v:true " UI
-    Plug 'luochen1990/rainbow'            " help you read complex code by showing diff level of parentheses in diff color !!
-    Plug 'Yggdroot/indentLine'            " indentLine - display the indent levels with thin vertical lines
-    Plug 'vim-airline/vim-airline'        " Airline - lean & mean status/tabline for vim that's light as air
-    Plug 'vim-airline/vim-airline-themes' " airline themes
-    Plug 'bling/vim-bufferline'           " bufferline - super simple vim plugin to show the list of buffers in the command bar
-    Plug 'majutsushi/tagbar'              " tagbar - Vim plugin that displays tags in a window, ordered by class etc
+    Plug 'mhinz/vim-startify'                " 🔗 The fancy start screen for Vim.
+    Plug 'luochen1990/rainbow'               " help you read complex code by showing diff level of parentheses in diff color !!
+    Plug 'Yggdroot/indentLine'               " indentLine - display the indent levels with thin vertical lines
+    Plug 'itchyny/lightline.vim'             " The lightline plugin is a light and configurable statusline/tabline for Vim.
+    Plug 'maximbaz/lightline-ale'            " ALE indicator for the lightline vim plugin
+    Plug 'mengelbrecht/lightline-bufferline' " A lightweight plugin to display the list of buffers in the lightline vim plugin
+    Plug 'majutsushi/tagbar'                 " tagbar - Vim plugin that displays tags in a window, ordered by class etc
 
     nmap <C-t> :TagbarToggle<CR>
 
@@ -225,27 +222,140 @@ if v:true " UI
                 \ 'ctagsargs': '-sort -silent'
                 \ }
 
-    let g:bufferline_echo = 0
-
-    if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
-    endif
-    let g:airline_theme                         = 'simple'
-    let g:airline_powerline_fonts               = 1
-    let g:airline#extensions#branch#enabled     = 1
-    let g:airline#extensions#syntastic#enabled  = 1
-    let g:airline_detect_paste                  = 1
-    let g:airline#extensions#whitespace#enabled = 1
-    let g:airline_detect_modified               = 1
-    let g:airline#extensions#tagbar#enabled     = 1
-    let g:airline#extensions#tagbar#flags       = 'p'
-
-    let g:rainbow_active = 1
-    let g:rainbow_conf   = {
-                \    'separately': {
-                \       'nerdtree': 0
-                \    }
+	function! LightlineModified()
+        return &ft ==# 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+	endfunction
+	function! LightlineReadonly()
+        return &ft !~? 'help' && &readonly ? '' : ''
+	endfunction
+    function! LightlineFugitive()
+        try
+            if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*FugitiveHead')
+                let mark = ''  " edit here for cool mark
+                let branch = FugitiveHead()
+                return branch !=# '' ? mark.branch : ''
+            endif
+        catch
+        endtry
+        return ''
+    endfunction
+	function! LightlineFilename()
+        let fname = expand('%:t')
+        return fname ==# 'ControlP' && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
+                    \ fname =~# '^__Tagbar__\|__Gundo' ? '' :
+                    \ &ft ==# 'nerdtree' ? 'NERDTree' :
+                    \ &ft ==# 'vimfiler' ? vimfiler#get_status_string() :
+                    \ &ft ==# 'unite' ? unite#get_status_string() :
+                    \ &ft ==# 'vimshell' ? vimshell#get_status_string() :
+                    \ (LightlineReadonly() !=# '' ? LightlineReadonly() . ' ' : '') .
+                    \ (fname !=# '' ? fname : '[No Name]') .
+                    \ (LightlineModified() !=# '' ? ' ' . LightlineModified() : '')
+	endfunction
+    function! LightlineFileType()
+        return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+    endfunction
+    function! LightlineFileFormat()
+        return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+    endfunction
+	function! LightlineFileencoding()
+        return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+	endfunction
+	function! LightlinePercent()
+        let totalno = line('$')
+        let currno = line('.')
+        return winwidth(0) > 70 ? printf('%3d%%', 100*currno/totalno) : ''
+	endfunction
+	function! LightlineLineinfo()
+        let totalno = line('$')
+        let currno = line('.')
+        let colno = col('.')
+        return winwidth(0) > 70 ? printf('≡ %d/%d  %d ', currno, totalno, colno) : ''
+	endfunction
+	function! LightlineBuffers()
+        return winwidth(0) > 70 ? lightline#bufferline#buffers() : ''
+	endfunction
+    function! LightlineMode()
+        let fname = expand('%:t')
+        return fname =~# '^__Tagbar__' ? 'Tagbar' :
+                    \ fname ==# 'ControlP' ? 'CtrlP' :
+                    \ fname ==# '__Gundo__' ? 'Gundo' :
+                    \ fname ==# '__Gundo_Preview__' ? 'Gundo Preview' :
+                    \ fname =~# 'NERD_tree' ? 'NERDTree' :
+                    \ &ft ==# 'unite' ? 'Unite' :
+                    \ &ft ==# 'vimfiler' ? 'VimFiler' :
+                    \ &ft ==# 'vimshell' ? 'VimShell' :
+                    \ winwidth(0) > 60 ? lightline#mode() : ''
+    endfunction
+    let g:lightline = {
+                \ 'colorscheme':  'molokai',
+                \ 'active':       {},
+                \ 'inactive':     {},
+                \ 'separator':    { 'left': '', 'right': '' },
+                \ 'subseparator': { 'left': '', 'right': '' }
                 \ }
+    let g:lightline.component_function = {
+                \ 'fugitive':     'LightlineFugitive',
+                \ 'readonly':     'LightlineReadonly',
+                \ 'filetype':     'LightlineFileType',
+                \ 'fileformat':   'LightlineFileFormat',
+                \ 'filename':     'LightlineFilename',
+                \ 'fileencoding': 'LightlineFileencoding',
+                \ 'mode':         'LightlineMode',
+                \ 'percent':      'LightlinePercent',
+                \ 'lineinfo':     'LightlineLineinfo'
+                \ }
+    let g:lightline.component_expand = {
+                \ 'linter_checking': 'lightline#ale#checking',
+                \ 'linter_infos':    'lightline#ale#infos',
+                \ 'linter_warnings': 'lightline#ale#warnings',
+                \ 'linter_errors':   'lightline#ale#errors',
+                \ 'buffers':         'LightlineBuffers',
+                \ }
+    let g:lightline.component_type = {
+                \ 'readonly':        'warning',
+                \ 'linter_checking': 'right',
+                \ 'linter_infos':    'right',
+                \ 'linter_warnings': 'warning',
+                \ 'linter_errors':   'error',
+                \ 'buffers':         'tabsel',
+                \ }
+    let g:lightline.active.left = [
+                \ ['mode', 'paste'],
+                \ ['fugitive'],
+                \ ['buffers']
+                \ ]
+    let g:lightline.active.right = [
+                \ ['lineinfo'],
+                \ ['percent'],
+                \ ['fileformat', 'fileencoding', 'filetype'],
+                \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
+                \ ]
+    let g:lightline.inactive.right = []
+    let g:lightline.mode_map = {
+                \ 'n':      'N',
+                \ 'i':      'I',
+                \ 'R':      'R',
+                \ 'v':      'V',
+                \ 'V':      'V-L',
+                \ "\<C-v>": 'V-B',
+                \ 'c':      'C',
+                \ 's':      'S',
+                \ 'S':      'S-L',
+                \ "\<C-s>": 'S-B',
+                \ 't':      'T',
+                \ }
+    let g:lightline#ale#indicator_checking       = "\uf110"
+    let g:lightline#ale#indicator_infos          = "\uf129 "
+    let g:lightline#ale#indicator_warnings       = "\uf071 "
+    let g:lightline#ale#indicator_errors         = "\uf05e "
+    let g:lightline#bufferline#modified          = "*"
+    let g:lightline#bufferline#read_only         = ""
+    let g:lightline#bufferline#filename_modifier = ':p:t'
+    let g:lightline#bufferline#unnamed           = '[No Name]'
+
+    let g:rainbow_active          = 1
+    let g:rainbow_conf            = {}
+    let g:rainbow_conf.separately = {'nerdtree': 0}
 
     let g:indentLine_char            = '┆'
     let g:indentLine_fileTypeExclude = ['NERDTree']
@@ -272,39 +382,6 @@ if v:true " colorschemes
     let g:solarized_termtrans  = 1
     let g:solarized_contrast   = "normal"
     let g:solarized_visibility = "low"
-endif
-
-if v:true " Languages
-    Plug 'fatih/vim-go', { 'tag': '*' }                     " go
-    Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
-    Plug 'spacewander/openresty-vim'                        " openrestry script syntax highlight
-    Plug 'neoclide/jsonc.vim', {'for': 'jsonc'}             " jsonc
-
-    let g:go_highlight_build_constraints = 1
-    let g:go_highlight_extra_types       = 1
-    let g:go_highlight_fields            = 1
-    let g:go_highlight_methods           = 1
-    let g:go_highlight_functions         = 1
-    let g:go_highlight_operators         = 1
-    let g:go_highlight_structs           = 1
-    let g:go_highlight_types             = 1
-    let g:go_auto_type_info              = 1
-    let g:go_fmt_command                 = "goimports"
-    let g:go_fmt_fail_silently           = 1
-    let g:go_def_mapping_enabled         = 0
-    augroup go
-        autocmd!
-        au FileType go nmap <Leader>s <Plug>(go-def-split)
-        au FileType go nmap <Leader>v <Plug>(go-def-vertical)
-        au FileType go nmap <Leader>ii <Plug>(go-implements)
-        au FileType go nmap <Leader>d <Plug>(go-doc)
-        au FileType go set completeopt+=preview
-    augroup end
-
-    augroup jsonc
-        autocmd!
-        autocmd BufRead,BufNewFile settings.json set filetype=jsonc
-    augroup end
 endif
 
 if v:true " coc.nvim
@@ -380,6 +457,43 @@ if v:true " coc.nvim
     let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
     let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
+endif
+
+if v:true " NERDTree and plugins
+    Plug 'preservim/nerdtree', {'on': 'NERDTreeToggle'} |
+                \ Plug 'jistr/vim-nerdtree-tabs' |
+                \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+                \ Plug 'ryanoasis/vim-devicons' |
+                \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+    map <C-E> :NERDTreeToggle<CR>
+    let g:NERDTreeShowHidden            = 1
+    let g:NERDTreeChDirMode             = 2
+    let g:NERDTreeMouseMode             = 2
+    let g:NERDTreeNodeDelimiter         = "\u00a0"
+    let g:NERDTreeStatusline            = 'NERDTree'
+    let g:NERDTreeCascadeSingleChildDir = 0
+    let g:NERDTreeShowBookmarks         = 1
+    let g:NERDTreeIgnore                = ['\.idea', '\.iml', '\.pyc', '\~$', '\.swo$', '\.git', '\.hg', '\.svn', '\.bzr', '\.DS_Store', 'tmp', 'gin-bin']
+    let g:NERDTreeDirArrowExpandable    = " "
+    let g:NERDTreeDirArrowCollapsible   = " "
+
+    let g:NERDTreeIndicatorMapCustom = {
+                \ 'Modified'  : '',
+                \ 'Staged'    : '',
+                \ 'Untracked' : '',
+                \ 'Renamed'   : '',
+                \ 'Unmerged'  : '',
+                \ 'Deleted'   : '',
+                \ 'Dirty'     : '',
+                \ 'Clean'     : '',
+                \ 'Ignored'   : '',
+                \ 'Unknown'   : ''
+                \ }
+
+    let g:nerdtree_tabs_open_on_gui_startup = '1'
+
+    let g:DevIconsEnableFoldersOpenClose  = 1
 endif
 
 call plug#end()
