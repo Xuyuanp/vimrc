@@ -44,7 +44,7 @@ if v:true " Languages
     Plug 'fatih/vim-go', { 'tag': '*' }                     " go
     Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
     Plug 'spacewander/openresty-vim'                        " openrestry script syntax highlight
-    Plug 'neoclide/jsonc.vim', {'for': 'jsonc'}             " jsonc
+    Plug 'neoclide/jsonc.vim'                               " jsonc
     Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
 
     let g:go_highlight_build_constraints = 1
@@ -59,6 +59,7 @@ if v:true " Languages
     let g:go_fmt_command                 = "goimports"
     let g:go_fmt_fail_silently           = 1
     let g:go_def_mapping_enabled         = 0
+    let g:go_gopls_options               = ['-remote', 'auto']
     augroup vimgo
         autocmd!
         au FileType go nmap <Leader>s <Plug>(go-def-split)
@@ -67,13 +68,7 @@ if v:true " Languages
         au FileType go nmap <Leader>d <Plug>(go-doc)
         au FileType go set completeopt+=preview
     augroup end
-
-    augroup jsonc
-        autocmd!
-        autocmd BufRead,BufNewFile settings.json set filetype=jsonc
-    augroup end
 endif
-
 
 if v:true " Productive tools (align, comment, tabular...)
     Plug 'godlygeek/tabular'            " tabular - Vim script for text filtering and alignment
@@ -397,6 +392,41 @@ if v:true " coc.nvim
                 \ 'coc-highlight',
                 \ 'coc-vimlsp',
                 \ ]
+
+    let g:coc_user_config = {
+                \ "suggest.snippetIndicator": " ►",
+                \ 'suggest.completionItemKindLabels': {
+                \   "keyword": '\uf1de',
+                \   "variable": "\ue79b",
+                \   "value": "\uf89f",
+                \   "operator": "\u03a8",
+                \   "function": '\u0192',
+                \   "reference": "\ufa46",
+                \   "constant": "\uf8fe",
+                \   "method": "\uf09a",
+                \   "struct": "\ufb44",
+                \   "class": "\uf0e8",
+                \   "interface": "\uf417",
+                \   "text": "\ue612",
+                \   "enum": "\uf435",
+                \   "enumMember": "\uf02b",
+                \   "module": "\uf40d",
+                \   "color": "\ue22b",
+                \   "property": "\ue624",
+                \   "field": "\uf9be",
+                \   "unit": "\uf475",
+                \   "event": "\ufacd",
+                \   "file": "\uf723",
+                \   "folder": "\uf114",
+                \   "snippet": "\ue60b",
+                \   "typeParameter": "\uf728",
+                \   "default": "\uf29c"
+                \ },
+                \ 'go': {
+                \     'goplsPath': getenv('GOPATH') . '/bin/gopls',
+                \     'goplsArgs': ['-remote', 'auto'],
+                \   }
+                \ }
 
     function! s:check_back_space() abort
         let col = col('.') - 1
