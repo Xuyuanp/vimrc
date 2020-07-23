@@ -78,6 +78,7 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'terryma/vim-multiple-cursors' " multiple cursors
     Plug 'junegunn/vim-easy-align'      " EasyAlign - A simple, easy-to-use Vim alignment plugin.
     Plug 'tomtom/tcomment_vim'          " Tcomment - An extensible & universal comment vim-plugin that also handles embedded filetypes
+    Plug 'tpope/vim-scriptease'         " A Vim plugin for Vim plugins
 
     vnoremap <CR><Space>   :EasyAlign\<CR>
     vnoremap <CR>2<Space>  :EasyAlign2\<CR>
@@ -236,6 +237,9 @@ if v:true " UI
                 \ 'separator':    { 'left': '', 'right': '' },
                 \ 'subseparator': { 'left': '', 'right': '' }
                 \ }
+    let g:lightline.component = {
+                \ 'tagbar': '%{tagbar#currenttag("%s", "", "fsp")}',
+                \ }
     let g:lightline.component_function = {
                 \ 'fugitive':     'LightlineFugitive',
                 \ 'readonly':     'LightlineReadonly',
@@ -272,20 +276,21 @@ if v:true " UI
                 \ ['percent'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
                 \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
+                \ ['tagbar']
                 \ ]
     let g:lightline.inactive.right = []
     let g:lightline.mode_map = {
-                \ 'n':      'N',
-                \ 'i':      'I',
-                \ 'R':      'R',
-                \ 'v':      'V',
-                \ 'V':      'V-L',
-                \ "\<C-v>": 'V-B',
-                \ 'c':      'C',
-                \ 's':      'S',
-                \ 'S':      'S-L',
-                \ "\<C-s>": 'S-B',
-                \ 't':      'T',
+                \ 'n':      "N",
+                \ 'i':      "I",
+                \ 'R':      "R",
+                \ 'v':      "V",
+                \ 'V':      "V-L",
+                \ "\<C-v>": "V-B",
+                \ 'c':      "C",
+                \ 's':      "S",
+                \ 'S':      "S-L",
+                \ "\<C-s>": "S-B",
+                \ 't':      "T",
                 \ }
     let g:lightline#ale#indicator_checking       = "\uf110"
     let g:lightline#ale#indicator_infos          = "\uf129 "
