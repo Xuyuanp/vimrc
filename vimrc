@@ -130,6 +130,7 @@ if v:true " UI
     Plug 'Yggdroot/indentLine'               " indentLine - display the indent levels with thin vertical lines
     Plug 'itchyny/lightline.vim'             " The lightline plugin is a light and configurable statusline/tabline for Vim.
     Plug 'maximbaz/lightline-ale'            " ALE indicator for the lightline vim plugin
+    Plug 'deponian/vim-lightline-whitespace' " Port of vim-airline's whitespace extension to lightline
     Plug 'mengelbrecht/lightline-bufferline' " A lightweight plugin to display the list of buffers in the lightline vim plugin
     Plug 'majutsushi/tagbar'                 " tagbar - Vim plugin that displays tags in a window, ordered by class etc
 
@@ -257,6 +258,7 @@ if v:true " UI
                 \ 'linter_warnings': 'lightline#ale#warnings',
                 \ 'linter_errors':   'lightline#ale#errors',
                 \ 'buffers':         'LightlineBuffers',
+                \ 'whitespace':      'lightline#whitespace#check',
                 \ }
     let g:lightline.component_type = {
                 \ 'readonly':        'warning',
@@ -265,6 +267,7 @@ if v:true " UI
                 \ 'linter_warnings': 'warning',
                 \ 'linter_errors':   'error',
                 \ 'buffers':         'tabsel',
+                \ 'whitespace':      'warning',
                 \ }
     let g:lightline.active.left = [
                 \ ['mode', 'paste'],
@@ -272,6 +275,7 @@ if v:true " UI
                 \ ['buffers']
                 \ ]
     let g:lightline.active.right = [
+                \ ['whitespace'],
                 \ ['lineinfo'],
                 \ ['percent'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
