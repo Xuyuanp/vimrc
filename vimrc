@@ -415,6 +415,20 @@ if v:true " coc.nvim
 
 endif
 
+if v:true " DB
+    Plug 'tpope/vim-dadbod'
+    Plug 'kristijanhusak/vim-dadbod-ui'
+
+    let g:db_ui_use_nerd_fonts     = 1
+    let g:db_ui_execute_on_save    = 0
+    let g:db_ui_win_position       = 'right'
+    let g:db_ui_show_database_icon = 1
+    augroup dadbod-config
+        autocmd!
+        autocmd BufReadPost *.dbout setlocal nofoldenable
+    augroup end
+endif
+
 if v:true " NERDTree and plugins
     Plug 'preservim/nerdtree', {'on': 'NERDTreeToggle'} |
                 \ Plug 'jistr/vim-nerdtree-tabs' |
