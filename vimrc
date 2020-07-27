@@ -276,8 +276,7 @@ if v:true " UI
                 \ ]
     let g:lightline.active.right = [
                 \ ['whitespace'],
-                \ ['lineinfo'],
-                \ ['percent'],
+                \ ['percent', 'lineinfo'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
                 \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
                 \ ['tagbar']
