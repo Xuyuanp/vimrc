@@ -101,9 +101,9 @@ if v:true " FZF
 
     let g:fzf_layout = {'window': {'width': 0.9, 'height': 0.6}}
     let g:fzf_action = {
-      \ 'ctrl-x': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
+                \ 'ctrl-x': 'split',
+                \ 'ctrl-v': 'vsplit'
+                \ }
 
     " Terminal buffer options for fzf
     autocmd! FileType fzf
@@ -165,12 +165,12 @@ if v:true " UI
                 \ 'ctagsargs': '-sort -silent'
                 \ }
 
-	function! LightlineModified()
+    function! LightlineModified()
         return &ft ==# 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-	endfunction
-	function! LightlineReadonly()
+    endfunction
+    function! LightlineReadonly()
         return &ft !~? 'help' && &readonly ? '' : ''
-	endfunction
+    endfunction
     function! LightlineFugitive()
         try
             if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*FugitiveHead')
@@ -182,7 +182,7 @@ if v:true " UI
         endtry
         return ''
     endfunction
-	function! LightlineFilename()
+    function! LightlineFilename()
         let fname = expand('%:t')
         return fname ==# 'ControlP' && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
                     \ fname =~# '^__Tagbar__\|__Gundo' ? '' :
@@ -193,30 +193,30 @@ if v:true " UI
                     \ (LightlineReadonly() !=# '' ? LightlineReadonly() . ' ' : '') .
                     \ (fname !=# '' ? fname : '[No Name]') .
                     \ (LightlineModified() !=# '' ? ' ' . LightlineModified() : '')
-	endfunction
+    endfunction
     function! LightlineFileType()
         return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
     endfunction
     function! LightlineFileFormat()
         return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
     endfunction
-	function! LightlineFileencoding()
+    function! LightlineFileencoding()
         return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
-	endfunction
-	function! LightlinePercent()
+    endfunction
+    function! LightlinePercent()
         let totalno = line('$')
         let currno = line('.')
         return winwidth(0) > 70 ? printf('%3d%%', 100*currno/totalno) : ''
-	endfunction
-	function! LightlineLineinfo()
+    endfunction
+    function! LightlineLineinfo()
         let totalno = line('$')
         let currno = line('.')
         let colno = col('.')
         return winwidth(0) > 70 ? printf('≡ %d/%d  %d ', currno, totalno, colno) : ''
-	endfunction
-	function! LightlineBuffers()
+    endfunction
+    function! LightlineBuffers()
         return winwidth(0) > 70 ? lightline#bufferline#buffers() : ''
-	endfunction
+    endfunction
     function! LightlineMode()
         let fname = expand('%:t')
         return fname =~# '^__Tagbar__' ? 'Tagbar' :
@@ -470,8 +470,30 @@ call plug#end()
 
 autocmd VimEnter *
             \ if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-            \ |   PlugInstall --sync | q
+            \ |   PlugInstall --sync
+            \ | qa
             \ | endif
+
+" gx to open GitHub URLs on browser
+function! s:plug_gx() abort
+    let currline = trim(getline('.'))
+    let repo = matchstr(currline, '\mPlug\s\+[''"]\zs[^''"]\+\ze[''"]')
+    if repo ==# ''
+        return
+    endif
+    let name = split(repo, '/')[1]
+    let uri  = get(get(g:plugs, name, {}), 'uri', '')
+    if uri !~ 'github.com'
+        return
+    endif
+    let url = 'https://github.com/' . repo
+    call netrw#BrowseX(url, 0)
+endfunction
+
+augroup PlugGx
+    autocmd!
+    autocmd FileType vim nnoremap <buffer> <silent> gx :call <sid>plug_gx()<cr>
+augroup end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Settings
@@ -568,35 +590,35 @@ set smartindent
 set autoindent
 
 if has('nvim')
-  " https://github.com/neovim/neovim/issues/2897#issuecomment-115464516
-  let g:terminal_color_0 = '#4e4e4e'
-  let g:terminal_color_1 = '#d68787'
-  let g:terminal_color_2 = '#5f865f'
-  let g:terminal_color_3 = '#d8af5f'
-  let g:terminal_color_4 = '#85add4'
-  let g:terminal_color_5 = '#d7afaf'
-  let g:terminal_color_6 = '#87afaf'
-  let g:terminal_color_7 = '#d0d0d0'
-  let g:terminal_color_8 = '#626262'
-  let g:terminal_color_9 = '#d75f87'
-  let g:terminal_color_10 = '#87af87'
-  let g:terminal_color_11 = '#ffd787'
-  let g:terminal_color_12 = '#add4fb'
-  let g:terminal_color_13 = '#ffafaf'
-  let g:terminal_color_14 = '#87d7d7'
-  let g:terminal_color_15 = '#e4e4e4'
+    " https://github.com/neovim/neovim/issues/2897#issuecomment-115464516
+    let g:terminal_color_0 = '#4e4e4e'
+    let g:terminal_color_1 = '#d68787'
+    let g:terminal_color_2 = '#5f865f'
+    let g:terminal_color_3 = '#d8af5f'
+    let g:terminal_color_4 = '#85add4'
+    let g:terminal_color_5 = '#d7afaf'
+    let g:terminal_color_6 = '#87afaf'
+    let g:terminal_color_7 = '#d0d0d0'
+    let g:terminal_color_8 = '#626262'
+    let g:terminal_color_9 = '#d75f87'
+    let g:terminal_color_10 = '#87af87'
+    let g:terminal_color_11 = '#ffd787'
+    let g:terminal_color_12 = '#add4fb'
+    let g:terminal_color_13 = '#ffafaf'
+    let g:terminal_color_14 = '#87d7d7'
+    let g:terminal_color_15 = '#e4e4e4'
 
-  set fillchars=vert:\|,fold:-
-  autocmd BufReadPost *
-    \ if line("'\"") >= 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+    set fillchars=vert:\|,fold:-
+    autocmd BufReadPost *
+                \ if line("'\"") >= 1 && line("'\"") <= line("$") |
+                \   exe "normal! g`\"" |
+                \ endif
 else
-  let g:terminal_ansi_colors = [
-    \ '#4e4e4e', '#d68787', '#5f865f', '#d8af5f',
-    \ '#85add4', '#d7afaf', '#87afaf', '#d0d0d0',
-    \ '#626262', '#d75f87', '#87af87', '#ffd787',
-    \ '#add4fb', '#ffafaf', '#87d7d7', '#e4e4e4']
+    let g:terminal_ansi_colors = [
+                \ '#4e4e4e', '#d68787', '#5f865f', '#d8af5f',
+                \ '#85add4', '#d7afaf', '#87afaf', '#d0d0d0',
+                \ '#626262', '#d75f87', '#87af87', '#ffd787',
+                \ '#add4fb', '#ffafaf', '#87d7d7', '#e4e4e4']
 endif
 
 
