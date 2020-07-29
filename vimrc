@@ -229,6 +229,14 @@ if v:true " UI
                     \ &ft ==# 'vimshell' ? 'VimShell' :
                     \ winwidth(0) > 60 ? lightline#mode() : ''
     endfunction
+    function! LightlineTagbar()
+        let max_len = 70
+        let output = tagbar#currenttagtype('%s', '') . ' - ' . tagbar#currenttag("%s", "", "f")
+        if len(output) > max_len
+            let output = output[:max_len-3] . '...'
+        endif
+        return output
+    endfunction
     let lightline_themes = ["one", "seoul256", "powerline", 'molokai']
     let theme = lightline_themes[localtime()%len(lightline_themes)]
     let g:lightline = {
@@ -237,9 +245,6 @@ if v:true " UI
                 \ 'inactive':     {},
                 \ 'separator':    { 'left': '', 'right': '' },
                 \ 'subseparator': { 'left': '', 'right': '' }
-                \ }
-    let g:lightline.component = {
-                \ 'tagbar': '%{tagbar#currenttag("%s", "", "fsp")}',
                 \ }
     let g:lightline.component_function = {
                 \ 'fugitive':     'LightlineFugitive',
@@ -250,7 +255,8 @@ if v:true " UI
                 \ 'fileencoding': 'LightlineFileencoding',
                 \ 'mode':         'LightlineMode',
                 \ 'percent':      'LightlinePercent',
-                \ 'lineinfo':     'LightlineLineinfo'
+                \ 'lineinfo':     'LightlineLineinfo',
+                \ 'tagbar':       'LightlineTagbar',
                 \ }
     let g:lightline.component_expand = {
                 \ 'linter_checking': 'lightline#ale#checking',
@@ -440,13 +446,13 @@ if v:true " NERDTree and plugins
     let g:NERDTreeShowHidden            = 1
     let g:NERDTreeChDirMode             = 2
     let g:NERDTreeMouseMode             = 2
-    let g:NERDTreeNodeDelimiter         = "\u00a0"
     let g:NERDTreeStatusline            = 'NERDTree'
     let g:NERDTreeCascadeSingleChildDir = 0
     let g:NERDTreeShowBookmarks         = 1
     let g:NERDTreeIgnore                = ['\.idea', '\.iml', '\.pyc', '\~$', '\.swo$', '\.git', '\.hg', '\.svn', '\.bzr', '\.DS_Store', 'tmp', 'gin-bin']
     let g:NERDTreeDirArrowExpandable    = " "
     let g:NERDTreeDirArrowCollapsible   = " "
+    let g:NERDTreeGlyphReadOnly         = ''
 
     let g:NERDTreeGitStatusUseNerdFonts = 1
 
