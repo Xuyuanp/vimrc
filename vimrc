@@ -448,18 +448,7 @@ if v:true " NERDTree and plugins
     let g:NERDTreeDirArrowExpandable    = " "
     let g:NERDTreeDirArrowCollapsible   = " "
 
-    let g:NERDTreeIndicatorMapCustom = {
-                \ 'Modified'  : '',
-                \ 'Staged'    : '',
-                \ 'Untracked' : '',
-                \ 'Renamed'   : '',
-                \ 'Unmerged'  : '',
-                \ 'Deleted'   : '',
-                \ 'Dirty'     : '',
-                \ 'Clean'     : '',
-                \ 'Ignored'   : '',
-                \ 'Unknown'   : ''
-                \ }
+    let g:NERDTreeGitStatusUseNerdFonts = 1
 
     let g:nerdtree_tabs_open_on_gui_startup = '1'
 
@@ -501,6 +490,7 @@ function! VimAwesomeComplete() abort
     echohl WarningMsg
     echo 'Downloading plugin list from VimAwesome'
     echohl None
+    " ---ruby start---
 ruby << EOF
 require 'json'
 require 'open-uri'
@@ -522,6 +512,7 @@ items = 1.upto(max_pages = 3).map do |page|
 end.each(&:join).map(&:value).inject(:+)
 VIM::command("let cands = #{JSON.dump items}")
 EOF
+    " ---ruby end---
     if !empty(cands)
         inoremap <buffer> <c-v> <c-n>
         augroup _VimAwesomeComplete
