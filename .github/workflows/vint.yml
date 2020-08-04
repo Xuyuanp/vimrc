@@ -1,0 +1,11 @@
+name: reviewdog
+on: [pull_request]
+jobs:
+  vint:
+    name: runner / vint
+    runs-on: ubuntu-latest
+    steps:
+    - name: vint
+      uses: ludvighz/vint-action@v1
+      with:
+        path: vimrc
