@@ -709,3 +709,6 @@ nnoremap <silent>g* g*zz
 " }}}
 
 silent! colorscheme gruvbox-material
+
+let myft = &ft
+unlet myft
