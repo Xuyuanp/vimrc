@@ -12,3 +12,5 @@ repos:
   rev: master
   hooks:
   - id: vint
+    files: vimrc
+    types: [file]
