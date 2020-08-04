@@ -33,9 +33,9 @@ endif
 try
     call plug#begin()
 catch /Unknown\ function/
-    call s:log_err("Plug not found, installing...")
+    call s:log_err('Plug not found, installing...')
     call s:install_plug()
-    echomsg "Plug installed, please run :PlugInstall and restart vim/neovim"
+    echomsg 'Plug installed, please run :PlugInstall and restart vim/neovim'
 
     call plug#begin()
 endtry
@@ -46,6 +46,7 @@ if v:true " Languages
     Plug 'spacewander/openresty-vim'                        " openrestry script syntax highlight
     Plug 'neoclide/jsonc.vim'                               " jsonc
     Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
+    Plug 'stephpy/vim-yaml'                                 " Override vim syntax for yaml files
 
     let g:go_highlight_build_constraints = 1
     let g:go_highlight_extra_types       = 1
@@ -56,16 +57,16 @@ if v:true " Languages
     let g:go_highlight_structs           = 1
     let g:go_highlight_types             = 1
     let g:go_auto_type_info              = 1
-    let g:go_fmt_command                 = "goimports"
+    let g:go_fmt_command                 = 'goimports'
     let g:go_fmt_fail_silently           = 1
     let g:go_def_mapping_enabled         = 0
     let g:go_gopls_options               = ['-remote', 'auto']
     augroup vimgo
         autocmd!
-        au FileType go nmap <Leader>s <Plug>(go-def-split)
-        au FileType go nmap <Leader>v <Plug>(go-def-vertical)
-        au FileType go nmap <Leader>ii <Plug>(go-implements)
-        au FileType go nmap <Leader>d <Plug>(go-doc)
+        au FileType go nmap <leader>s <Plug>(go-def-split)
+        au FileType go nmap <leader>v <Plug>(go-def-vertical)
+        au FileType go nmap <leader>ii <Plug>(go-implements)
+        au FileType go nmap <leader>d <Plug>(go-doc)
         au FileType go set completeopt+=preview
     augroup end
 endif
@@ -79,6 +80,7 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'junegunn/vim-easy-align'      " EasyAlign - A simple, easy-to-use Vim alignment plugin.
     Plug 'tomtom/tcomment_vim'          " Tcomment - An extensible & universal comment vim-plugin that also handles embedded filetypes
     Plug 'tpope/vim-scriptease'         " A Vim plugin for Vim plugins
+    Plug 'bronson/vim-trailing-whitespace'
 
     vnoremap <CR><Space>   :EasyAlign\<CR>
     vnoremap <CR>2<Space>  :EasyAlign2\<CR>
@@ -91,6 +93,8 @@ if v:true " Productive tools (align, comment, tabular...)
 
     let g:ctrlsf_context    = '-B 5 -A 3'
     let g:ctrlsf_width      = '30%'
+
+    nnoremap <silent><leader><space> :FixWhitespace<CR>
 endif
 
 if v:true " FZF
@@ -106,8 +110,10 @@ if v:true " FZF
                 \ }
 
     " Terminal buffer options for fzf
-    autocmd! FileType fzf
-    autocmd  FileType fzf set noshowmode noruler nonu
+    augroup fzf
+        autocmd! FileType fzf
+        autocmd  FileType fzf set noshowmode noruler nonu
+    augroup end
 
     " All files
     command! -nargs=? -complete=dir AF
@@ -166,14 +172,14 @@ if v:true " UI
                 \ }
 
     function! LightlineModified()
-        return &ft ==# 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+        return &filetype ==# 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
     endfunction
     function! LightlineReadonly()
-        return &ft !~? 'help' && &readonly ? '' : ''
+        return &filetype !~? 'help' && &readonly ? '' : ''
     endfunction
     function! LightlineFugitive()
         try
-            if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*FugitiveHead')
+            if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &filetype !~? 'vimfiler' && exists('*FugitiveHead')
                 let mark = ''  " edit here for cool mark
                 let branch = FugitiveHead()
                 return branch !=# '' ? mark.branch : ''
@@ -186,10 +192,10 @@ if v:true " UI
         let fname = expand('%:t')
         return fname ==# 'ControlP' && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
                     \ fname =~# '^__Tagbar__\|__Gundo' ? '' :
-                    \ &ft ==# 'nerdtree' ? 'NERDTree' :
-                    \ &ft ==# 'vimfiler' ? vimfiler#get_status_string() :
-                    \ &ft ==# 'unite' ? unite#get_status_string() :
-                    \ &ft ==# 'vimshell' ? vimshell#get_status_string() :
+                    \ &filetype ==# 'nerdtree' ? 'NERDTree' :
+                    \ &filetype ==# 'vimfiler' ? vimfiler#get_status_string() :
+                    \ &filetype ==# 'unite' ? unite#get_status_string() :
+                    \ &filetype ==# 'vimshell' ? vimshell#get_status_string() :
                     \ (LightlineReadonly() !=# '' ? LightlineReadonly() . ' ' : '') .
                     \ (fname !=# '' ? fname : '[No Name]') .
                     \ (LightlineModified() !=# '' ? ' ' . LightlineModified() : '')
@@ -201,7 +207,7 @@ if v:true " UI
         return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
     endfunction
     function! LightlineFileencoding()
-        return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+        return winwidth(0) > 70 ? (&fileencoding !=# '' ? &fileencoding : &encoding) : ''
     endfunction
     function! LightlinePercent()
         let totalno = line('$')
@@ -224,20 +230,20 @@ if v:true " UI
                     \ fname ==# '__Gundo__' ? 'Gundo' :
                     \ fname ==# '__Gundo_Preview__' ? 'Gundo Preview' :
                     \ fname =~# 'NERD_tree' ? 'NERDTree' :
-                    \ &ft ==# 'unite' ? 'Unite' :
-                    \ &ft ==# 'vimfiler' ? 'VimFiler' :
-                    \ &ft ==# 'vimshell' ? 'VimShell' :
+                    \ &filetype ==# 'unite' ? 'Unite' :
+                    \ &filetype ==# 'vimfiler' ? 'VimFiler' :
+                    \ &filetype ==# 'vimshell' ? 'VimShell' :
                     \ winwidth(0) > 60 ? lightline#mode() : ''
     endfunction
     function! LightlineTagbar()
         let max_len = 70
-        let output = tagbar#currenttagtype('%s', '') . ' - ' . tagbar#currenttag("%s", "", "f")
+        let output = tagbar#currenttagtype('%s', '') . ' - ' . tagbar#currenttag('%s', '', 'f')
         if len(output) > max_len
             let output = output[:max_len-3] . '...'
         endif
         return output
     endfunction
-    let lightline_themes = ["one", "seoul256", "powerline", 'molokai']
+    let lightline_themes = ['one', 'seoul256', 'powerline', 'molokai']
     let theme = lightline_themes[localtime()%len(lightline_themes)]
     let g:lightline = {
                 \ 'colorscheme':  theme,
@@ -289,24 +295,24 @@ if v:true " UI
                 \ ]
     let g:lightline.inactive.right = []
     let g:lightline.mode_map = {
-                \ 'n':      "N",
-                \ 'i':      "I",
-                \ 'R':      "R",
-                \ 'v':      "V",
-                \ 'V':      "V-L",
-                \ "\<C-v>": "V-B",
-                \ 'c':      "C",
-                \ 's':      "S",
-                \ 'S':      "S-L",
-                \ "\<C-s>": "S-B",
-                \ 't':      "T",
+                \ 'n':      'N',
+                \ 'i':      'I',
+                \ 'R':      'R',
+                \ 'v':      'V',
+                \ 'V':      'V-L',
+                \ '\<C-v>': 'V-B',
+                \ 'c':      'C',
+                \ 's':      'S',
+                \ 'S':      'S-L',
+                \ '\<C-s>': 'S-B',
+                \ 't':      'T',
                 \ }
     let g:lightline#ale#indicator_checking       = "\uf110"
     let g:lightline#ale#indicator_infos          = "\uf129 "
     let g:lightline#ale#indicator_warnings       = "\uf071 "
     let g:lightline#ale#indicator_errors         = "\uf05e "
-    let g:lightline#bufferline#modified          = "*"
-    let g:lightline#bufferline#read_only         = ""
+    let g:lightline#bufferline#modified          = '*'
+    let g:lightline#bufferline#read_only         = ''
     let g:lightline#bufferline#filename_modifier = ':p:t'
     let g:lightline#bufferline#unnamed           = '[No Name]'
 
@@ -331,14 +337,15 @@ if v:true " colorschemes
     Plug 'fatih/molokai'
     Plug 'morhetz/gruvbox'
     Plug 'altercation/vim-colors-solarized'
+    Plug 'sainnhe/gruvbox-material'
 
     let g:rehash256        = 1
     let g:molokai_original = 1
 
     let g:solarized_termcolors = 256
     let g:solarized_termtrans  = 1
-    let g:solarized_contrast   = "normal"
-    let g:solarized_visibility = "low"
+    let g:solarized_contrast   = 'normal'
+    let g:solarized_visibility = 'low'
 endif
 
 if v:true " coc.nvim
@@ -391,15 +398,13 @@ if v:true " coc.nvim
     nnoremap <silent> K :call <SID>show_documentation()<CR>
 
     function! s:show_documentation()
-        if &filetype == 'vim'
+        if &filetype ==# 'vim'
             execute 'h '.expand('<cword>')
         else
             call CocAction('doHover')
         endif
     endfunction
 
-    " Highlight symbol under cursor on CursorHold
-    autocmd CursorHold * silent call CocActionAsync('highlight')
 
     " Remap for rename current word
     nmap <leader>rn <Plug>(coc-rename)
@@ -414,11 +419,9 @@ if v:true " coc.nvim
         autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
         " Update signature help on jump placeholder
         autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+        " Highlight symbol under cursor on CursorHold
+        autocmd CursorHold * silent call CocActionAsync('highlight')
     augroup end
-
-    let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-    let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-
 endif
 
 if v:true " DB
@@ -450,8 +453,8 @@ if v:true " NERDTree and plugins
     let g:NERDTreeCascadeSingleChildDir = 0
     let g:NERDTreeShowBookmarks         = 1
     let g:NERDTreeIgnore                = ['\.idea', '\.iml', '\.pyc', '\~$', '\.swo$', '\.git', '\.hg', '\.svn', '\.bzr', '\.DS_Store', 'tmp', 'gin-bin']
-    let g:NERDTreeDirArrowExpandable    = " "
-    let g:NERDTreeDirArrowCollapsible   = " "
+    let g:NERDTreeDirArrowExpandable    = ' '
+    let g:NERDTreeDirArrowCollapsible   = ' '
     let g:NERDTreeGlyphReadOnly         = ''
 
     let g:NERDTreeGitStatusUseNerdFonts = 1
@@ -463,12 +466,6 @@ endif
 
 call plug#end()
 
-autocmd VimEnter *
-            \ if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-            \ |   PlugInstall --sync
-            \ | qa
-            \ | endif
-
 " gx to open GitHub URLs on browser
 function! s:plug_gx() abort
     let currline = trim(getline('.'))
@@ -478,17 +475,12 @@ function! s:plug_gx() abort
     endif
     let name = split(repo, '/')[1]
     let uri  = get(get(g:plugs, name, {}), 'uri', '')
-    if uri !~ 'github.com'
+    if uri !~# 'github.com'
         return
     endif
     let url = 'https://github.com/' . repo
     call netrw#BrowseX(url, 0)
 endfunction
-
-augroup PlugGx
-    autocmd!
-    autocmd FileType vim nnoremap <buffer> <silent> gx :call <sid>plug_gx()<cr>
-augroup end
 
 " VimAwesome
 function! VimAwesomeComplete() abort
@@ -496,6 +488,7 @@ function! VimAwesomeComplete() abort
     echohl WarningMsg
     echo 'Downloading plugin list from VimAwesome'
     echohl None
+    let cands = {}
     " ---ruby start---
 ruby << EOF
 require 'json'
@@ -532,12 +525,21 @@ EOF
     return ''
 endfunction
 
-if has('ruby')
-    augroup VimAwesomeComplete
-        autocmd!
-        autocmd FileType vim inoremap <c-x><c-v> <c-r>=VimAwesomeComplete()<cr>
-    augroup END
-endif
+augroup my_plug
+    autocmd!
+
+    autocmd FileType vim nnoremap <buffer> <silent> gx :call <sid>plug_gx()<cr>
+
+    autocmd VimEnter *
+                \ if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+                \ |   PlugInstall --sync
+                \ | qa
+                \ | endif
+
+    if has('ruby')
+        autocmd FileType vim inoremap <silent> <c-x><c-v> <c-r>=VimAwesomeComplete()<cr>
+    endif
+augroup end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Settings
@@ -653,10 +655,6 @@ if has('nvim')
     let g:terminal_color_15 = '#e4e4e4'
 
     set fillchars=vert:\|,fold:-
-    autocmd BufReadPost *
-                \ if line("'\"") >= 1 && line("'\"") <= line("$") |
-                \   exe "normal! g`\"" |
-                \ endif
 else
     let g:terminal_ansi_colors = [
                 \ '#4e4e4e', '#d68787', '#5f865f', '#d8af5f',
@@ -683,10 +681,10 @@ nnoremap <Right> <C-w>>
 " }}}
 
 " Mapping for tab management {{{
-nnoremap <Leader>tc :tabc<CR>
-nnoremap <Leader>tn :tabn<CR>
-nnoremap <Leader>tp :tabp<CR>
-nnoremap <Leader>te :tabe<CR>
+nnoremap <leader>tc :tabc<CR>
+nnoremap <leader>tn :tabn<CR>
+nnoremap <leader>tp :tabp<CR>
+nnoremap <leader>te :tabe<CR>
 " }}}
 
 " Reselect visual block after indent/outdent {{{
@@ -700,7 +698,7 @@ nnoremap k gk
 " }}}
 
 " Clear search highlight
-nnoremap <silent><Leader>/ :nohls<CR>
+nnoremap <silent><leader>/ :nohls<CR>
 
 " Keep search pattern at the center of the screen {{{
 nnoremap <silent>n nzz
@@ -710,23 +708,4 @@ nnoremap <silent># #zz
 nnoremap <silent>g* g*zz
 " }}}
 
-" Force saving files that require root permission
-cmap w!! %!sudo tee > /dev/null %
-
-" via: http://rails-bestpractices.com/posts/60-remove-trailing-whitespace
-" Strip trailing whitespace
-function! <SID>StripTrailingWhitespaces()
-    " Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line('.')
-    let c = col('.')
-    " Do the business:
-    %s/\s\+$//e
-    " Clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
-endfunction
-command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
-nmap <silent><Leader><Space> :StripTrailingWhitespaces<CR>
-
-silent! colorscheme molokai
+silent! colorscheme gruvbox-material
