@@ -709,3 +709,5 @@ nnoremap <silent>g* g*zz
 " }}}
 
 silent! colorscheme gruvbox-material
+
+" nothing
