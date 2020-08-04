@@ -5,6 +5,7 @@ jobs:
     name: runner / vint
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: vint
       uses: ludvighz/vint-action@v1
       with:
