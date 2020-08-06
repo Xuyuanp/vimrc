@@ -1,9 +1,12 @@
-" redefine leader key
-let mapleader = ','
-
 " set encoding
 set encoding=utf-8
 scriptencoding utf-8
+
+" redefine leader key
+let mapleader = ','
+
+let s:is_win = has('win16') || has('win32') || has('win64')
+let s:is_nvim = has('nvim')
 
 function! s:log_err(msg)
     echohl ErrorMsg
@@ -18,17 +21,16 @@ function! s:install_plug() abort
     endif
 
     let plug_url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    let plug_file = expand('~/.vim/autoload/plug.vim')
-    if has('nvim')
-        let plug_file = stdpath('data') . '/site/autoload/plug.vim'
-    endif
-    call system(join(['curl', '-fLo', plug_file, '--create-dirs', plug_url], ' '))
+    let plug_file = s:is_nvim ?
+                \ stdpath('data') . '/site/autoload/plug.vim' :
+                \ expand('~/.vim/autoload/plug.vim')
+    let curl_bin = s:is_win ? 'curl.ps1' : 'curl'
+    call system(join([curl_bin, '-fLo', plug_file, '--create-dirs', plug_url], ' '))
 endfunction
 
-let g:plug_home = expand('~/.vim/.plugged')
-if has('nvim')
-    let g:plug_home = stdpath('data') . '/plugged'
-endif
+let g:plug_home = s:is_nvim ?
+            \ stdpath('data') . '/plugged' :
+            \ expand('~/.vim/.plugged')
 
 try
     call plug#begin()
@@ -110,9 +112,9 @@ if v:true " FZF
                 \ }
 
     " Terminal buffer options for fzf
-    augroup fzf
-        autocmd! FileType fzf
-        autocmd  FileType fzf set noshowmode noruler nonu
+    augroup vimrc_fzf
+        autocmd!
+        autocmd FileType fzf set noshowmode noruler nonu
     augroup end
 
     " All files
@@ -121,9 +123,9 @@ if v:true " FZF
                 \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
                 \ })))
 
-    nnoremap <silent> <Leader>ag       :Ag<CR>
-    nnoremap <silent> <Leader>rg       :Rg<CR>
-    nnoremap <silent> <Leader>af       :AF<CR>
+    nnoremap <silent> <leader>ag       :Ag<CR>
+    nnoremap <silent> <leader>rg       :Rg<CR>
+    nnoremap <silent> <leader>af       :AF<CR>
     imap <c-x><c-k> <plug>(fzf-complete-word)
     imap <c-x><c-f> <plug>(fzf-complete-path)
     imap <c-x><c-j> <plug>(fzf-complete-file-ag)
@@ -237,7 +239,7 @@ if v:true " UI
     endfunction
     function! LightlineTagbar()
         let max_len = 70
-        let output = tagbar#currenttagtype('%s', '') . ' - ' . tagbar#currenttag('%s', '', 'f')
+        let output = tagbar#currenttag('%s', '', 'fsp')
         if len(output) > max_len
             let output = output[:max_len-3] . '...'
         endif
@@ -661,8 +663,10 @@ else
                 \ '#85add4', '#d7afaf', '#87afaf', '#d0d0d0',
                 \ '#626262', '#d75f87', '#87af87', '#ffd787',
                 \ '#add4fb', '#ffafaf', '#87d7d7', '#e4e4e4']
-endif
 
+    " See here: https://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
+    set clipboard=exclude:.*
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
@@ -708,4 +712,5 @@ nnoremap <silent># #zz
 nnoremap <silent>g* g*zz
 " }}}
 
+set background=dark
 silent! colorscheme gruvbox-material
