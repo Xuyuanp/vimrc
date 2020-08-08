@@ -75,7 +75,7 @@ if v:true " Languages
     let g:go_fmt_fail_silently           = 1
     let g:go_def_mapping_enabled         = 0
     let g:go_gopls_options               = ['-remote', 'auto']
-    augroup vimgo
+    augroup my_vim_go
         autocmd!
         au FileType go nmap <leader>s <Plug>(go-def-split)
         au FileType go nmap <leader>v <Plug>(go-def-vertical)
@@ -124,9 +124,9 @@ if v:true " FZF
                 \ }
 
     " Terminal buffer options for fzf
-    augroup vimrc_fzf
+    augroup my_fzf
         autocmd!
-        autocmd FileType fzf set noshowmode noruler nonu
+        autocmd  FileType fzf set noshowmode noruler nonu
     augroup end
 
     " All files
