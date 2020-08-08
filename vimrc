@@ -14,6 +14,12 @@ function! s:log_err(msg)
     echohl None
 endfunction
 
+function! s:log_warn(msg)
+    echohl WarningMsg
+    echomsg a:msg
+    echohl None
+endfunction
+
 function! s:install_plug() abort
     if !executable('curl')
         call s:log_err("'curl' command not found")
@@ -489,9 +495,7 @@ endfunction
 " VimAwesome
 function! VimAwesomeComplete() abort
     let prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '[.a-zA-Z0-9_/-]*$')
-    echohl WarningMsg
-    echo 'Downloading plugin list from VimAwesome'
-    echohl None
+    call s:log_warn('Downloading plugin list from VimAwesome')
     let cands = {}
     " ---ruby start---
 ruby << EOF
