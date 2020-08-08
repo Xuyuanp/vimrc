@@ -203,10 +203,12 @@ if v:true " UI
                     \ (LightlineModified() !=# '' ? ' ' . LightlineModified() : '')
     endfunction
     function! LightlineFileType()
-        return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+        let symbol = get(g:, 'loaded_web_devicons', 0) ? WebDevIconsGetFileTypeSymbol() : ''
+        return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . (strlen(symbol) ? ' ' . symbol : '') : 'no ft') : ''
     endfunction
     function! LightlineFileFormat()
-        return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+        let symbol = get(g:, 'loaded_web_devicons', 0) ? WebDevIconsGetFileFormatSymbol() : ''
+        return winwidth(0) > 70 ? (&fileformat . (strlen(symbol) ? ' ' . symbol : '')) : ''
     endfunction
     function! LightlineFileencoding()
         return winwidth(0) > 70 ? (&fileencoding !=# '' ? &fileencoding : &encoding) : ''
