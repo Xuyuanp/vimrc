@@ -1,3 +1,5 @@
+silent! source $VIMRC_BEFORE
+
 " set encoding
 set encoding=utf-8
 scriptencoding utf-8
@@ -38,6 +40,8 @@ let g:plug_home = s:is_nvim ?
             \ stdpath('data') . '/plugged' :
             \ expand('~/.vim/.plugged')
 
+silent! source $VIM_PLUG_BEFORE
+
 try
     call plug#begin()
 catch /Unknown\ function/
@@ -47,6 +51,8 @@ catch /Unknown\ function/
 
     call plug#begin()
 endtry
+
+silent! source $VIM_PLUG_FIRST
 
 if v:true " Languages
     Plug 'fatih/vim-go', { 'tag': '*' }                     " go
@@ -474,7 +480,11 @@ if v:true " NERDTree and plugins
     let g:DevIconsEnableFoldersOpenClose  = 1
 endif
 
+silent! source $VIM_PLUG_LAST
+
 call plug#end()
+
+silent! source $VIM_PLUG_AFTER
 
 " gx to open GitHub URLs on browser
 function! s:plug_gx() abort
@@ -720,3 +730,5 @@ nnoremap <silent>g* g*zz
 
 set background=dark
 silent! colorscheme gruvbox-material
+
+silent! source $VIMRC_AFTER
