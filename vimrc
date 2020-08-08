@@ -466,6 +466,7 @@ if v:true " NERDTree and plugins
                 \ Plug 'Xuyuanp/nerdtree-git-plugin' |
                 \ Plug 'ryanoasis/vim-devicons' |
                 \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    Plug 'xuyuanp/viz-nr2char'
 
     map <C-E> :NERDTreeToggle<CR>
     let g:NERDTreeShowHidden            = 1
