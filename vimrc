@@ -346,8 +346,8 @@ if v:true " UI
     let g:rainbow_conf            = {}
     let g:rainbow_conf.separately = {'nerdtree': 0}
 
-    let g:indentLine_char            = '┆'
-    let g:indentLine_fileTypeExclude = ['nerdtree']
+    let g:indentLine_char     = '┆'
+    let g:indentLine_fileType = ['python']
 endif
 
 if v:true " git
