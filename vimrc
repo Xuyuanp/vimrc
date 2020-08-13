@@ -641,8 +641,7 @@ set wildmenu
 " Display incomplete commands
 set showcmd
 " Shortens messages to avoid 'press a key' prompt
-set shortmess=aoOtTI
-set shortmess+=c
+set shortmess=aoOtTIc
 
 " Turn backup off
 set nobackup
