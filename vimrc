@@ -607,6 +607,9 @@ set cmdheight=2
 " Show line number
 set number
 
+" if hidden is not set, TextEdit might fail.
+set hidden
+
 " Ignore case when searching
 set ignorecase
 set smartcase
