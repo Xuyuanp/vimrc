@@ -403,10 +403,11 @@ if v:true " coc.nvim
                 \ 'coc-vimlsp',
                 \ ]
 
-    let g:coc_user_config = {'go': {}}
-    let g:coc_user_config.go.goplsPath = getenv('GOPATH') . '/bin/gopls'
-    let g:coc_user_config.go.goplsArgs = ['-remote', 'auto']
     let g:coc_config_home = '~/.vim'
+
+    let g:coc_user_config = {'go': {}}
+    let g:coc_user_config.go.goplsPath = $GOPATH . '/bin/gopls'
+    let g:coc_user_config.go.goplsArgs = ['-remote', 'auto']
 
     function! s:check_back_space() abort
         let col = col('.') - 1
@@ -421,13 +422,21 @@ if v:true " coc.nvim
                 \ coc#refresh()
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-    " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
-    " Coc only does snippet and additional edit on confirm.
-    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    " Use <c-space> to trigger completion.
+    if has('nvim')
+        inoremap <silent><expr> <c-space> coc#refresh()
+    else
+        inoremap <silent><expr> <c-@> coc#refresh()
+    endif
 
-    " Use `[c` and `]c` for navigate diagnostics
-    nmap <silent> [c <Plug>(coc-diagnostic-prev)
-    nmap <silent> ]c <Plug>(coc-diagnostic-next)
+    " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+    " position. Coc only does snippet and additional edit on confirm.
+    " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+    if exists('*complete_info')
+        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    else
+        inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    endif
 
     " Remap keys for gotos
     nmap <silent> gd <Plug>(coc-definition)
@@ -439,25 +448,24 @@ if v:true " coc.nvim
     nnoremap <silent> K :call <SID>show_documentation()<CR>
 
     function! s:show_documentation()
-        if &filetype ==# 'vim'
+        if (index(['vim','help'], &filetype) >= 0)
             execute 'h '.expand('<cword>')
         else
             call CocAction('doHover')
         endif
     endfunction
 
-
     " Remap for rename current word
-    nmap <leader>rn <Plug>(coc-rename)
+    nnoremap <leader>rn <Plug>(coc-rename)
 
     " Remap for format selected region
-    vmap <leader>f  <Plug>(coc-format-selected)
-    nmap <leader>f  <Plug>(coc-format-selected)
+    vnoremap <leader>f  <Plug>(coc-format-selected)
+    nnoremap <leader>f  <Plug>(coc-format-selected)
 
-    augroup coc
+    augroup my_coc
         autocmd!
         " Setup formatexpr specified filetype(s).
-        autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+        autocmd FileType typescript,json setlocal formatexpr=CocAction('formatSelected')
         " Update signature help on jump placeholder
         autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
         " Highlight symbol under cursor on CursorHold
