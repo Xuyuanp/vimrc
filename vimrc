@@ -601,9 +601,6 @@ set nowrap
 " Always show current position
 set ruler
 
-" The commandbar is 2 high
-set cmdheight=2
-
 " Show line number
 set number
 
