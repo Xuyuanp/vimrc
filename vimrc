@@ -7,36 +7,7 @@ scriptencoding utf-8
 " redefine leader key
 let mapleader = ','
 
-let s:is_win = has('win16') || has('win32') || has('win64')
-let s:is_nvim = has('nvim')
-
-function! s:log_err(msg)
-    echohl ErrorMsg
-    echomsg a:msg
-    echohl None
-endfunction
-
-function! s:log_warn(msg)
-    echohl WarningMsg
-    echomsg a:msg
-    echohl None
-endfunction
-
-function! s:install_plug() abort
-    if !executable('curl')
-        call s:log_err("'curl' command not found")
-        return
-    endif
-
-    let plug_url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    let plug_file = s:is_nvim ?
-                \ stdpath('data') . '/site/autoload/plug.vim' :
-                \ expand('~/.vim/autoload/plug.vim')
-    let curl_bin = s:is_win ? 'curl.ps1' : 'curl'
-    call system(join([curl_bin, '-fLo', plug_file, '--create-dirs', plug_url], ' '))
-endfunction
-
-let g:plug_home = s:is_nvim ?
+let g:plug_home = has('nvim') ?
             \ stdpath('data') . '/plugged' :
             \ expand('~/.vim/.plugged')
 
@@ -45,9 +16,9 @@ silent! source $VIM_PLUG_BEFORE
 try
     call plug#begin()
 catch /Unknown\ function/
-    call s:log_err('Plug not found, installing...')
-    call s:install_plug()
-    echomsg 'Plug installed, please run :PlugInstall and restart vim/neovim'
+    call dotvim#log#warn('Plug not found, installing...')
+    call dotvim#plug#Install(expand('~/.vim/autoload/plug.vim'))
+    call dotvim#log#info('Plug installed')
 
     call plug#begin()
 endtry
@@ -97,7 +68,6 @@ endif
 
 if v:true " Productive tools (align, comment, tabular...)
     Plug 'godlygeek/tabular'            " tabular - Vim script for text filtering and alignment
-    Plug 'dyng/ctrlsf.vim'              " ctrlsf - An ack/ag powered code search and view tool, in an intuitive way with fairly more context.
     Plug 'jiangmiao/auto-pairs'         " auto-pairs - insert or delete brackets, parens, quotes in pair
     Plug 'tpope/vim-surround'           " Surround - quoting/parenthesizing made simple
     Plug 'terryma/vim-multiple-cursors' " multiple cursors
@@ -114,9 +84,6 @@ if v:true " Productive tools (align, comment, tabular...)
     vnoremap <CR>=         :EasyAlign=<CR>
     vnoremap <CR><CR>=     :EasyAlign!=<CR>
     vnoremap <CR>"         :EasyAlign"<CR>
-
-    let g:ctrlsf_context    = '-B 5 -A 3'
-    let g:ctrlsf_width      = '30%'
 
     nnoremap <silent><leader><space> :FixWhitespace<CR>
 endif
@@ -195,107 +162,32 @@ if v:true " UI
                 \ 'ctagsargs': '-sort -silent'
                 \ }
 
-    function! LightlineModified()
-        return &filetype ==# 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-    endfunction
-    function! LightlineReadonly()
-        return &filetype !~? 'help' && &readonly ? '' : ''
-    endfunction
-    function! LightlineFugitive()
-        try
-            if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &filetype !~? 'vimfiler' && exists('*FugitiveHead')
-                let mark = ''  " edit here for cool mark
-                let branch = FugitiveHead()
-                return branch !=# '' ? mark.branch : ''
-            endif
-        catch
-        endtry
-        return ''
-    endfunction
-    function! LightlineFilename()
-        let fname = expand('%:t')
-        return fname ==# 'ControlP' && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
-                    \ fname =~# '^__Tagbar__\|__Gundo' ? '' :
-                    \ &filetype ==# 'nerdtree' ? 'NERDTree' :
-                    \ &filetype ==# 'vimfiler' ? vimfiler#get_status_string() :
-                    \ &filetype ==# 'unite' ? unite#get_status_string() :
-                    \ &filetype ==# 'vimshell' ? vimshell#get_status_string() :
-                    \ (LightlineReadonly() !=# '' ? LightlineReadonly() . ' ' : '') .
-                    \ (fname !=# '' ? fname : '[No Name]') .
-                    \ (LightlineModified() !=# '' ? ' ' . LightlineModified() : '')
-    endfunction
-    function! LightlineFileType()
-        let symbol = get(g:, 'loaded_web_devicons', 0) ? WebDevIconsGetFileTypeSymbol() : ''
-        return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . (strlen(symbol) ? ' ' . symbol : '') : 'no ft') : ''
-    endfunction
-    function! LightlineFileFormat()
-        let symbol = get(g:, 'loaded_web_devicons', 0) ? WebDevIconsGetFileFormatSymbol() : ''
-        return winwidth(0) > 70 ? (&fileformat . (strlen(symbol) ? ' ' . symbol : '')) : ''
-    endfunction
-    function! LightlineFileencoding()
-        return winwidth(0) > 70 ? (&fileencoding !=# '' ? &fileencoding : &encoding) : ''
-    endfunction
-    function! LightlinePercent()
-        let totalno = line('$')
-        let currno = line('.')
-        return winwidth(0) > 70 ? printf('%3d%%', 100*currno/totalno) : ''
-    endfunction
-    function! LightlineLineinfo()
-        let totalno = line('$')
-        let currno = line('.')
-        let colno = col('.')
-        return winwidth(0) > 70 ? printf('≡ %d/%d  %d ', currno, totalno, colno) : ''
-    endfunction
-    function! LightlineBuffers()
-        return winwidth(0) > 70 ? lightline#bufferline#buffers() : ''
-    endfunction
-    function! LightlineMode()
-        let fname = expand('%:t')
-        return fname =~# '^__Tagbar__' ? 'Tagbar' :
-                    \ fname ==# 'ControlP' ? 'CtrlP' :
-                    \ fname ==# '__Gundo__' ? 'Gundo' :
-                    \ fname ==# '__Gundo_Preview__' ? 'Gundo Preview' :
-                    \ fname =~# 'NERD_tree' ? 'NERDTree' :
-                    \ &filetype ==# 'unite' ? 'Unite' :
-                    \ &filetype ==# 'vimfiler' ? 'VimFiler' :
-                    \ &filetype ==# 'vimshell' ? 'VimShell' :
-                    \ winwidth(0) > 60 ? lightline#mode() : ''
-    endfunction
-    function! LightlineTagbar()
-        let max_len = 70
-        let output = tagbar#currenttag('%s', '', 'fsp')
-        if len(output) > max_len
-            let output = output[:max_len-3] . '...'
-        endif
-        return output
-    endfunction
     let lightline_themes = ['one', 'seoul256', 'powerline', 'molokai']
-    let theme = lightline_themes[localtime()%len(lightline_themes)]
     let g:lightline = {
-                \ 'colorscheme':  theme,
+                \ 'colorscheme':  lightline_themes[localtime()%len(lightline_themes)],
                 \ 'active':       {},
                 \ 'inactive':     {},
                 \ 'separator':    { 'left': '', 'right': '' },
                 \ 'subseparator': { 'left': '', 'right': '' }
                 \ }
     let g:lightline.component_function = {
-                \ 'fugitive':     'LightlineFugitive',
-                \ 'readonly':     'LightlineReadonly',
-                \ 'filetype':     'LightlineFileType',
-                \ 'fileformat':   'LightlineFileFormat',
-                \ 'filename':     'LightlineFilename',
-                \ 'fileencoding': 'LightlineFileencoding',
-                \ 'mode':         'LightlineMode',
-                \ 'percent':      'LightlinePercent',
-                \ 'lineinfo':     'LightlineLineinfo',
-                \ 'tagbar':       'LightlineTagbar',
+                \ 'fugitive':     'dotvim#lightline#Fugitive',
+                \ 'readonly':     'dotvim#lightline#Readonly',
+                \ 'filetype':     'dotvim#lightline#FileType',
+                \ 'fileformat':   'dotvim#lightline#FileFormat',
+                \ 'filename':     'dotvim#lightline#Filename',
+                \ 'fileencoding': 'dotvim#lightline#Fileencoding',
+                \ 'mode':         'dotvim#lightline#Mode',
+                \ 'percent':      'dotvim#lightline#Percent',
+                \ 'lineinfo':     'dotvim#lightline#Lineinfo',
+                \ 'tagbar':       'dotvim#lightline#Tagbar',
                 \ }
     let g:lightline.component_expand = {
                 \ 'linter_checking': 'lightline#ale#checking',
                 \ 'linter_infos':    'lightline#ale#infos',
                 \ 'linter_warnings': 'lightline#ale#warnings',
                 \ 'linter_errors':   'lightline#ale#errors',
-                \ 'buffers':         'LightlineBuffers',
+                \ 'buffers':         'dotvim#lightline#Buffers',
                 \ 'whitespace':      'lightline#whitespace#check',
                 \ }
     let g:lightline.component_type = {
@@ -333,10 +225,10 @@ if v:true " UI
                 \ '\<C-s>': 'S-B',
                 \ 't':      'T',
                 \ }
-    let g:lightline#ale#indicator_checking       = "\uf110"
-    let g:lightline#ale#indicator_infos          = "\uf129 "
-    let g:lightline#ale#indicator_warnings       = "\uf071 "
-    let g:lightline#ale#indicator_errors         = "\uf05e "
+    let g:lightline#ale#indicator_checking       = nr2char(0xf110)
+    let g:lightline#ale#indicator_infos          = nr2char(0xf129)
+    let g:lightline#ale#indicator_warnings       = nr2char(0xf071)
+    let g:lightline#ale#indicator_errors         = nr2char(0xf05e)
     let g:lightline#bufferline#modified          = '*'
     let g:lightline#bufferline#read_only         = ''
     let g:lightline#bufferline#filename_modifier = ':p:t'
@@ -512,6 +404,8 @@ if v:true " NERDTree and plugins
     let g:nerdtree_tabs_open_on_gui_startup = '1'
 
     let g:DevIconsEnableFoldersOpenClose  = 1
+
+    let g:viz_nr2char_auto = 1
 endif
 
 silent! source $VIM_PLUG_LAST
@@ -520,67 +414,10 @@ call plug#end()
 
 silent! source $VIM_PLUG_AFTER
 
-" gx to open GitHub URLs on browser
-function! s:plug_gx() abort
-    let currline = trim(getline('.'))
-    let repo = matchstr(currline, '\mPlug\s\+[''"]\zs[^''"]\+\ze[''"]')
-    if repo ==# ''
-        return
-    endif
-    let name = split(repo, '/')[1]
-    let uri  = get(get(g:plugs, name, {}), 'uri', '')
-    if uri !~# 'github.com'
-        return
-    endif
-    let url = 'https://github.com/' . repo
-    call netrw#BrowseX(url, 0)
-endfunction
-
-" VimAwesome
-function! VimAwesomeComplete() abort
-    let prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '[.a-zA-Z0-9_/-]*$')
-    call s:log_warn('Downloading plugin list from VimAwesome')
-    let cands = {}
-    " ---ruby start---
-ruby << EOF
-require 'json'
-require 'open-uri'
-
-query = VIM::evaluate('prefix').gsub('/', '%20')
-items = 1.upto(max_pages = 3).map do |page|
-    Thread.new do
-        url  = "http://vimawesome.com/api/plugins?page=#{page}&query=#{query}"
-        data = open(url).read
-        json = JSON.parse(data, symbolize_names: true)
-        json[:plugins].map do |info|
-            pair = info.values_at :github_owner, :github_repo_name
-            next if pair.any? { |e| e.nil? || e.empty? }
-            {word: pair.join('/'),
-            menu: info[:category].to_s,
-            info: info.values_at(:short_desc, :author, :github_stars).compact.join($/)}
-        end.compact
-    end
-end.each(&:join).map(&:value).inject(:+)
-VIM::command("let cands = #{JSON.dump items}")
-EOF
-    " ---ruby end---
-    if !empty(cands)
-        inoremap <buffer> <c-v> <c-n>
-        augroup _VimAwesomeComplete
-            autocmd!
-            autocmd CursorMovedI,InsertLeave * iunmap <buffer> <c-v>
-                        \| autocmd! _VimAwesomeComplete
-        augroup END
-
-        call complete(col('.') - strchars(prefix), cands)
-    endif
-    return ''
-endfunction
-
 augroup my_plug
     autocmd!
 
-    autocmd FileType vim nnoremap <buffer> <silent> gx :call <sid>plug_gx()<cr>
+    autocmd FileType vim nnoremap <buffer> <silent> gx :call dotvim#plug#OpenGithub()<cr>
 
     autocmd VimEnter *
                 \ if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
@@ -589,7 +426,7 @@ augroup my_plug
                 \ | endif
 
     if has('ruby')
-        autocmd FileType vim inoremap <silent> <c-x><c-v> <c-r>=VimAwesomeComplete()<cr>
+        autocmd FileType vim inoremap <silent> <c-x><c-v> <c-r>=dotvim#plug#VimAwesomeComplete()<cr>
     endif
 augroup end
 
