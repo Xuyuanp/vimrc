@@ -32,6 +32,7 @@ if v:true " Languages
     Plug 'neoclide/jsonc.vim'                               " jsonc
     Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
     Plug 'stephpy/vim-yaml'                                 " Override vim syntax for yaml files
+    Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
 
     let g:go_highlight_build_constraints      = 1
     let g:go_highlight_types                  = 1
