@@ -74,7 +74,7 @@ function! dotvim#lightline#Mode()
                 \ &filetype ==# 'unite' ? 'Unite' :
                 \ &filetype ==# 'vimfiler' ? 'VimFiler' :
                 \ &filetype ==# 'vimshell' ? 'VimShell' :
-                \ winwidth(0) > 60 ? lightline#mode() : ''
+                \ winwidth(0) > 70 ? lightline#mode() : ''
 endfunction
 
 function! dotvim#lightline#Tagbar()
@@ -84,4 +84,8 @@ function! dotvim#lightline#Tagbar()
         let output = output[:max_len-3] . '...'
     endif
     return output
+endfunction
+
+function! dotvim#lightline#SynName()
+    return winwidth(0) > 70 ? synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name') : ''
 endfunction

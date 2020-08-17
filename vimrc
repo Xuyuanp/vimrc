@@ -182,6 +182,7 @@ if v:true " UI
                 \ 'percent':      'dotvim#lightline#Percent',
                 \ 'lineinfo':     'dotvim#lightline#Lineinfo',
                 \ 'tagbar':       'dotvim#lightline#Tagbar',
+                \ 'synName':      'dotvim#lightline#SynName',
                 \ }
     let g:lightline.component_expand = {
                 \ 'linter_checking': 'lightline#ale#checking',
@@ -210,6 +211,7 @@ if v:true " UI
                 \ ['percent', 'lineinfo'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
                 \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
+                \ ['synName'],
                 \ ['tagbar']
                 \ ]
     let g:lightline.inactive.right = []
@@ -278,8 +280,6 @@ if v:true " colorschemes
     let g:gruvbox_material_enable_italic = 1
     let g:gruvbox_material_enable_bold = 1
     let g:gruvbox_material_better_performance = 1
-    let g:gruvbox_material_background = 'soft'
-    let g:gruvbox_material_palette = 'mix'
 endif
 
 if v:true " coc.nvim
