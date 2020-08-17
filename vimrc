@@ -277,9 +277,10 @@ if v:true " colorschemes
     let g:solarized_contrast   = 'normal'
     let g:solarized_visibility = 'low'
 
-    let g:gruvbox_material_enable_italic = 1
-    let g:gruvbox_material_enable_bold = 1
+    let g:gruvbox_material_enable_italic      = 1
+    let g:gruvbox_material_enable_bold        = 1
     let g:gruvbox_material_better_performance = 1
+    let g:gruvbox_material_palette            = 'mix'
 endif
 
 if v:true " coc.nvim
