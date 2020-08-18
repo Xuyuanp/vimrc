@@ -284,7 +284,13 @@ if v:true " colorschemes
     let g:gruvbox_material_palette            = 'mix'
 endif
 
-if v:true
+if has('nvim-0.5')
+    Plug 'nvim-treesitter/nvim-treesitter'
+    Plug 'neovim/nvim-lsp'
+    Plug 'nvim-lua/lsp-status.nvim'
+    Plug 'nathunsmitty/diagnostic-nvim'
+    Plug 'nvim-lua/completion-nvim'
+else
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 
     let g:coc_global_extensions = [
@@ -368,7 +374,7 @@ if v:true
     augroup end
 endif
 
-if v:true " DB
+if v:false " DB
     Plug 'tpope/vim-dadbod'
     Plug 'kristijanhusak/vim-dadbod-ui'
 
@@ -432,6 +438,38 @@ augroup my_plug
         autocmd FileType vim inoremap <silent> <c-x><c-v> <c-r>=dotvim#plug#VimAwesomeComplete()<cr>
     endif
 augroup end
+
+if has('nvim-0.5')
+    lua require('lsp')
+
+    let g:diagnostic_insert_delay        = 1
+    let g:diagnostic_show_sign           = 1
+    let g:diagnostic_enable_virtual_text = 1
+    let g:completion_enable_auto_paren   = 1
+    let g:completion_enable_auto_popup   = 1
+    let g:completion_trigger_on_delete   = 1
+
+    let g:completion_confirm_key = ''
+    imap <expr> <cr>  pumvisible() ?
+                \ complete_info()["selected"] != "-1" ? "\<Plug>(completion_confirm_completion)" : "\<c-e>\<CR>" :
+                \ "\<CR>"
+
+    function! <SID>check_back_space() abort
+        let l:col = col('.') - 1
+        return !l:col || getline('.')[l:col - 1]  =~# '\s'
+    endfunction
+
+    inoremap <silent><expr> <TAB>
+                \ pumvisible() ? "\<C-n>" :
+                \ <SID>check_back_space() ? "\<TAB>" :
+                \ completion#trigger_completion()
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+    " Set completeopt to have a better completion experience
+    set completeopt=menuone,noinsert,noselect
+    " Avoid showing message extra message when using completion
+    set shortmess+=c
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Settings
