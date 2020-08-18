@@ -4,8 +4,10 @@ silent! source $VIMRC_BEFORE
 set encoding=utf-8
 scriptencoding utf-8
 
+set shell=/bin/sh
+
 " redefine leader key
-let mapleader = ','
+let g:mapleader = ','
 
 let g:plug_home = has('nvim') ?
             \ stdpath('data') . '/plugged' :
@@ -163,9 +165,9 @@ if v:true " UI
                 \ 'ctagsargs': '-sort -silent'
                 \ }
 
-    let lightline_themes = ['one', 'seoul256', 'powerline', 'molokai']
+    let s:lightline_themes = ['one', 'seoul256', 'powerline', 'molokai']
     let g:lightline = {
-                \ 'colorscheme':  lightline_themes[localtime()%len(lightline_themes)],
+                \ 'colorscheme':  s:lightline_themes[localtime()%len(s:lightline_themes)],
                 \ 'active':       {},
                 \ 'inactive':     {},
                 \ 'separator':    { 'left': '', 'right': '' },
@@ -211,7 +213,6 @@ if v:true " UI
                 \ ['percent', 'lineinfo'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
                 \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
-                \ ['synName'],
                 \ ['tagbar']
                 \ ]
     let g:lightline.inactive.right = []
@@ -283,7 +284,7 @@ if v:true " colorschemes
     let g:gruvbox_material_palette            = 'mix'
 endif
 
-if v:true " coc.nvim
+if v:true
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 
     let g:coc_global_extensions = [
@@ -303,9 +304,9 @@ if v:true " coc.nvim
     let g:coc_user_config.go.goplsPath = $GOPATH . '/bin/gopls'
     let g:coc_user_config.go.goplsArgs = ['-remote', 'auto']
 
-    function! s:check_back_space() abort
-        let col = col('.') - 1
-        return !col || getline('.')[col - 1]  =~# '\s'
+    function! <SID>check_back_space() abort
+        let l:col = col('.') - 1
+        return !l:col || getline('.')[l:col - 1]  =~# '\s'
     endfunction
 
     " Use tab for trigger completion with characters ahead and navigate.
@@ -341,7 +342,7 @@ if v:true " coc.nvim
     " Use K for show documentation in preview window
     nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-    function! s:show_documentation()
+    function! <SID>show_documentation()
         if (index(['vim','help'], &filetype) >= 0)
             execute 'h '.expand('<cword>')
         else
@@ -553,6 +554,11 @@ else
 
     " See here: https://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
     set clipboard=exclude:.*
+endif
+
+if has('nvim-0.5')
+    " Highlight yanks
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank {timeout=1000}
 endif
 
 " don't syntax-highlight long lines

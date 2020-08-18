@@ -14,3 +14,7 @@ repos:
   - id: vint
     types: [text]
     files: vimrc
+- repo: https://github.com/Vimjas/vint
+  rev: master
+  hooks:
+  - id: vint

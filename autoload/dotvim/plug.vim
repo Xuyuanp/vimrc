@@ -6,32 +6,32 @@ function! dotvim#plug#Install(plug_file) abort
         return
     endif
 
-    let plug_url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    let curl_bin = s:is_win ? 'curl.ps1' : 'curl'
-    call system(join([curl_bin, '-fLo', a:plug_file, '--create-dirs', plug_url], ' '))
+    let l:plug_url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    let l:curl_bin = s:is_win ? 'curl.ps1' : 'curl'
+    call system(join([l:curl_bin, '-fLo', a:plug_file, '--create-dirs', l:plug_url], ' '))
 endfunction
 
 " gx to open GitHub URLs on browser
 function! dotvim#plug#OpenGithub() abort
-    let currline = trim(getline('.'))
-    let repo = matchstr(currline, '\mPlug\s\+[''"]\zs[^''"]\+\ze[''"]')
-    if repo ==# ''
+    let l:currline = trim(getline('.'))
+    let l:repo = matchstr(l:currline, '\mPlug\s\+[''"]\zs[^''"]\+\ze[''"]')
+    if l:repo ==# ''
         return
     endif
-    let name = split(repo, '/')[1]
-    let uri  = get(get(g:plugs, name, {}), 'uri', '')
-    if uri !~# 'github.com'
+    let l:name = split(l:repo, '/')[1]
+    let l:uri  = get(get(g:plugs, l:name, {}), 'uri', '')
+    if l:uri !~# 'github.com'
         return
     endif
-    let url = 'https://github.com/' . repo
-    call netrw#BrowseX(url, 0)
+    let l:url = 'https://github.com/' . l:repo
+    call netrw#BrowseX(l:url, 0)
 endfunction
 
 " VimAwesome
 function! dotvim#plug#VimAwesomeComplete() abort
-    let prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '[.a-zA-Z0-9_/-]*$')
+    let l:prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '[.a-zA-Z0-9_/-]*$')
     call dotvim#log#info('Downloading plugin list from VimAwesome')
-    let cands = {}
+    let l:cands = {}
     " ---ruby start---
 ruby << EOF
 require 'json'
@@ -52,10 +52,10 @@ items = 1.upto(max_pages = 3).map do |page|
         end.compact
     end
 end.each(&:join).map(&:value).inject(:+)
-VIM::command("let cands = #{JSON.dump items}")
+VIM::command("let l:cands = #{JSON.dump items}")
 EOF
     " ---ruby end---
-    if !empty(cands)
+    if !empty(l:cands)
         inoremap <buffer> <c-v> <c-n>
         augroup _VimAwesomeComplete
             autocmd!
@@ -63,8 +63,7 @@ EOF
                         \| autocmd! _VimAwesomeComplete
         augroup END
 
-        call complete(col('.') - strchars(prefix), cands)
+        call complete(col('.') - strchars(l:prefix), l:cands)
     endif
     return ''
 endfunction
-
