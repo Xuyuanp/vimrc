@@ -555,6 +555,9 @@ else
     set clipboard=exclude:.*
 endif
 
+" don't syntax-highlight long lines
+set synmaxcol=200
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
