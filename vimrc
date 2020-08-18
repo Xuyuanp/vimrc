@@ -17,7 +17,7 @@ try
     call plug#begin()
 catch /Unknown\ function/
     call dotvim#log#warn('Plug not found, installing...')
-    call dotvim#plug#Install(expand('~/.vim/autoload/plug.vim'))
+    call dotvim#plug#Install(has('nvim') ? stdpath('data') . '/site/autoload/plug.vim' : expand('~/.vim/autoload/plug.vim'))
     call dotvim#log#info('Plug installed')
 
     call plug#begin()
@@ -297,7 +297,7 @@ if v:true " coc.nvim
                 \ 'coc-vimlsp',
                 \ ]
 
-    let g:coc_config_home = '~/.vim'
+    let g:coc_config_home = has('nvim') ? stdpath('config') : '~/.vim'
 
     let g:coc_user_config = {'go': {}}
     let g:coc_user_config.go.goplsPath = $GOPATH . '/bin/gopls'
