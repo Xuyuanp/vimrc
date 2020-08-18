@@ -11,7 +11,7 @@ let g:plug_home = has('nvim') ?
             \ stdpath('data') . '/plugged' :
             \ expand('~/.vim/.plugged')
 
-silent! source $VIM_PLUG_BEFORE
+silent! source $VIMRC_PLUG_PRE
 
 try
     call plug#begin()
@@ -23,7 +23,7 @@ catch /Unknown\ function/
     call plug#begin()
 endtry
 
-silent! source $VIM_PLUG_FIRST
+silent! source $VIMRC_PLUG_FIRST
 
 if v:true " Languages
     Plug 'fatih/vim-go', { 'tag': '*' }                     " go
@@ -410,11 +410,11 @@ if v:true " NERDTree and plugins
     let g:viz_nr2char_auto = 1
 endif
 
-silent! source $VIM_PLUG_LAST
+silent! source $VIMRC_PLUG_LAST
 
 call plug#end()
 
-silent! source $VIM_PLUG_AFTER
+silent! source $VIMRC_PLUG_POST
 
 augroup my_plug
     autocmd!
