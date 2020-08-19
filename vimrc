@@ -446,7 +446,7 @@ augroup my_plug
 augroup end
 
 if has('nvim-0.5')
-    lua require('lsp')
+    silent! lua require('lsp')
 
     let g:diagnostic_insert_delay        = 1
     let g:diagnostic_show_sign           = 1
@@ -475,6 +475,9 @@ if has('nvim-0.5')
     set completeopt=menuone,noinsert,noselect
     " Avoid showing message extra message when using completion
     set shortmess+=c
+
+    " treesitter
+    silent! lua require('treesitter')
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
