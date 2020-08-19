@@ -61,11 +61,11 @@ if v:true " Languages
     let g:go_doc_popup_window                 = 1
     augroup my_vim_go
         autocmd!
-        au FileType go nmap <leader>s <Plug>(go-def-split)
-        au FileType go nmap <leader>v <Plug>(go-def-vertical)
-        au FileType go nmap <leader>ii <Plug>(go-implements)
-        au FileType go nmap <leader>d <Plug>(go-doc)
-        au FileType go set completeopt+=preview
+        autocmd FileType go nmap <leader>s <Plug>(go-def-split)
+        autocmd FileType go nmap <leader>v <Plug>(go-def-vertical)
+        autocmd FileType go nmap <leader>ii <Plug>(go-implements)
+        autocmd FileType go nmap <leader>d <Plug>(go-doc)
+        autocmd FileType go set completeopt+=preview
     augroup end
 endif
 
