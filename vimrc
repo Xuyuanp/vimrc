@@ -124,6 +124,12 @@ if v:true " FZF
     imap <c-x><c-l> <plug>(fzf-complete-line)
 endif
 
+if v:true " tmux
+    Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
+    Plug 'tmux-plugins/vim-tmux-focus-events' |
+                \ Plug 'roxma/vim-tmux-clipboard'
+endif
+
 if v:true " UI
     Plug 'mhinz/vim-startify'                " 🔗 The fancy start screen for Vim.
     Plug 'luochen1990/rainbow'               " help you read complex code by showing diff level of parentheses in diff color !!
