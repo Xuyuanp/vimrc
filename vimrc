@@ -32,9 +32,12 @@ if v:true " Languages
     Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
     Plug 'spacewander/openresty-vim'                        " openrestry script syntax highlight
     Plug 'neoclide/jsonc.vim'                               " jsonc
-    Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
+    if !has('nvim-0.5')
+        Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
+    endif
     Plug 'stephpy/vim-yaml'                                 " Override vim syntax for yaml files
     Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
+    Plug 'vim-jp/syntax-vim-ex', {'for': 'vim'}             " An excellent Vim's syntax highlighting file for Vim script
 
     let g:go_highlight_build_constraints      = 1
     let g:go_highlight_types                  = 1
@@ -59,14 +62,14 @@ if v:true " Languages
     let g:go_def_mapping_enabled              = 0
     let g:go_gopls_options                    = ['-remote', 'auto']
     let g:go_doc_popup_window                 = 1
-    augroup my_vim_go
-        autocmd!
-        autocmd FileType go nmap <leader>s <Plug>(go-def-split)
-        autocmd FileType go nmap <leader>v <Plug>(go-def-vertical)
-        autocmd FileType go nmap <leader>ii <Plug>(go-implements)
-        autocmd FileType go nmap <leader>d <Plug>(go-doc)
-        autocmd FileType go set completeopt+=preview
-    augroup end
+    " augroup my_vim_go
+    "     autocmd!
+    "     autocmd FileType go nmap <leader>s <Plug>(go-def-split)
+    "     autocmd FileType go nmap <leader>v <Plug>(go-def-vertical)
+    "     autocmd FileType go nmap <leader>ii <Plug>(go-implements)
+    "     autocmd FileType go nmap <leader>d <Plug>(go-doc)
+    "     autocmd FileType go set completeopt+=preview
+    " augroup end
 endif
 
 if v:true " Productive tools (align, comment, tabular...)
@@ -294,7 +297,7 @@ if has('nvim-0.5')
     Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'neovim/nvim-lsp'
     Plug 'nvim-lua/lsp-status.nvim'
-    Plug 'nathunsmitty/diagnostic-nvim'
+    Plug 'nvim-lua/diagnostic-nvim'
     Plug 'nvim-lua/completion-nvim'
 else
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
@@ -380,6 +383,11 @@ else
     augroup end
 endif
 
+if v:true " snippets
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/vim-vsnip-integ'
+endif
+
 if v:false " DB
     Plug 'tpope/vim-dadbod'
     Plug 'kristijanhusak/vim-dadbod-ui'
@@ -451,12 +459,13 @@ if has('nvim-0.5')
     let g:diagnostic_insert_delay        = 1
     let g:diagnostic_show_sign           = 1
     let g:diagnostic_enable_virtual_text = 1
-    let g:completion_enable_auto_paren   = 1
+    " let g:completion_enable_auto_paren   = 1
     let g:completion_enable_auto_popup   = 1
     let g:completion_trigger_on_delete   = 1
+    let g:completion_enable_snippet      = 'vim-vsnip'
 
     let g:completion_confirm_key = ''
-    imap <expr> <cr>  pumvisible() ?
+    imap <expr> <CR>  pumvisible() ?
                 \ complete_info()["selected"] != "-1" ? "\<Plug>(completion_confirm_completion)" : "\<c-e>\<CR>" :
                 \ "\<CR>"
 
@@ -475,6 +484,14 @@ if has('nvim-0.5')
     set completeopt=menuone,noinsert,noselect
     " Avoid showing message extra message when using completion
     set shortmess+=c
+
+    """""""""""""""
+    "  vim-vsnip  "
+    """""""""""""""
+    imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+    smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+    imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+    smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
 
     " treesitter
     silent! lua require('treesitter')
