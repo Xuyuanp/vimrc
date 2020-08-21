@@ -62,14 +62,14 @@ if v:true " Languages
     let g:go_def_mapping_enabled              = 0
     let g:go_gopls_options                    = ['-remote', 'auto']
     let g:go_doc_popup_window                 = 1
-    " augroup my_vim_go
-    "     autocmd!
-    "     autocmd FileType go nmap <leader>s <Plug>(go-def-split)
-    "     autocmd FileType go nmap <leader>v <Plug>(go-def-vertical)
-    "     autocmd FileType go nmap <leader>ii <Plug>(go-implements)
-    "     autocmd FileType go nmap <leader>d <Plug>(go-doc)
-    "     autocmd FileType go set completeopt+=preview
-    " augroup end
+    augroup my_vim_go
+        autocmd!
+        autocmd FileType go nmap <leader>s <Plug>(go-def-split)
+        autocmd FileType go nmap <leader>v <Plug>(go-def-vertical)
+        autocmd FileType go nmap <leader>ii <Plug>(go-implements)
+        autocmd FileType go nmap <leader>d <Plug>(go-doc)
+        autocmd FileType go set completeopt+=preview
+    augroup end
 endif
 
 if v:true " Productive tools (align, comment, tabular...)
@@ -81,6 +81,7 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'tomtom/tcomment_vim'          " Tcomment - An extensible & universal comment vim-plugin that also handles embedded filetypes
     Plug 'tpope/vim-scriptease'         " A Vim plugin for Vim plugins
     Plug 'bronson/vim-trailing-whitespace'
+    Plug 'dstein64/vim-startuptime'
 
     vnoremap <CR><Space>   :EasyAlign\<CR>
     vnoremap <CR>2<Space>  :EasyAlign2\<CR>
@@ -121,10 +122,10 @@ if v:true " FZF
     nnoremap <silent> <leader>ag       :Ag<CR>
     nnoremap <silent> <leader>rg       :Rg<CR>
     nnoremap <silent> <leader>af       :AF<CR>
-    imap <c-x><c-k> <plug>(fzf-complete-word)
-    imap <c-x><c-f> <plug>(fzf-complete-path)
-    imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-    imap <c-x><c-l> <plug>(fzf-complete-line)
+    imap <c-x><c-k> <Plug>(fzf-complete-word)
+    imap <c-x><c-f> <Plug>(fzf-complete-path)
+    imap <c-x><c-j> <Plug>(fzf-complete-file-ag)
+    imap <c-x><c-l> <Plug>(fzf-complete-line)
 endif
 
 if v:true " tmux
