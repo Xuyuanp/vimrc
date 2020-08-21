@@ -295,11 +295,16 @@ if v:true " colorschemes
 endif
 
 if has('nvim-0.5')
+    Plug 'tjdevries/nlua.nvim'
+
     Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'neovim/nvim-lsp'
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/diagnostic-nvim'
     Plug 'nvim-lua/completion-nvim'
+
+    " This is required for syntax highlighting
+    Plug 'euclidianAce/BetterLua.vim'
 else
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 
@@ -389,7 +394,7 @@ if v:true " snippets
     Plug 'hrsh7th/vim-vsnip-integ'
 endif
 
-if v:false " DB
+if v:true " DB
     Plug 'tpope/vim-dadbod'
     Plug 'kristijanhusak/vim-dadbod-ui'
 
@@ -432,6 +437,10 @@ if v:true " NERDTree and plugins
     let g:viz_nr2char_auto = 1
 endif
 
+if has('nvim')
+    Plug 'norcalli/nvim-colorizer.lua'
+endif
+
 silent! source $VIMRC_PLUG_LAST
 
 call plug#end()
@@ -453,6 +462,10 @@ augroup my_plug
         autocmd FileType vim inoremap <silent> <c-x><c-v> <c-r>=dotvim#plug#VimAwesomeComplete()<cr>
     endif
 augroup end
+
+if has('nvim')
+    silent! lua require'colorizer'.setup()
+endif
 
 if has('nvim-0.5')
     silent! lua require('lsp')
@@ -577,6 +590,9 @@ set list listchars=tab:\ \ ,trail:·
 
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
+
+" always show signcolumn
+set signcolumn=yes
 
 " Text options
 set expandtab
