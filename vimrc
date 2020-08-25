@@ -37,39 +37,14 @@ if v:true " Languages
     endif
     Plug 'stephpy/vim-yaml'                                 " Override vim syntax for yaml files
     Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
-    Plug 'vim-jp/syntax-vim-ex', {'for': 'vim'}             " An excellent Vim's syntax highlighting file for Vim script
+    " Plug 'vim-jp/syntax-vim-ex', {'for': 'vim'}             " An excellent Vim's syntax highlighting file for Vim script
 
-    let g:go_highlight_build_constraints      = 1
-    let g:go_highlight_types                  = 1
-    let g:go_highlight_extra_types            = 1
-    let g:go_highlight_fields                 = 1
-    let g:go_highlight_methods                = 1
-    let g:go_highlight_functions              = 1
-    let g:go_highlight_function_parameters    = 1
-    let g:go_highlight_function_calls         = 1
-    let g:go_highlight_operators              = 1
-    let g:go_highlight_structs                = 1
-    let g:go_highlight_generate_tags          = 1
-    let g:go_highlight_format_strings         = 1
-    let g:go_highlight_variable_declarations  = 1
-    let g:go_highlight_variable_assignments   = 1
-    let g:go_highlight_array_whitespace_error = 1
-    let g:go_highlight_chan_whitespace_error  = 1
-    let g:go_highlight_space_tab_error        = 1
     let g:go_auto_type_info                   = 1
     let g:go_fmt_command                      = 'goimports'
     let g:go_fmt_fail_silently                = 1
     let g:go_def_mapping_enabled              = 0
     let g:go_gopls_options                    = ['-remote', 'auto']
     let g:go_doc_popup_window                 = 1
-    augroup my_vim_go
-        autocmd!
-        autocmd FileType go nmap <leader>s <Plug>(go-def-split)
-        autocmd FileType go nmap <leader>v <Plug>(go-def-vertical)
-        autocmd FileType go nmap <leader>ii <Plug>(go-implements)
-        autocmd FileType go nmap <leader>d <Plug>(go-doc)
-        autocmd FileType go set completeopt+=preview
-    augroup end
 endif
 
 if v:true " Productive tools (align, comment, tabular...)
@@ -470,13 +445,15 @@ endif
 if has('nvim-0.5')
     silent! lua require('lsp')
 
-    let g:diagnostic_insert_delay        = 1
-    let g:diagnostic_show_sign           = 1
-    let g:diagnostic_enable_virtual_text = 1
-    " let g:completion_enable_auto_paren   = 1
-    let g:completion_enable_auto_popup   = 1
-    let g:completion_trigger_on_delete   = 1
-    let g:completion_enable_snippet      = 'vim-vsnip'
+    let g:diagnostic_insert_delay           = 1
+    let g:diagnostic_show_sign              = 1
+    let g:diagnostic_enable_virtual_text    = 1
+    let g:completion_enable_auto_popup      = 1
+    let g:completion_trigger_on_delete      = 1
+    let g:completion_enable_snippet         = 'vim-vsnip'
+    let g:completion_auto_change_source     = 1
+    let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
+    let g:completion_matching_ignore_case   = 1
 
     let g:completion_confirm_key = ''
     imap <expr> <CR>  pumvisible() ?
@@ -499,13 +476,14 @@ if has('nvim-0.5')
     " Avoid showing message extra message when using completion
     set shortmess+=c
 
-    """""""""""""""
-    "  vim-vsnip  "
-    """""""""""""""
+    " vim-vsnip  "
+    let g:vsnip_snippet_dir = expand('<sfile>:p:h') . '/snippets'
+
     imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
     smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
     imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
     smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+
 
     " treesitter
     silent! lua require('treesitter')
