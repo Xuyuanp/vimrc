@@ -28,6 +28,7 @@ endtry
 silent! source $VIMRC_PLUG_FIRST
 
 if v:true " Languages
+    Plug 'fatih/vim-go', { 'tag': '*' }                     " go
     Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
     Plug 'spacewander/openresty-vim', {'for': 'nginx'}      " openrestry script syntax highlight
     Plug 'neoclide/jsonc.vim', {'for': 'jsonc'}             " jsonc
@@ -125,7 +126,6 @@ endif
 if v:true " UI
     Plug 'mhinz/vim-startify'                " 🔗 The fancy start screen for Vim.
     Plug 'luochen1990/rainbow'               " help you read complex code by showing diff level of parentheses in diff color !!
-    Plug 'Yggdroot/indentLine'               " indentLine - display the indent levels with thin vertical lines
     Plug 'itchyny/lightline.vim'             " The lightline plugin is a light and configurable statusline/tabline for Vim.
     Plug 'maximbaz/lightline-ale'            " ALE indicator for the lightline vim plugin
     Plug 'deponian/vim-lightline-whitespace' " Port of vim-airline's whitespace extension to lightline
@@ -211,6 +211,7 @@ if v:true " UI
                 \ ['percent', 'lineinfo'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
                 \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
+                \ ['synName'],
                 \ ['tagbar']
                 \ ]
     let g:lightline.inactive.right = []
@@ -239,9 +240,6 @@ if v:true " UI
     let g:rainbow_active          = 1
     let g:rainbow_conf            = {}
     let g:rainbow_conf.separately = {'nerdtree': 0}
-
-    let g:indentLine_char     = '┆'
-    let g:indentLine_fileType = ['python']
 endif
 
 if v:true " git
@@ -285,7 +283,7 @@ endif
 if has('nvim-0.5')
     Plug 'tjdevries/nlua.nvim'
 
-    Plug 'nvim-treesitter/nvim-treesitter'
+    " Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'neovim/nvim-lsp'
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/diagnostic-nvim'
@@ -449,7 +447,10 @@ endif
 
 if has('nvim-0.5')
     " treesitter
-    silent! lua require('dotvim/treesitter')
+    " NOTE: buggy
+    if exists('g:loaded_nvim_treesitter')
+        silent! lua require('dotvim/treesitter')
+    endif
 
     " lsp
     silent! lua require('dotvim/lsp')
@@ -463,7 +464,7 @@ if has('nvim-0.5')
     let g:completion_auto_change_source     = 1
     let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
     let g:completion_matching_ignore_case   = 1
-    let g:completion_syntax_at_point        = 'dotvim#completion#SyntaxAtPoint'
+    " let g:completion_syntax_at_point        = 'dotvim#completion#SyntaxAtPoint'
     let g:completion_chain_complete_list = {
                 \ 'default': {
                 \   'default': [
