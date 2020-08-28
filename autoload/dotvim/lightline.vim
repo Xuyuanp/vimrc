@@ -80,12 +80,16 @@ function! dotvim#lightline#Mode() abort
 endfunction
 
 function! dotvim#lightline#Tagbar() abort
-    let l:max_len = s:max_length
-    let l:output = tagbar#currenttag('%s', '', 'fsp')
-    if len(l:output) > l:max_len
-        let l:output = l:output[:l:max_len-3] . '...'
-    endif
-    return l:output
+    try
+        let l:max_len = s:max_length
+        let l:output = tagbar#currenttag('%s', '', 'fsp')
+        if len(l:output) > l:max_len
+            let l:output = l:output[:l:max_len-3] . '...'
+        endif
+        return l:output
+    catch
+        return ''
+    endtry
 endfunction
 
 function! dotvim#lightline#SynName() abort
