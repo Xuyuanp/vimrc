@@ -87,5 +87,10 @@ function! dotvim#lightline#Tagbar() abort
 endfunction
 
 function! dotvim#lightline#SynName() abort
-    return winwidth(0) > 70 ? synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name') : ''
+    try
+        let l:synName = dotvim#completion#SyntaxAtPoint()
+    catch
+        let l:synName = synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
+    endtry
+    return winwidth(0) > 70 ? (empty(l:synName) ? 'unknown' : l:synName) : ''
 endfunction

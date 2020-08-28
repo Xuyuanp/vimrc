@@ -5,9 +5,7 @@ lsp_status.register_progress()
 
 local diagnostic = require('diagnostic')
 local completion = require('completion')
-local nvim_lsp = require('nvim_lsp')
--- local configs = require('nvim_lsp/configs')
--- local util = require('nvim_lsp/util')
+local nvim_lsp   = require('nvim_lsp')
 
 local on_attach = function(client)
   lsp_status.on_attach(client)
@@ -15,8 +13,8 @@ local on_attach = function(client)
   completion.on_attach(client)
 
   -- Keybindings for LSPs
-  vim.fn.nvim_set_keymap("n", "<C-]>", "<cmd>lua vim.lsp.buf.definition()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {noremap = true, silent = true})
+  vim.fn.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", {noremap = true, silent = true})
   vim.fn.nvim_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.implementation()<CR>", {noremap = true, silent = true})
   vim.fn.nvim_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", {noremap = true, silent = true})
   vim.fn.nvim_set_keymap("n", "1gD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", {noremap = true, silent = true})
@@ -30,7 +28,7 @@ nvim_lsp.gopls.setup{
     capabilities = lsp_status.capabilities,
     settings = {
         gopls = {
-            usePlaceholders = true
+            usePlaceholders = false
         }
     }
 }
