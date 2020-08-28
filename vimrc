@@ -438,18 +438,9 @@ silent! source $VIMRC_PLUG_POST
 
 augroup my_plug
     autocmd!
-
-    autocmd FileType vim nnoremap <buffer> <silent> gx :call dotvim#plug#OpenGithub()<cr>
-
-    autocmd VimEnter *
-                \ if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-                \ |   PlugInstall --sync
-                \ | qa
-                \ | endif
-
-    if has('ruby')
-        autocmd FileType vim inoremap <silent> <c-x><c-v> <c-r>=dotvim#plug#VimAwesomeComplete()<cr>
-    endif
+    autocmd FileType vim nnoremap <buffer><silent> gx :call dotvim#plug#OpenGithub()<CR>
+    " Checking if has ruby here will slow down startup time.
+    autocmd FileType vim inoremap <buffer><silent> <C-x><C-v> <C-r>=dotvim#plug#VimAwesomeComplete()<CR>
 augroup end
 
 if has('nvim')
