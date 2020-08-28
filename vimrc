@@ -1,7 +1,6 @@
 silent! source $VIMRC_BEFORE
 
 " set encoding
-set encoding=utf-8
 scriptencoding utf-8
 
 set shell=/bin/sh
@@ -19,7 +18,11 @@ try
     call plug#begin()
 catch /Unknown\ function/
     call dotvim#log#warn('Plug not found, installing...')
-    call dotvim#plug#Install(has('nvim') ? stdpath('data') . '/site/autoload/plug.vim' : expand('~/.vim/autoload/plug.vim'))
+    call dotvim#plug#Install(
+                \ has('nvim') ?
+                \ stdpath('data') . '/site/autoload/plug.vim' :
+                \ expand('~/.vim/autoload/plug.vim')
+                \ )
     call dotvim#log#info('Plug installed')
 
     call plug#begin()
