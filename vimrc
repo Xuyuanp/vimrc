@@ -28,23 +28,37 @@ endtry
 silent! source $VIMRC_PLUG_FIRST
 
 if v:true " Languages
-    Plug 'fatih/vim-go', { 'tag': '*' }                     " go
     Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
-    Plug 'spacewander/openresty-vim'                        " openrestry script syntax highlight
-    Plug 'neoclide/jsonc.vim'                               " jsonc
-    if !has('nvim-0.5')
-        Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
-    endif
-    Plug 'stephpy/vim-yaml'                                 " Override vim syntax for yaml files
+    Plug 'spacewander/openresty-vim', {'for': 'nginx'}      " openrestry script syntax highlight
+    Plug 'neoclide/jsonc.vim', {'for': 'jsonc'}             " jsonc
+    Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
+    Plug 'stephpy/vim-yaml', {'for': 'yaml'}                " Override vim syntax for yaml files
     Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
-    " Plug 'vim-jp/syntax-vim-ex', {'for': 'vim'}             " An excellent Vim's syntax highlighting file for Vim script
+    Plug 'vim-jp/syntax-vim-ex', {'for': 'vim'}             " An excellent Vim's syntax highlighting file for Vim script
 
-    let g:go_auto_type_info                   = 1
+    let g:go_highlight_build_constraints      = 1
+    let g:go_highlight_types                  = 1
+    let g:go_highlight_extra_types            = 1
+    let g:go_highlight_fields                 = 1
+    let g:go_highlight_methods                = 1
+    let g:go_highlight_functions              = 1
+    let g:go_highlight_function_parameters    = 1
+    let g:go_highlight_function_calls         = 1
+    let g:go_highlight_operators              = 1
+    let g:go_highlight_structs                = 1
+    let g:go_highlight_generate_tags          = 1
+    let g:go_highlight_format_strings         = 1
+    let g:go_highlight_variable_declarations  = 1
+    let g:go_highlight_variable_assignments   = 1
+    let g:go_highlight_array_whitespace_error = 1
+    let g:go_highlight_chan_whitespace_error  = 1
+    let g:go_highlight_space_tab_error        = 1
+    let g:go_gopls_enabled                    = 0
+    let g:go_doc_keywordprg_enabled           = 0
+    let g:go_auto_type_info                   = 0
     let g:go_fmt_command                      = 'goimports'
     let g:go_fmt_fail_silently                = 1
     let g:go_def_mapping_enabled              = 0
-    let g:go_gopls_options                    = ['-remote', 'auto']
-    let g:go_doc_popup_window                 = 1
 endif
 
 if v:true " Productive tools (align, comment, tabular...)
@@ -97,10 +111,9 @@ if v:true " FZF
     nnoremap <silent> <leader>ag       :Ag<CR>
     nnoremap <silent> <leader>rg       :Rg<CR>
     nnoremap <silent> <leader>af       :AF<CR>
-    imap <c-x><c-k> <Plug>(fzf-complete-word)
-    imap <c-x><c-f> <Plug>(fzf-complete-path)
-    imap <c-x><c-j> <Plug>(fzf-complete-file-ag)
-    imap <c-x><c-l> <Plug>(fzf-complete-line)
+    imap <C-x><C-k> <Plug>(fzf-complete-word)
+    imap <C-x><C-j> <Plug>(fzf-complete-file-ag)
+    imap <C-x><C-l> <Plug>(fzf-complete-line)
 endif
 
 if v:true " tmux
@@ -277,6 +290,7 @@ if has('nvim-0.5')
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/diagnostic-nvim'
     Plug 'nvim-lua/completion-nvim'
+    Plug 'steelsojka/completion-buffers'
 
     " This is required for syntax highlighting
     Plug 'euclidianAce/BetterLua.vim'
@@ -443,7 +457,11 @@ if has('nvim')
 endif
 
 if has('nvim-0.5')
-    silent! lua require('lsp')
+    " treesitter
+    silent! lua require('dotvim/treesitter')
+
+    " lsp
+    silent! lua require('dotvim/lsp')
 
     let g:diagnostic_insert_delay           = 1
     let g:diagnostic_show_sign              = 1
@@ -454,6 +472,24 @@ if has('nvim-0.5')
     let g:completion_auto_change_source     = 1
     let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
     let g:completion_matching_ignore_case   = 1
+    let g:completion_syntax_at_point        = 'dotvim#completion#SyntaxAtPoint'
+    let g:completion_chain_complete_list = {
+                \ 'default': {
+                \   'default': [
+                \      {'complete_items': ['lsp', 'snippet']},
+                \      {'complete_items': ['buffer', 'buffers']},
+                \      {'mode': '<c-n>'},
+                \   ],
+                \   'string': [
+                \      {'complete_items': ['path']},
+                \      {'complete_items': ['buffer', 'buffers']},
+                \   ],
+                \   'comment': [
+                \      {'complete_items': ['path']},
+                \      {'complete_items': ['buffer', 'buffers']},
+                \   ],
+                \ },
+                \ }
 
     let g:completion_confirm_key = ''
     imap <expr> <CR>  pumvisible() ?
@@ -476,6 +512,11 @@ if has('nvim-0.5')
     " Avoid showing message extra message when using completion
     set shortmess+=c
 
+    augroup my_completion_nvim
+        autocmd!
+        autocmd BufEnter * lua require'completion'.on_attach()
+    augroup end
+
     " vim-vsnip  "
     let g:vsnip_snippet_dir = expand('<sfile>:p:h') . '/snippets'
 
@@ -483,10 +524,6 @@ if has('nvim-0.5')
     smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
     imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
     smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
-
-
-    " treesitter
-    silent! lua require('treesitter')
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
