@@ -644,7 +644,7 @@ endif
 
 if has('nvim-0.5')
     " Highlight yanks
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank {timeout=1000}
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank {timeout=500}
 endif
 
 " don't syntax-highlight long lines
