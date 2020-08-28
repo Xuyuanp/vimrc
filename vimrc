@@ -35,7 +35,6 @@ if v:true " Languages
     Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
     Plug 'stephpy/vim-yaml', {'for': 'yaml'}                " Override vim syntax for yaml files
     Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
-    Plug 'vim-jp/syntax-vim-ex', {'for': 'vim'}             " An excellent Vim's syntax highlighting file for Vim script
 
     let g:go_highlight_build_constraints      = 1
     let g:go_highlight_types                  = 1
@@ -124,13 +123,13 @@ if v:true " tmux
 endif
 
 if v:true " UI
-    Plug 'mhinz/vim-startify'                " 🔗 The fancy start screen for Vim.
-    Plug 'luochen1990/rainbow'               " help you read complex code by showing diff level of parentheses in diff color !!
-    Plug 'itchyny/lightline.vim'             " The lightline plugin is a light and configurable statusline/tabline for Vim.
-    Plug 'maximbaz/lightline-ale'            " ALE indicator for the lightline vim plugin
-    Plug 'deponian/vim-lightline-whitespace' " Port of vim-airline's whitespace extension to lightline
-    Plug 'mengelbrecht/lightline-bufferline' " A lightweight plugin to display the list of buffers in the lightline vim plugin
-    Plug 'majutsushi/tagbar'                 " tagbar - Vim plugin that displays tags in a window, ordered by class etc
+    Plug 'mhinz/vim-startify'                        " 🔗 The fancy start screen for Vim.
+    Plug 'luochen1990/rainbow'                       " help you read complex code by showing diff level of parentheses in diff color !!
+    Plug 'itchyny/lightline.vim'                     " The lightline plugin is a light and configurable statusline/tabline for Vim.
+    Plug 'maximbaz/lightline-ale'                    " ALE indicator for the lightline vim plugin
+    Plug 'deponian/vim-lightline-whitespace'         " Port of vim-airline's whitespace extension to lightline
+    Plug 'mengelbrecht/lightline-bufferline'         " A lightweight plugin to display the list of buffers in the lightline vim plugin
+    Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'} " tagbar - Vim plugin that displays tags in a window, ordered by class etc
 
     nmap <C-t> :TagbarToggle<CR>
 
@@ -211,7 +210,6 @@ if v:true " UI
                 \ ['percent', 'lineinfo'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
                 \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
-                \ ['synName'],
                 \ ['tagbar']
                 \ ]
     let g:lightline.inactive.right = []
