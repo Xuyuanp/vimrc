@@ -10,7 +10,7 @@ function M.syntax_at_point()
         return current_node:type()
     end
     local pos = api.nvim_win_get_cursor(0)
-    return vim.fn.synIDattr(vim.fn.synID(pos[1], pos[2]-1, 1), "name")
+    return vim.fn.synIDattr(vim.fn.synID(pos[1], pos[2]+1, 1), "name")
 end
 
 return M
