@@ -1,5 +1,7 @@
 scriptencoding utf-8
 
+let s:max_length = 70
+
 function! dotvim#lightline#Modified() abort
     return &filetype ==# 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
@@ -35,33 +37,33 @@ endfunction
 
 function! dotvim#lightline#FileType() abort
     let l:symbol = get(g:, 'loaded_webdevicons', 0) ? WebDevIconsGetFileTypeSymbol() : ''
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . (strlen(l:symbol) ? ' ' . l:symbol : '') : 'no ft') : ''
+    return winwidth(0) > s:max_length ? (strlen(&filetype) ? &filetype . (strlen(l:symbol) ? ' ' . l:symbol : '') : 'no ft') : ''
 endfunction
 
 function! dotvim#lightline#FileFormat() abort
     let l:symbol = get(g:, 'loaded_webdevicons', 0) ? WebDevIconsGetFileFormatSymbol() : ''
-    return winwidth(0) > 70 ? (&fileformat . (strlen(l:symbol) ? ' ' . l:symbol : '')) : ''
+    return winwidth(0) > s:max_length ? (&fileformat . (strlen(l:symbol) ? ' ' . l:symbol : '')) : ''
 endfunction
 
 function! dotvim#lightline#Fileencoding() abort
-    return winwidth(0) > 70 ? (&fileencoding !=# '' ? &fileencoding : &encoding) : ''
+    return winwidth(0) > s:max_length ? (&fileencoding !=# '' ? &fileencoding : &encoding) : ''
 endfunction
 
 function! dotvim#lightline#Percent() abort
     let l:totalno = line('$')
     let l:currno = line('.')
-    return winwidth(0) > 70 ? printf('%3d%%', 100*l:currno/l:totalno) : ''
+    return winwidth(0) > s:max_length ? printf('%3d%%', 100*l:currno/l:totalno) : ''
 endfunction
 
 function! dotvim#lightline#Lineinfo() abort
     let l:totalno = line('$')
     let l:currno = line('.')
     let l:colno = col('.')
-    return winwidth(0) > 70 ? printf('≡ %d/%d  %d ', l:currno, l:totalno, l:colno) : ''
+    return winwidth(0) > s:max_length ? printf('≡ %d/%d  %d ', l:currno, l:totalno, l:colno) : ''
 endfunction
 
 function! dotvim#lightline#Buffers() abort
-    return winwidth(0) > 70 ? lightline#bufferline#buffers() : ''
+    return winwidth(0) > s:max_length ? lightline#bufferline#buffers() : ''
 endfunction
 
 function! dotvim#lightline#Mode() abort
@@ -74,11 +76,11 @@ function! dotvim#lightline#Mode() abort
                 \ &filetype ==# 'unite' ? 'Unite' :
                 \ &filetype ==# 'vimfiler' ? 'VimFiler' :
                 \ &filetype ==# 'vimshell' ? 'VimShell' :
-                \ winwidth(0) > 70 ? lightline#mode() : ''
+                \ winwidth(0) > s:max_length ? lightline#mode() : ''
 endfunction
 
 function! dotvim#lightline#Tagbar() abort
-    let l:max_len = 70
+    let l:max_len = s:max_length
     let l:output = tagbar#currenttag('%s', '', 'fsp')
     if len(l:output) > l:max_len
         let l:output = l:output[:l:max_len-3] . '...'
@@ -87,10 +89,6 @@ function! dotvim#lightline#Tagbar() abort
 endfunction
 
 function! dotvim#lightline#SynName() abort
-    try
-        let l:synName = dotvim#completion#SyntaxAtPoint()
-    catch
-        let l:synName = synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name')
-    endtry
-    return winwidth(0) > 70 ? (empty(l:synName) ? 'unknown' : l:synName) : ''
+    let l:synName = dotvim#completion#SyntaxAtPoint()
+    return winwidth(0) > s:max_length ? (empty(l:synName) ? 'unknown' : l:synName) : ''
 endfunction
