@@ -501,11 +501,6 @@ if has('nvim-0.5')
                 \ completion#trigger_completion()
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-    " Set completeopt to have a better completion experience
-    set completeopt=menuone,noinsert,noselect
-    " Avoid showing message extra message when using completion
-    set shortmess+=c
-
     augroup my_completion_nvim
         autocmd!
         autocmd BufEnter * lua require'completion'.on_attach()
@@ -653,6 +648,9 @@ endif
 
 " don't syntax-highlight long lines
 set synmaxcol=200
+
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Commands
