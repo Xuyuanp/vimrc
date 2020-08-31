@@ -56,8 +56,6 @@ if v:true " Languages
     let g:go_highlight_array_whitespace_error = 1
     let g:go_highlight_chan_whitespace_error  = 1
     let g:go_highlight_space_tab_error        = 1
-    let g:go_gopls_enabled                    = 0
-    let g:go_doc_keywordprg_enabled           = 0
     let g:go_auto_type_info                   = 0
     let g:go_fmt_command                      = 'goimports'
     let g:go_fmt_fail_silently                = 1
