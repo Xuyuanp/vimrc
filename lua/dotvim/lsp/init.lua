@@ -44,6 +44,27 @@ nvim_lsp.pyls.setup{
     capabilities = lsp_status.capabilities,
 }
 
+local function detect_lua_library()
+    local library = {}
+    local in_rtp = false
+
+    local cwd = vim.fn.getcwd()
+    local paths = vim.api.nvim_list_runtime_paths()
+    for _, path in pairs(paths) do
+        if cwd:sub(1, #path) == path then
+            in_rtp = true
+        elseif vim.fn.isdirectory(path..'/lua') > 0 then
+            library[path] = true
+        end
+    end
+
+    if in_rtp then
+        return library
+    else
+        return {}
+    end
+end
+
 -- LspInstall sumneko_lua
 nvim_lsp.sumneko_lua.setup{
     on_attach = on_attach,
@@ -54,13 +75,14 @@ nvim_lsp.sumneko_lua.setup{
             diagnostics = {
                 enable = true,
                 globals = {
-                    "vim", "Color", "c", "Group", "g", "s", "describe", "it", "before_each", "after_each"
+                    "vim"
                 },
             },
+            runtime = {
+                version = "LuaJIT"
+            },
             workspace = {
-                library = {
-                    [vim.fn.expand("/usr/local/opt/neovim/share/nvim/runtime/lua")] = true,
-                },
+                library = detect_lua_library(),
             },
         },
     },
