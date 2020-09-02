@@ -1,34 +1,75 @@
 local vim = vim
 
-local lsp_status = require('lsp-status')
-lsp_status.register_progress()
-
 local diagnostic = require('diagnostic')
 local completion = require('completion')
 local nvim_lsp   = require('nvim_lsp')
 
-local on_attach = function(client)
-  lsp_status.on_attach(client)
-  diagnostic.on_attach(client)
-  completion.on_attach(client)
+local signature_help_callback = function(_, _, result)
+    local util = vim.lsp.util
+    if not (result and result.signatures and #result.signatures > 0) then
+        return { 'No signature available' }
+    end
+    local active_signature = result.activeSignature or 0
+    if active_signature >= #result.signatures then
+        active_signature = 0
+    end
+    local signature = result.signatures[active_signature+1]
+    if not signature then
+        return { 'No signature available' }
+    end
 
-  -- Keybindings for LSPs
-  vim.fn.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.implementation()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "1gD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", {noremap = true, silent = true})
-  vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
+    local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+    if filetype and type(signature.label) == "string" then
+        signature.label = string.format("```%s\n%s\n```", filetype, signature.label)
+    end
+
+    local lines = util.convert_signature_help_to_markdown_lines(result)
+    lines = util.trim_empty_lines(lines)
+    if vim.tbl_isempty(lines) then
+        return { 'No signature available' }
+    end
+    local _, winnr = util.fancy_floating_markdown(lines, {
+        pad_left = 1, pad_right = 1
+    })
+    util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
+
+local on_attach = function(client)
+    diagnostic.on_attach(client)
+    completion.on_attach()
+
+    client.callbacks["textDocument/signatureHelp"] = signature_help_callback
+
+    -- Keybindings for LSPs
+    vim.fn.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
+    vim.fn.nvim_set_keymap("n", "K",  "<cmd>lua vim.lsp.buf.hover()<CR>",            {noremap = false, silent = true})
+    vim.fn.nvim_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.implementation()<CR>",   {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "1gD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
+
+    if client.server_capabilities.documentHighlightProvider then
+        vim.api.nvim_command("autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()")
+        vim.api.nvim_command("autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()")
+        vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
+    end
+    if client.server_capabilities.documentFormattingProvider then
+        vim.api.nvim_command("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()")
+    end
+end
+
+-- some pls complete function with parentheses if 'snippetSupport' is true
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = false
 
 nvim_lsp.gopls.setup{
     on_attach = on_attach,
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
     settings = {
         gopls = {
-            usePlaceholders = false
+            usePlaceholders = false,
         }
     }
 }
@@ -36,12 +77,11 @@ nvim_lsp.gopls.setup{
 -- LspInstall vim-language-server
 nvim_lsp.vimls.setup{
     on_attach = on_attach,
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
 }
 
 nvim_lsp.pyls.setup{
     on_attach = on_attach,
-    capabilities = lsp_status.capabilities,
 }
 
 local function detect_lua_library()
@@ -58,17 +98,12 @@ local function detect_lua_library()
         end
     end
 
-    if in_rtp then
-        return library
-    else
-        return {}
-    end
+    return in_rtp and library or {}
 end
 
 -- LspInstall sumneko_lua
 nvim_lsp.sumneko_lua.setup{
     on_attach = on_attach,
-    capabilities = lsp_status.capabilities,
     settings = {
         Lua = {
             color = {mode = {"Grammar", "Semantic"}},
