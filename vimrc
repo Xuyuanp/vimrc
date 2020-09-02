@@ -60,6 +60,17 @@ if v:true " Languages
     let g:go_fmt_command                      = 'goimports'
     let g:go_fmt_fail_silently                = 1
     let g:go_def_mapping_enabled              = 0
+    if has('nvim-0.5')
+        let g:go_gopls_enabled          = 0
+        let g:go_doc_keywordprg_enabled = 0
+    endif
+endif
+
+if v:true
+    " Fix CursorHold Performance.
+    Plug 'antoinemadec/FixCursorHold.nvim'
+
+    let g:cursorhold_updatetime = 800
 endif
 
 if v:true " Productive tools (align, comment, tabular...)
@@ -376,8 +387,14 @@ else
 endif
 
 if v:true " snippets
-    Plug 'hrsh7th/vim-vsnip'
-    Plug 'hrsh7th/vim-vsnip-integ'
+    " Track the engine.
+    Plug 'SirVer/ultisnips'
+    " Snippets are separated from the engine. Add this if you want them:
+    Plug 'honza/vim-snippets'
+
+    let g:UltiSnipsExpandTrigger       = '<Plug>'
+    let g:UltiSnipsJumpForwardTrigger  = '<C-j>'
+    let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 endif
 
 if v:true " DB
@@ -460,8 +477,9 @@ if has('nvim-0.5')
     let g:completion_enable_auto_popup      = 1
     let g:completion_trigger_on_delete      = 1
     let g:completion_auto_change_source     = 1
+    let g:completion_enable_auto_paren      = 1
     let g:completion_matching_ignore_case   = 1
-    let g:completion_enable_snippet         = 'vim-vsnip'
+    let g:completion_enable_snippet         = 'UltiSnips'
     let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
     let g:completion_sorting                = 'none'
     " let g:completion_syntax_at_point        = 'dotvim#completion#SyntaxAtPoint'
@@ -504,13 +522,7 @@ if has('nvim-0.5')
         autocmd BufEnter * lua require'completion'.on_attach()
     augroup end
 
-    " vim-vsnip  "
-    let g:vsnip_snippet_dir = expand('<sfile>:p:h') . '/snippets'
-
-    imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
-    smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
-    imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
-    smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+    set omnifunc=v:lua.vim.lsp.omnifunc
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
