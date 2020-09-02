@@ -50,7 +50,7 @@ local signature_help_callback = function(_, _, result)
         pad_left = 1, pad_right = 1
     })
     if #highlights > 0 then
-        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Search', 0, highlights[1], highlights[2]+1)
+        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlights[1], highlights[2]+1)
     end
     util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
