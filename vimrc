@@ -387,14 +387,8 @@ else
 endif
 
 if v:true " snippets
-    " Track the engine.
-    Plug 'SirVer/ultisnips'
-    " Snippets are separated from the engine. Add this if you want them:
-    Plug 'honza/vim-snippets'
-
-    let g:UltiSnipsExpandTrigger       = '<Plug>'
-    let g:UltiSnipsJumpForwardTrigger  = '<C-j>'
-    let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/vim-vsnip-integ'
 endif
 
 if v:true " DB
@@ -479,7 +473,7 @@ if has('nvim-0.5')
     let g:completion_auto_change_source     = 1
     let g:completion_enable_auto_paren      = 1
     let g:completion_matching_ignore_case   = 1
-    let g:completion_enable_snippet         = 'UltiSnips'
+    let g:completion_enable_snippet         = 'vim-vsnip'
     let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
     let g:completion_sorting                = 'none'
     " let g:completion_syntax_at_point        = 'dotvim#completion#SyntaxAtPoint'
@@ -523,6 +517,14 @@ if has('nvim-0.5')
     augroup end
 
     set omnifunc=v:lua.vim.lsp.omnifunc
+
+    " vim-vsnip  "
+    let g:vsnip_snippet_dir = expand('<sfile>:p:h') . '/snippets'
+
+    imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+    smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+    imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+    smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
