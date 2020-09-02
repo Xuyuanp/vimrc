@@ -13,9 +13,27 @@ local signature_help_callback = function(_, _, result)
     if active_signature >= #result.signatures then
         active_signature = 0
     end
-    local signature = result.signatures[active_signature+1]
+    local signature = result.signatures[active_signature + 1]
     if not signature then
         return { 'No signature available' }
+    end
+
+    local highlights = {}
+    if result.activeParameter or signature.parameters then
+        local active_parameter = result.activeParameter or 0
+        local parameter = signature.parameters[active_parameter + 1]
+        if parameter and parameter.label then
+            local label_type = type(parameter.label)
+            if label_type == "string" then
+                local l, r = string.find(signature.label, parameter.label, 1, true)
+                if l and r then
+                    highlights = {l, r + 1}
+                end
+            elseif label_type == "table" then
+                local l, r = unpack(parameter.label)
+                highlights = {l + 1, r}
+            end
+        end
     end
 
     local filetype = vim.api.nvim_buf_get_option(0, "filetype")
@@ -28,9 +46,12 @@ local signature_help_callback = function(_, _, result)
     if vim.tbl_isempty(lines) then
         return { 'No signature available' }
     end
-    local _, winnr = util.fancy_floating_markdown(lines, {
+    local bufnr, winnr = util.fancy_floating_markdown(lines, {
         pad_left = 1, pad_right = 1
     })
+    if #highlights > 0 then
+        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Search', 0, highlights[1], highlights[2]+1)
+    end
     util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
 
@@ -39,6 +60,10 @@ local on_attach = function(client)
     completion.on_attach()
 
     client.callbacks["textDocument/signatureHelp"] = signature_help_callback
+
+    local server_capabilities = client.server_capabilities
+
+    server_capabilities.signatureHelpProvider.triggerCharacters = {"(", ",", " "}
 
     -- Keybindings for LSPs
     vim.fn.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
@@ -50,12 +75,12 @@ local on_attach = function(client)
     vim.fn.nvim_set_keymap("n", "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
     vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
 
-    if client.server_capabilities.documentHighlightProvider then
+    if server_capabilities.documentHighlightProvider then
         vim.api.nvim_command("autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()")
         vim.api.nvim_command("autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()")
         vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
     end
-    if client.server_capabilities.documentFormattingProvider then
+    if server_capabilities.documentFormattingProvider then
         vim.api.nvim_command("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()")
     end
 end
