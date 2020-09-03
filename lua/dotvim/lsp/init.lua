@@ -31,7 +31,7 @@ local signature_help_callback = function(_, _, result)
                 end
             elseif label_type == "table" then
                 local l, r = unpack(parameter.label)
-                highlights = {l + 1, r}
+                highlights = {l + 1, r + 1}
             end
         end
     end
@@ -50,7 +50,7 @@ local signature_help_callback = function(_, _, result)
         pad_left = 1, pad_right = 1
     })
     if #highlights > 0 then
-        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlights[1], highlights[2]+1)
+        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlights[1], highlights[2])
     end
     util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
