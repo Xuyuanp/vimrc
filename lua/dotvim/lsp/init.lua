@@ -75,14 +75,16 @@ local on_attach = function(client)
     vim.fn.nvim_set_keymap("n", "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
     vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
 
+    vim.api.nvim_command("augroup dotvim_lsp_init_on_attach")
+    vim.api.nvim_command("autocmd!")
     if server_capabilities.documentHighlightProvider then
-        vim.api.nvim_command("autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()")
-        vim.api.nvim_command("autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()")
+        vim.api.nvim_command("autocmd CursorHold,CursorHoldI  <buffer> lua vim.lsp.buf.document_highlight()")
         vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
     end
     if server_capabilities.documentFormattingProvider then
         vim.api.nvim_command("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()")
     end
+    vim.api.nvim_command("augroup end")
 end
 
 -- some pls complete function with parentheses if 'snippetSupport' is true
