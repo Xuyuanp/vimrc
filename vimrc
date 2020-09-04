@@ -460,7 +460,7 @@ endif
 if has('nvim-0.5')
     " treesitter
     " NOTE: buggy
-    if exists('g:loaded_nvim_treesitter')
+    if get(g:, 'loaded_nvim_treesitter', 0)
         silent! lua require('dotvim/treesitter')
     endif
 
