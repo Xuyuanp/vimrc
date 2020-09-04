@@ -132,19 +132,26 @@ end
 nvim_lsp.sumneko_lua.setup{
     on_attach = on_attach,
     settings = {
+        -- https://github.com/sumneko/vscode-lua/blob/master/setting/schema.json
         Lua = {
-            color = {mode = {"Grammar", "Semantic"}},
             diagnostics = {
                 enable = true,
                 globals = {
                     "vim"
                 },
+                disable = {
+                    "unused-vararg",
+                    "unused-local",
+                },
             },
             runtime = {
-                version = "LuaJIT"
+                version = "Lua 5.1"
             },
             workspace = {
                 library = detect_lua_library(),
+                ignoreDir = {
+                    ".cache",
+                }
             },
         },
     },
