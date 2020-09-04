@@ -1,3 +1,4 @@
 .cache/
 .plugged/
 autoload/plug.vim
+.luacheckcache
