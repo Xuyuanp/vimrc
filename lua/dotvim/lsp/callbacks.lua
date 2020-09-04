@@ -1,7 +1,6 @@
 local vim = vim
 
 local signature_help_callback = function(_, _method, result)
-    print(vim.inspect(result))
     local util = vim.lsp.util
     if not (result and result.signatures and #result.signatures > 0) then
         return { 'No signature available' }
