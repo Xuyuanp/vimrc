@@ -38,6 +38,7 @@ if v:true " Languages
     Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
     Plug 'stephpy/vim-yaml', {'for': 'yaml'}                " Override vim syntax for yaml files
     Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
+    Plug 'plasticboy/vim-markdown'
 
     let g:go_highlight_build_constraints      = 1
     let g:go_highlight_types                  = 1
@@ -64,6 +65,8 @@ if v:true " Languages
         let g:go_gopls_enabled          = 0
         let g:go_doc_keywordprg_enabled = 0
     endif
+
+    let g:vim_markdown_folding_disabled = 1
 endif
 
 if v:true
