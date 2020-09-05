@@ -1,17 +1,15 @@
 vimrc
 =====
 
-My vimrc configuration.
+My personal vim/neovim configuration.
 
 # Setup
 
 ## Mac OS X / Linux
 
-1. Clone this repo to your `~/.vim`.
-2. Start vim or nvim, it will download plug automatically
+1. Clone to `${XDG_CONFIG_HOME:-$HOME/.config}/nvim`. (`$HOME/.vim` for vim)
+2. Start vim or nvim, plug will be installed automatically
 3. Execute `:PlugInstall` to download plugins
-4. Restart vim
-5. Source `~/.vim/vimrc` in `init.vim` (for neovim)
 
 That's all. Happy hacking!
 
