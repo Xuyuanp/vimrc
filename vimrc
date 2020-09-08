@@ -423,7 +423,7 @@ if v:true " NERDTree and plugins
     let g:NERDTreeStatusline            = 'NERDTree'
     let g:NERDTreeCascadeSingleChildDir = 0
     let g:NERDTreeShowBookmarks         = 1
-    let g:NERDTreeIgnore                = ['\.idea', '\.iml', '\.pyc', '\~$', '\.swo$', '\.git', '\.hg', '\.svn', '\.bzr', '\.DS_Store', 'tmp', 'gin-bin']
+    let g:NERDTreeIgnore                = ['\.idea', '\.iml', '\.pyc', '\~$', '\.swo$', '\.git$', '\.hg', '\.svn', '\.bzr', '\.DS_Store', 'tmp', 'gin-bin']
     let g:NERDTreeDirArrowExpandable    = ' '
     let g:NERDTreeDirArrowCollapsible   = ' '
     let g:NERDTreeGlyphReadOnly         = ''
