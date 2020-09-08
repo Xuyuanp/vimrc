@@ -69,6 +69,10 @@ if v:true " Languages
     let g:vim_markdown_folding_disabled = 1
 endif
 
+if v:true " unit testing
+    Plug 'thinca/vim-themis'
+endif
+
 if v:true
     " Fix CursorHold Performance.
     Plug 'antoinemadec/FixCursorHold.nvim'
