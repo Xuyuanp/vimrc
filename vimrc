@@ -67,6 +67,9 @@ if v:true " Languages
     endif
 
     let g:vim_markdown_folding_disabled = 1
+
+    " this feature breaks visual selection
+    let g:ale_hover_cursor  = 0
 endif
 
 if v:true " unit testing
