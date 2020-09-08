@@ -460,6 +460,13 @@ augroup my_plug
     autocmd FileType vim inoremap <buffer><silent> <C-x><C-v> <C-r>=dotvim#plug#VimAwesomeComplete()<CR>
 augroup end
 
+if has('osx') && executable('cliclick')
+    augroup auto_change_input_source
+        autocmd!
+        autocmd InsertLeave * call dotvim#osx#AutoChangeInputSource()
+    augroup end
+endif
+
 if has('nvim')
     silent! lua require'colorizer'.setup()
 endif
