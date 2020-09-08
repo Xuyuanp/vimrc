@@ -1,0 +1,77 @@
+{
+    "function": {
+        "prefix": "func",
+        "body": [
+            "function! $1($2) abort",
+            "\t$0",
+            "endfunction"
+        ],
+        "description": "Snippet for function declaration"
+    },
+    "if": {
+        "prefix": "if",
+        "body": [
+            "if ${1:condition}",
+            "\t$2",
+            "endif"
+        ],
+        "description": "Snippet for if statement"
+    },
+    "if-else": {
+        "prefix": "if/else",
+        "body": [
+            "if ${1:condition}",
+            "\t$2",
+            "else",
+            "\t$3",
+            "endif"
+        ],
+        "description": "Snippet for if-else statement"
+    },
+    "if-elseif": {
+        "prefix": "if/elseif",
+        "body": [
+            "if ${1:condition}",
+            "\t$2",
+            "elseif ${3:condition}",
+            "\t$4",
+            "endif"
+        ],
+        "description": "Snippet for if-elsif statement"
+    },
+    "try-catch": {
+        "prefix": "try/catch",
+        "body": [
+            "try",
+            "\t$1",
+            "catch /${2:pattern}/",
+            "\t$3",
+            "endtry"
+        ],
+        "description": "Snippet for try/catch statement"
+    },
+    "try-catch-finally": {
+        "prefix": "try/catch/finally",
+        "body": [
+            "try",
+            "\t$1",
+            "catch /${2:pattern}/",
+            "\t$3",
+            "finally",
+            "\t$4",
+            "endtry"
+        ],
+        "description": "Snippet for try/catch/finally statement"
+    },
+    "try-finally": {
+        "prefix": "try/finally",
+        "body": [
+            "try",
+            "\t$1",
+            "finally",
+            "\t$2",
+            "endtry"
+        ],
+        "description": "Snippet for try/finally statement"
+    }
+}
