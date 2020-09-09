@@ -151,38 +151,15 @@ if v:true " UI
     Plug 'maximbaz/lightline-ale'                    " ALE indicator for the lightline vim plugin
     Plug 'deponian/vim-lightline-whitespace'         " Port of vim-airline's whitespace extension to lightline
     Plug 'mengelbrecht/lightline-bufferline'         " A lightweight plugin to display the list of buffers in the lightline vim plugin
-    Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'} " tagbar - Vim plugin that displays tags in a window, ordered by class etc
+    Plug 'liuchengxu/vista.vim'
 
-    nmap <C-t> :TagbarToggle<CR>
+    nmap <C-t> :Vista!!<CR>
 
-    let g:tagbar_show_linebumbers = 1
-    let g:tagbar_type_go          = {
-                \ 'ctagstype': 'go',
-                \ 'kinds': [
-                \   'p:package',
-                \   'i:imports:1',
-                \   'c:constants',
-                \   'v:variables',
-                \   't:types',
-                \   'n:interfaces',
-                \   'w:fields',
-                \   'e:embedded',
-                \   'm:methods',
-                \   'r:constructor',
-                \   'f:functions'
-                \ ],
-                \ 'sro': '.',
-                \ 'kind2scope': {
-                \   't': 'ctype',
-                \   'n': 'ntype'
-                \ },
-                \ 'scope2kind': {
-                \   'ctype': 't',
-                \   'ntype': 'n'
-                \ },
-                \ 'ctagsbin': 'gotags',
-                \ 'ctagsargs': '-sort -silent'
-                \ }
+    if has('nvim-0.5')
+        let g:vista_default_executive = 'nvim_lsp'
+    else
+        let g:vista_default_executive = 'coc'
+    endif
 
     let s:lightline_themes = ['one', 'seoul256', 'powerline', 'molokai']
     let g:lightline = {
@@ -202,7 +179,6 @@ if v:true " UI
                 \ 'mode':         'dotvim#lightline#Mode',
                 \ 'percent':      'dotvim#lightline#Percent',
                 \ 'lineinfo':     'dotvim#lightline#Lineinfo',
-                \ 'tagbar':       'dotvim#lightline#Tagbar',
                 \ 'synName':      'dotvim#lightline#SynName',
                 \ }
     let g:lightline.component_expand = {
@@ -232,7 +208,6 @@ if v:true " UI
                 \ ['percent', 'lineinfo'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
                 \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
-                \ ['tagbar']
                 \ ]
     let g:lightline.inactive.right = []
     let g:lightline.mode_map = {

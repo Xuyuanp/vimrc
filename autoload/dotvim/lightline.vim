@@ -79,20 +79,7 @@ function! dotvim#lightline#Mode() abort
                 \ winwidth(0) > s:max_length ? lightline#mode() : ''
 endfunction
 
-function! dotvim#lightline#Tagbar() abort
-    try
-        let l:max_len = s:max_length
-        let l:output = tagbar#currenttag('%s', '', 'fsp')
-        if len(l:output) > l:max_len
-            let l:output = l:output[:l:max_len-3] . '...'
-        endif
-        return l:output
-    catch
-        return ''
-    endtry
-endfunction
-
 function! dotvim#lightline#SynName() abort
-    let l:synName = dotvim#completion#SyntaxAtPoint()
-    return winwidth(0) > s:max_length ? (empty(l:synName) ? 'unknown' : l:synName) : ''
+    let l:synName = luaeval('require("dotvim/treesitter/util").syntax_at_point()')
+    return winwidth(0) > s:max_length ? l:synName : ''
 endfunction

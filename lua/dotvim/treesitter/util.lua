@@ -17,7 +17,6 @@ function M.syntax_at_point(winnr)
     -- try to get treesitter node type firstly
     local current_node = get_node_at_cursor(cursor)
     if current_node then
-        print(current_node:type())
         return current_node:type()
     end
     -- fallback
