@@ -46,19 +46,16 @@ local default_config = {
 
 local function detect_lua_library()
     local library = {}
-    local in_rtp = false
 
     local cwd = vim.fn.getcwd()
     local paths = vim.api.nvim_list_runtime_paths()
-    for _, path in pairs(paths) do
-        if vim.startswith(cwd, path) then
-            in_rtp = true
-        elseif vim.fn.isdirectory(path..'/lua') > 0 then
+    for _, path in ipairs(paths) do
+        if not vim.startswith(cwd, path) and vim.fn.isdirectory(path..'/lua') > 0 then
             library[path] = true
         end
     end
 
-    return in_rtp and library or {}
+    return library
 end
 
 local langs = {
@@ -74,6 +71,10 @@ local langs = {
     [nvim_lsp.vimls] = {},
     -- LspInstall sumneko_lua
     [nvim_lsp.sumneko_lua] = {
+        root_dir = function(fname)
+            -- default is git find_git_ancestor or home dir
+            return require('nvim_lsp/util').find_git_ancestor(fname) or vim.fn.fnamemodify(fname, ':p:h')
+        end,
         settings = {
             -- https://github.com/sumneko/vscode-lua/blob/master/setting/schema.json
             Lua = {

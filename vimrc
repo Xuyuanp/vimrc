@@ -301,8 +301,6 @@ if v:true " colorschemes
 endif
 
 if has('nvim-0.5')
-    Plug 'tjdevries/nlua.nvim'
-
     " Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'neovim/nvim-lsp'
     Plug 'nvim-lua/lsp-status.nvim'
