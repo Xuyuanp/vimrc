@@ -434,8 +434,6 @@ if v:true " NERDTree and plugins
     let g:NERDTreeGlyphReadOnly         = ''
 
     let g:NERDTreeGitStatusUseNerdFonts = 1
-    let g:NERDTreeGitStatusUpdateOnCursorHold = 0
-    let g:NERDTreeUpdateOnCursorHold = 0
 
     let g:nerdtree_tabs_open_on_gui_startup = '1'
 
