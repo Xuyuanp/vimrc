@@ -474,10 +474,7 @@ endif
 
 if has('nvim-0.5')
     " treesitter
-    " NOTE: buggy
-    if get(g:, 'loaded_nvim_treesitter', 0)
-        silent! lua require('dotvim/treesitter')
-    endif
+    silent! lua require('dotvim/treesitter')
 
     " lsp
     silent! lua require('dotvim/lsp')
@@ -493,7 +490,6 @@ if has('nvim-0.5')
     let g:completion_enable_snippet         = 'vim-vsnip'
     let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
     let g:completion_sorting                = 'none'
-    " let g:completion_syntax_at_point        = 'dotvim#completion#SyntaxAtPoint'
     let g:completion_chain_complete_list = {
                 \ 'default': {
                 \   'default': [
