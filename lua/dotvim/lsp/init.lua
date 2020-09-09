@@ -34,14 +34,22 @@ local on_attach = function(client)
     vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
 end
 
-local on_new_config = function(config)
-    config.capabilities.textDocument.completion.completionItem.snippetSupport = false
-    config.callbacks = vim.tbl_deep_extend("force", config.callbacks, callbacks)
-end
-
 local default_config = {
     on_attach = on_attach,
-    on_new_config = on_new_config,
+
+    capabilities = {
+        textDocument = {
+            completion = {
+                completionItem = {
+                    -- fmt.Println($1, $2)
+                    -- VS.
+                    -- fmt.Println
+                    snippetSupport = false
+                }
+            }
+        }
+    },
+    callbacks = callbacks,
 }
 
 local function detect_lua_library()
