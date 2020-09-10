@@ -277,7 +277,7 @@ endif
 
 if has('nvim-0.5')
     " Plug 'nvim-treesitter/nvim-treesitter'
-    Plug 'neovim/nvim-lsp'
+    Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/diagnostic-nvim'
     Plug 'nvim-lua/completion-nvim'
@@ -504,13 +504,21 @@ if has('nvim-0.5')
 
     set omnifunc=v:lua.vim.lsp.omnifunc
 
-    " vim-vsnip  "
+    " vim-vsnip
     let g:vsnip_snippet_dir = expand('<sfile>:p:h') . '/snippets'
 
     imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
     smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
     imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
     smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+
+    " GitLens
+    augroup my_git_lens
+        autocmd!
+        autocmd CursorHold * lua require('dotvim/util/gitlens').blameVirtualText()
+        autocmd CursorMoved,CursorMovedI * lua require('dotvim/util/gitlens').clearBlameVirtualText()
+    augroup end
+    highlight! link GitLens Comment
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
