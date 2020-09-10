@@ -80,6 +80,20 @@ function! dotvim#lightline#Mode() abort
 endfunction
 
 function! dotvim#lightline#SynName() abort
-    let l:synName = luaeval('require("dotvim/treesitter/util").syntax_at_point()')
+    if has('nvim-0.5')
+        let l:synName = luaeval('require("dotvim/treesitter/util").syntax_at_point()')
+    else
+        let l:synName = synIDattr(synID(line('.'), col('.'), 1), 'name')
+    endif
     return winwidth(0) > s:max_length ? l:synName : ''
+endfunction
+
+function! dotvim#lightline#LspStatus() abort
+    if !has('nvim-0.5') | return '' | endif
+
+    if luaeval('#vim.lsp.buf_get_clients() > 0')
+        return luaeval("require('lsp-status').status()")
+    endif
+
+    return ''
 endfunction

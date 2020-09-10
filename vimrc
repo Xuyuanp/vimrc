@@ -161,7 +161,13 @@ if v:true " UI
         let g:vista_default_executive = 'coc'
     endif
 
-    let s:lightline_themes = ['one', 'seoul256', 'powerline', 'molokai']
+    let g:lightline#ale#indicator_checking = nr2char(0xf110)
+    let g:lightline#ale#indicator_infos    = nr2char(0xf129)
+    let g:lightline#ale#indicator_warnings = nr2char(0xf071)
+    let g:lightline#ale#indicator_errors   = nr2char(0xf05e)
+    let g:lightline#ale#indicator_ok       = nr2char(0xf00c)
+
+    let s:lightline_themes = ['one', 'seoul256', 'powerline', 'gruvbox_material']
     let g:lightline = {
                 \ 'colorscheme':  s:lightline_themes[localtime()%len(s:lightline_themes)],
                 \ 'active':       {},
@@ -180,9 +186,11 @@ if v:true " UI
                 \ 'percent':      'dotvim#lightline#Percent',
                 \ 'lineinfo':     'dotvim#lightline#Lineinfo',
                 \ 'synName':      'dotvim#lightline#SynName',
+                \ 'lspStatus':    'dotvim#lightline#LspStatus',
                 \ }
     let g:lightline.component_expand = {
                 \ 'linter_checking': 'lightline#ale#checking',
+                \  'linter_ok':      'lightline#ale#ok',
                 \ 'linter_infos':    'lightline#ale#infos',
                 \ 'linter_warnings': 'lightline#ale#warnings',
                 \ 'linter_errors':   'lightline#ale#errors',
@@ -192,6 +200,7 @@ if v:true " UI
     let g:lightline.component_type = {
                 \ 'readonly':        'warning',
                 \ 'linter_checking': 'right',
+                \ 'linter_ok':       'right',
                 \ 'linter_infos':    'right',
                 \ 'linter_warnings': 'warning',
                 \ 'linter_errors':   'error',
@@ -207,7 +216,7 @@ if v:true " UI
                 \ ['whitespace'],
                 \ ['percent', 'lineinfo'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
-                \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos'],
+                \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
                 \ ]
     let g:lightline.inactive.right = []
     let g:lightline.mode_map = {
@@ -452,9 +461,12 @@ if has('nvim-0.5')
     " lsp
     silent! lua require('dotvim/lsp')
 
+    " diagnostic
     let g:diagnostic_insert_delay           = 1
     let g:diagnostic_show_sign              = 1
     let g:diagnostic_enable_virtual_text    = 1
+
+    " completion-nvim
     let g:completion_enable_auto_popup      = 1
     let g:completion_trigger_on_delete      = 1
     let g:completion_auto_change_source     = 1

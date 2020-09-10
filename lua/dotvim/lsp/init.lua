@@ -3,12 +3,16 @@ local vim = vim
 local diagnostic = require('diagnostic')
 local completion = require('completion')
 local nvim_lsp   = require('nvim_lsp')
+local lsp_status = require("lsp-status")
 local callbacks  = require('dotvim/lsp/callbacks')
 local util       = require('dotvim/util')
 
+lsp_status.register_progress()
+
 local on_attach = function(client)
     diagnostic.on_attach(client)
-    completion.on_attach()
+    lsp_status.on_attach(client)
+    completion.on_attach({})
 
     local server_capabilities = client.server_capabilities
     server_capabilities.signatureHelpProvider.triggerCharacters = {"(", ",", " "}
@@ -34,21 +38,22 @@ local on_attach = function(client)
     vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
 end
 
-local default_config = {
-    on_attach = on_attach,
-
-    capabilities = {
-        textDocument = {
-            completion = {
-                completionItem = {
-                    -- fmt.Println($1, $2)
-                    -- VS.
-                    -- fmt.Println
-                    snippetSupport = false
-                }
+local default_capabilities = vim.tbl_extend("force", lsp_status.capabilities, {
+    textDocument = {
+        completion = {
+            completionItem = {
+                -- fmt.Println($1, $2)
+                -- VS.
+                -- fmt.Println
+                snippetSupport = false
             }
         }
-    },
+    }
+})
+
+local default_config = {
+    on_attach = on_attach,
+    capabilities = default_capabilities,
     callbacks = callbacks,
 }
 
