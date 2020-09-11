@@ -1,6 +1,6 @@
 local vim = vim
 
-local signature_help_callback = function(_, method, result)
+local signature_help_callback = function(_, _method, result)
     local util = vim.lsp.util
     if not (result and result.signatures and #result.signatures > 0) then
         return
@@ -46,16 +46,13 @@ local signature_help_callback = function(_, method, result)
         return
     end
 
-    util.focusable_float(method, function()
-        local bufnr, winnr = util.fancy_floating_markdown(lines, {
-            pad_left = 1, pad_right = 1
-        })
-        if #highlights > 0 then
-            vim.api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlights[1], highlights[2])
-        end
-        util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
-        return bufnr, winnr
-    end)
+    local bufnr, winnr = util.fancy_floating_markdown(lines, {
+        pad_left = 1, pad_right = 1
+    })
+    if #highlights > 0 then
+        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlights[1], highlights[2])
+    end
+    util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
 
 return {
