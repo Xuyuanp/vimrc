@@ -39,6 +39,7 @@ if v:true " Languages
     Plug 'stephpy/vim-yaml', {'for': 'yaml'}                " Override vim syntax for yaml files
     Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
     Plug 'plasticboy/vim-markdown'
+    Plug 'rust-lang/rust.vim'
 
     let g:go_highlight_build_constraints      = 1
     let g:go_highlight_types                  = 1
@@ -418,6 +419,8 @@ if v:true " NERDTree and plugins
     let g:NERDTreeGlyphReadOnly         = ''
 
     let g:NERDTreeGitStatusUseNerdFonts = 1
+
+    let g:NERDTreeUpdateOnCursorHold = 0
 
     let g:nerdtree_tabs_open_on_gui_startup = '1'
 

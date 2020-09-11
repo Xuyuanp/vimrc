@@ -17,14 +17,19 @@ local on_attach = function(client)
     local server_capabilities = client.server_capabilities
     server_capabilities.signatureHelpProvider.triggerCharacters = {"(", ",", " "}
 
-    util.Augroup('dotvim_lsp_init_on_attach', function()
-        if server_capabilities.documentHighlightProvider then
-            vim.api.nvim_command("autocmd CursorHold,CursorHoldI  <buffer> lua vim.lsp.buf.document_highlight()")
-            vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
-        end
-        if server_capabilities.documentFormattingProvider then
-            vim.api.nvim_command("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()")
-        end
+    if server_capabilities.documentHighlightProvider then
+        -- rust_analyzer crashed if no delay
+        vim.defer_fn(function()
+            util.Augroup('dotvim_lsp_init_on_attach', function()
+                vim.api.nvim_command("autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()")
+                vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
+            end)
+        end, 5000)
+    end
+
+    util.Augroup("dotvim_lsp_status", function()
+        vim.api.nvim_command("autocmd User LspMessageUpdate call lightline#update()")
+        vim.api.nvim_command("autocmd User LspStatusUpdate call lightline#update()")
     end)
 
     -- Keybindings for LSPs
@@ -38,18 +43,8 @@ local on_attach = function(client)
     vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
 end
 
-local default_capabilities = vim.tbl_extend("force", lsp_status.capabilities, {
-    textDocument = {
-        completion = {
-            completionItem = {
-                -- fmt.Println($1, $2)
-                -- VS.
-                -- fmt.Println
-                snippetSupport = false
-            }
-        }
-    }
-})
+local default_capabilities = lsp_status.capabilities
+default_capabilities.textDocument.completion.completionItem.snippetSupport = false
 
 local default_config = {
     on_attach = on_attach,
@@ -82,6 +77,7 @@ local langs = {
     [nvim_lsp.pyls] = {},
     -- LspInstall vim-language-server
     [nvim_lsp.vimls] = {},
+    [nvim_lsp.rust_analyzer] = {},
     -- LspInstall sumneko_lua
     [nvim_lsp.sumneko_lua] = {
         root_dir = function(fname)

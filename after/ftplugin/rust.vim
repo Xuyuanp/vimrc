@@ -1,0 +1,1 @@
+call dotvim#lsp#EnableAutoFormat()
