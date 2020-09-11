@@ -191,7 +191,7 @@ if v:true " UI
                 \ }
     let g:lightline.component_expand = {
                 \ 'linter_checking': 'lightline#ale#checking',
-                \  'linter_ok':      'lightline#ale#ok',
+                \ 'linter_ok':       'lightline#ale#ok',
                 \ 'linter_infos':    'lightline#ale#infos',
                 \ 'linter_warnings': 'lightline#ale#warnings',
                 \ 'linter_errors':   'lightline#ale#errors',
@@ -218,6 +218,7 @@ if v:true " UI
                 \ ['percent', 'lineinfo'],
                 \ ['fileformat', 'fileencoding', 'filetype'],
                 \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
+                \ ['lspStatus'],
                 \ ]
     let g:lightline.inactive.right = []
     let g:lightline.mode_map = {
@@ -237,7 +238,8 @@ if v:true " UI
     let g:lightline#ale#indicator_infos          = nr2char(0xf129)
     let g:lightline#ale#indicator_warnings       = nr2char(0xf071)
     let g:lightline#ale#indicator_errors         = nr2char(0xf05e)
-    let g:lightline#bufferline#modified          = '*'
+
+    let g:lightline#bufferline#modified          = ' ' . nr2char(0xf444)
     let g:lightline#bufferline#read_only         = ''
     let g:lightline#bufferline#filename_modifier = ':p:t'
     let g:lightline#bufferline#unnamed           = '[No Name]'

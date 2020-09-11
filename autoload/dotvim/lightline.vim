@@ -92,7 +92,7 @@ function! dotvim#lightline#LspStatus() abort
     if !has('nvim-0.5') | return '' | endif
 
     if luaeval('#vim.lsp.buf_get_clients() > 0')
-        return luaeval("require('lsp-status').status()")
+        return luaeval("require('dotvim/lsp/status').get_messages()")
     endif
 
     return ''
