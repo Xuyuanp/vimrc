@@ -1,6 +1,8 @@
 local vim = vim
 
-local signature_help_callback = function(_, _method, result)
+local M = {}
+
+M["textDocument/signatureHelp"] = function(_, _method, result)
     local util = vim.lsp.util
     if not (result and result.signatures and #result.signatures > 0) then
         return
@@ -55,6 +57,4 @@ local signature_help_callback = function(_, _method, result)
     util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
 
-return {
-    ["textDocument/signatureHelp"] = signature_help_callback,
-}
+return M

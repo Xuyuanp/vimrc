@@ -15,7 +15,13 @@ local on_attach = function(client)
     completion.on_attach({})
 
     local server_capabilities = client.server_capabilities
-    server_capabilities.signatureHelpProvider.triggerCharacters = {"(", ",", " "}
+    if server_capabilities.signatureHelpProvider then
+        server_capabilities.signatureHelpProvider.triggerCharacters = {"(", ",", " "}
+    end
+
+    if server_capabilities.documentFormattingProvider then
+        vim.fn["dotvim#lsp#EnableAutoFormat"]()
+    end
 
     if server_capabilities.documentHighlightProvider then
         -- rust_analyzer crashed if no delay
@@ -39,8 +45,9 @@ local on_attach = function(client)
     vim.fn.nvim_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
     vim.fn.nvim_set_keymap("n", "1gD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", {noremap = true, silent = true})
     vim.fn.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",     {noremap = true, silent = true})
 end
 
 local default_capabilities = lsp_status.capabilities
@@ -77,6 +84,7 @@ local langs = {
     [nvim_lsp.pyls] = {},
     -- LspInstall vim-language-server
     [nvim_lsp.vimls] = {},
+    [nvim_lsp.clojure_lsp] = {},
     [nvim_lsp.rust_analyzer] = {},
     -- LspInstall sumneko_lua
     [nvim_lsp.sumneko_lua] = {
