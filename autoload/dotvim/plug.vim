@@ -2,7 +2,7 @@ let s:is_win = has('win16') || has('win32') || has('win64')
 
 function! dotvim#plug#Install(plug_file) abort
     if !executable('curl')
-        call dotvim#log#err("'curl' command not found")
+        call dotvim#log#error("'curl' command not found")
         return
     endif
 

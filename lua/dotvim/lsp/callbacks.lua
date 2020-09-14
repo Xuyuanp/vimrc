@@ -1,8 +1,10 @@
 local vim = vim
+local logger = require("dotvim/log")
 
 local M = {}
 
 M["textDocument/signatureHelp"] = function(_, _method, result)
+    logger.debug(result)
     local util = vim.lsp.util
     if not (result and result.signatures and #result.signatures > 0) then
         return
