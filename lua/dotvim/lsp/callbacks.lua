@@ -16,24 +16,29 @@ M["textDocument/signatureHelp"] = function(_, _method, result)
         return
     end
 
-    local highlights = {}
+    local highlight_label = {}
+    local highlight_document = false
     if signature.parameters then
         local active_parameter = result.activeParameter or 0
         if active_parameter >= #signature.parameters then
             active_parameter = 0
         end
         local parameter = signature.parameters[active_parameter + 1]
-        if parameter and parameter.label then
-            local label_type = type(parameter.label)
-            if label_type == "string" then
-                local l, r = string.find(signature.label, parameter.label, 1, true)
-                if l and r then
-                    highlights = {l, r + 1}
+        if parameter then
+            if parameter.label then
+                local label_type = type(parameter.label)
+                if label_type == "string" then
+                    local l, r = string.find(signature.label, parameter.label, 1, true)
+                    if l and r then
+                        highlight_label = {l, r + 1}
+                    end
+                elseif label_type == "table" then
+                    local l, r = unpack(parameter.label)
+                    highlight_label = {l + 1, r + 1}
                 end
-            elseif label_type == "table" then
-                local l, r = unpack(parameter.label)
-                highlights = {l + 1, r + 1}
             end
+
+            highlight_document = parameter.documentation and type(parameter.documentation) == "string"
         end
     end
 
@@ -51,8 +56,12 @@ M["textDocument/signatureHelp"] = function(_, _method, result)
     local bufnr, winnr = util.fancy_floating_markdown(lines, {
         pad_left = 1, pad_right = 1
     })
-    if #highlights > 0 then
-        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlights[1], highlights[2])
+    if #highlight_label > 0 then
+        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlight_label[1], highlight_label[2])
+    end
+    if highlight_document then
+        local line_count = vim.api.nvim_buf_line_count(bufnr)
+        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Label', line_count-1, 0, -1)
     end
     util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
