@@ -15,9 +15,8 @@ function M.blameVirtualText()
     local hash = vim.split(blame, '%s')[1]
     if hash == '00000000' then return end
 
-    local cmd = string.format("git show %s ", hash) .. "--format=': %an | %ar | %s'"
-    local text = vim.fn.system(cmd)
-    text = vim.split(text, "\n")[1]
+    local cmd = string.format("git show %s ", hash) .. "--format=' : @%an | %s | %ar'"
+    local text = vim.fn.systemlist(cmd)[1]
     if text:find("fatal") then return end
 
     api.nvim_buf_set_virtual_text(0, ns_id, line[1]-1, {{ text, "GitLens" }}, {})
