@@ -9,10 +9,10 @@ local util       = require('dotvim/util')
 
 lsp_status.register_progress()
 
-local on_attach = function(client)
+local on_attach = function(client, completion_opts)
     diagnostic.on_attach(client)
     lsp_status.on_attach(client)
-    completion.on_attach({})
+    completion.on_attach(completion_opts or {})
 
     local server_capabilities = client.server_capabilities
     if server_capabilities.signatureHelpProvider then
@@ -39,15 +39,16 @@ local on_attach = function(client)
     end)
 
     -- Keybindings for LSPs
-    vim.fn.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
-    vim.fn.nvim_set_keymap("n", "K",  "<cmd>lua vim.lsp.buf.hover()<CR>",            {noremap = false, silent = true})
-    vim.fn.nvim_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.implementation()<CR>",   {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "1gD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gd",  "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
+    vim.fn.nvim_set_keymap("n", "K",   "<cmd>lua vim.lsp.buf.hover()<CR>",            {noremap = false, silent = true})
+    vim.fn.nvim_set_keymap("n", "gi",  "<cmd>lua vim.lsp.buf.implementation()<CR>",   {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gk",  "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gtd", "<cmd>lua vim.lsp.buf.type_definition()<CR>",  {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gr",  "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "grr", "<cmd>lua vim.lsp.buf.rename()<CR>",           {noremap = true, silent = true})
     vim.fn.nvim_set_keymap("n", "gds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
     vim.fn.nvim_set_keymap("n", "gws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",     {noremap = true, silent = true})
+    vim.fn.nvim_set_keymap("n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",      {noremap = true, silent = true})
 end
 
 local default_capabilities = lsp_status.capabilities
