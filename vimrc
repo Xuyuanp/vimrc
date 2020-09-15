@@ -62,9 +62,11 @@ if v:true " Languages
     let g:go_fmt_command                      = 'goimports'
     let g:go_fmt_fail_silently                = 1
     let g:go_def_mapping_enabled              = 0
+    let g:go_echo_go_info                     = 0
     if has('nvim-0.5')
-        let g:go_gopls_enabled          = 0
-        let g:go_doc_keywordprg_enabled = 0
+        let g:go_code_completion_enabled = 0
+        let g:go_gopls_enabled           = 0
+        let g:go_doc_keywordprg_enabled  = 0
     endif
 
     let g:vim_markdown_folding_disabled = 1
