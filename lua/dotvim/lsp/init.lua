@@ -12,7 +12,9 @@ lsp_status.register_progress()
 local on_attach = function(client, completion_opts)
     diagnostic.on_attach(client)
     lsp_status.on_attach(client)
-    completion.on_attach(completion_opts or {})
+    completion.on_attach(completion_opts or {
+        syntax_at_point = require("dotvim/treesitter/util").syntax_at_point,
+    })
 
     local server_capabilities = client.server_capabilities
     if server_capabilities.signatureHelpProvider then
