@@ -2,7 +2,19 @@ local api = vim.api
 
 local M = {}
 
+local ignored_filetypes = {
+    help     = true,
+    qf       = true,
+    fzf      = true,
+    nerdtree = true,
+    vista    = true,
+    startify = true,
+}
+
 function M.blameVirtualText()
+    local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+    if not filetype or ignored_filetypes[filetype:lower()] then return end
+
     local fname = vim.fn.expand('%')
     if not vim.fn.filereadable(fname) then return end
 
@@ -13,11 +25,16 @@ function M.blameVirtualText()
     local blame = vim.fn.system(string.format("git blame -c -L %d,%d %s", line[1], line[1], fname))
     if vim.v.shell_error > 0 then return end
     local hash = vim.split(blame, '%s')[1]
-    if hash == '00000000' then return end
+    local text
+    if hash == "00000000" then
+        text = "Not Commit Yet"
+    else
+        local cmd = string.format("git show %s", hash) .. " --format='@%an | %s | %ar'"
+        text = vim.fn.systemlist(cmd)[1]
+        if text:find("fatal") then return end
+    end
 
-    local cmd = string.format("git show %s ", hash) .. "--format=' : @%an | %s | %ar'"
-    local text = vim.fn.systemlist(cmd)[1]
-    if text:find("fatal") then return end
+    text = " : " .. text
 
     api.nvim_buf_set_virtual_text(0, ns_id, line[1]-1, {{ text, "GitLens" }}, {})
 end
