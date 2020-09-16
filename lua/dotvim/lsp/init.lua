@@ -51,6 +51,20 @@ local on_attach = function(client, completion_opts)
     vim.fn.nvim_set_keymap("n", "gds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
     vim.fn.nvim_set_keymap("n", "gws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
     vim.fn.nvim_set_keymap("n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",      {noremap = true, silent = true})
+
+    -- Keybindings for diagnostic
+    vim.fn.nvim_set_keymap("n", "]d", "<cmd>NextDiagnosticCycle<CR>", {noremap = false, silent = true})
+    vim.fn.nvim_set_keymap("n", "[d", "<cmd>PrevDiagnosticCycle<CR>", {noremap = false, silent = true})
+
+    vim.fn.sign_define("LspDiagnosticsErrorSign",       {text = "E", texthl = "LspDiagnosticsError"})
+    vim.fn.sign_define("LspDiagnosticsWarningSign",     {text = "W", texthl = "LspDiagnosticsWarning"})
+    vim.fn.sign_define("LspDiagnosticsInformationSign", {text = "I", texthl = "LspDiagnosticsInformation"})
+    vim.fn.sign_define("LspDiagnosticsHintSign",        {text = "H", texthl = "LspDiagnosticsHint"})
+
+    vim.api.nvim_command([[highlight! default link LspDiagnosticsError       Error]])
+    vim.api.nvim_command([[highlight! default link LspDiagnosticsWarning     WarningMsg]])
+    vim.api.nvim_command([[highlight! default link LspDiagnosticsInformation Normal]])
+    vim.api.nvim_command([[highlight! default link LspDiagnosticsHint        SpecialComment]])
 end
 
 local default_capabilities = lsp_status.capabilities
