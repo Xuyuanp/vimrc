@@ -59,7 +59,7 @@ function! dotvim#lightline#Lineinfo() abort
     let l:totalno = line('$')
     let l:currno = line('.')
     let l:colno = col('.')
-    return winwidth(0) > s:max_length ? printf('≡ %d/%d  %d ', l:currno, l:totalno, l:colno) : ''
+    return winwidth(0) > s:max_length ? printf(' %d/%d  %d ', l:currno, l:totalno, l:colno) : ''
 endfunction
 
 function! dotvim#lightline#Buffers() abort
