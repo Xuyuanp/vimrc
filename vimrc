@@ -541,6 +541,20 @@ if has('nvim-0.5')
         autocmd CursorMoved,CursorMovedI * lua require('dotvim/util/gitlens').clearBlameVirtualText()
     augroup end
     highlight! link GitLens Comment
+
+    " Scrollbar
+    augroup dotvim_scrollbar
+        autocmd!
+        autocmd BufEnter,BufWinEnter * lua require('dotvim/util/scrollbar').show()
+        autocmd CursorMoved,CursorMovedI * lua require('dotvim/util/scrollbar').show()
+        autocmd VimResized * lua require('dotvim/util/scrollbar').show()
+        autocmd FocusGained * lua require('dotvim/util/scrollbar').show()
+        " NOTE: 'clear' is not 'disable'
+        autocmd FocusLost * lua require('dotvim/util/scrollbar').clear()
+    augroup end
+    let g:scrollbar_sign_priority = 10
+    let g:scrollbar_max_size = 10
+    let g:scrollbar_min_size = 3
 endif
 
 " Rename tmux window name automatically
