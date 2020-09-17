@@ -300,6 +300,8 @@ if has('nvim-0.5')
 
     " This is required for syntax highlighting
     Plug 'euclidianAce/BetterLua.vim'
+
+    Plug 'Xuyuanp/scrollbar.nvim'
 else
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 
@@ -535,7 +537,7 @@ if has('nvim-0.5')
     smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
 
     " GitLens
-    augroup my_git_lens
+    augroup dotvim_git_lens
         autocmd!
         autocmd CursorHold * lua require('dotvim/util/gitlens').blameVirtualText()
         autocmd CursorMoved,CursorMovedI * lua require('dotvim/util/gitlens').clearBlameVirtualText()
@@ -545,12 +547,12 @@ if has('nvim-0.5')
     " Scrollbar
     augroup dotvim_scrollbar
         autocmd!
-        autocmd BufEnter,BufWinEnter * lua require('dotvim/util/scrollbar').show()
-        autocmd CursorMoved,CursorMovedI * lua require('dotvim/util/scrollbar').show()
-        autocmd VimResized * lua require('dotvim/util/scrollbar').show()
-        autocmd FocusGained * lua require('dotvim/util/scrollbar').show()
+        autocmd BufEnter,BufWinEnter     * silent! lua require('scrollbar').show()
+        autocmd CursorMoved,CursorMovedI * silent! lua require('scrollbar').show()
+        autocmd VimResized               * silent! lua require('scrollbar').show()
+        autocmd FocusGained              * silent! lua require('scrollbar').show()
         " NOTE: 'clear' is not 'disable'
-        autocmd FocusLost * lua require('dotvim/util/scrollbar').clear()
+        " autocmd FocusLost,WinLeave * lua require('scrollbar').clear()
     augroup end
     let g:scrollbar_sign_priority = 10
     let g:scrollbar_max_size = 10
