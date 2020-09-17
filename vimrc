@@ -122,7 +122,7 @@ if v:true " FZF
                 \ }
 
     " Terminal buffer options for fzf
-    augroup my_fzf
+    augroup dotvim_fzf
         autocmd!
         autocmd  FileType fzf set noshowmode noruler nonu
     augroup end
@@ -375,7 +375,7 @@ else
     vnoremap <leader>f  <Plug>(coc-format-selected)
     nnoremap <leader>f  <Plug>(coc-format-selected)
 
-    augroup my_coc
+    augroup dotvim_coc
         autocmd!
         " Setup formatexpr specified filetype(s).
         autocmd FileType typescript,json setlocal formatexpr=CocAction('formatSelected')
@@ -446,7 +446,7 @@ call plug#end()
 
 silent! source $VIMRC_PLUG_POST
 
-augroup my_plug
+augroup dotvim_plug
     autocmd!
     autocmd FileType vim nnoremap <buffer><silent> gx :call dotvim#plug#OpenGithub()<CR>
     " Checking if has ruby here will slow down startup time.
@@ -521,7 +521,7 @@ if has('nvim-0.5')
                 \ completion#trigger_completion()
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-    augroup my_completion_nvim
+    augroup dotvim_completion_nvim
         autocmd!
         autocmd BufEnter * lua require'completion'.on_attach()
     augroup end
