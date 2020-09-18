@@ -301,8 +301,7 @@ if has('nvim-0.5')
     " This is required for syntax highlighting
     Plug 'euclidianAce/BetterLua.vim'
 
-    " Plug 'Xuyuanp/scrollbar.nvim'
-    Plug '~/.tmp/scrollbar.nvim'
+    Plug 'Xuyuanp/scrollbar.nvim'
 else
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 
@@ -548,18 +547,19 @@ if has('nvim-0.5')
     " Scrollbar
     augroup dotvim_scrollbar
         autocmd!
-        autocmd BufEnter * lua require('scrollbar').show()
-        autocmd BufLeave * lua require('scrollbar').clear()
+        autocmd BufEnter * silent! lua require('scrollbar').show()
+        autocmd BufLeave * silent! lua require('scrollbar').clear()
 
-        autocmd CursorMoved * lua require('scrollbar').show()
-        " autocmd CursorHold  * lua require('scrollbar').clear()
-        autocmd VimResized  * lua require('scrollbar').show()
+        autocmd CursorMoved * silent! lua require('scrollbar').show()
+        autocmd VimResized  * silent! lua require('scrollbar').show()
 
-        " autocmd FocusGained * lua require('scrollbar').show()
-        " autocmd FocusLost   * lua require('scrollbar').clear()
+        " autocmd CursorHold  * silent! lua require('scrollbar').clear()
+
+        " autocmd FocusGained * silent! lua require('scrollbar').show()
+        " autocmd FocusLost   * silent! lua require('scrollbar').clear()
     augroup end
 
-    let g:scrollbar_excluded_filetypes = ['nerdtree']
+    let g:scrollbar_excluded_filetypes = ['nerdtree', 'vista_kind']
     let g:scrollbar_shape = {
                 \ 'head': '⍋',
                 \ 'tail': '⍒',
