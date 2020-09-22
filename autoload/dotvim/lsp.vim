@@ -30,3 +30,38 @@ function! dotvim#lsp#FormatOnSave(opts, timeout_ms) abort
         endtry
     endif
 endfunction
+
+function! dotvim#lsp#DocumentSymbolSink(symbol) abort
+    let l:parts = split(a:symbol, "\t")
+    let l:linenr = l:parts[1]
+    exec l:linenr
+endfunction
+
+function! dotvim#lsp#DocumentSymbol(symbols) abort
+    let l:bufname = bufname('%')
+
+    let l:source = []
+    for l:symbol in a:symbols
+        call extend(l:source, [printf("[%s] %s\t%d\t%d\t%s",
+                    \ l:symbol['kind'],
+                    \ l:symbol['name'],
+                    \ l:symbol['range']['start']['line']+1,
+                    \ l:symbol['range']['end']['line']+1,
+                    \ l:bufname,
+                    \ )])
+    endfor
+
+    call fzf#run(fzf#wrap('[LSP] DocumentSymbol', {
+                \ 'source': l:source,
+                \ 'sink': function('dotvim#lsp#DocumentSymbolSink'),
+                \ 'options': [
+                \   '+m', '+x',
+                \   '--tiebreak=index',
+                \   '--ansi',
+                \   '-d', '\t',
+                \   '--with-nth', '1,2,3',
+                \   '--prompt', 'Symbols> ',
+                \   '--preview', 'bat --highlight-line={2}:{3} --color=always {4}',
+                \   '--preview-window', '+{2}-10']
+                \ }))
+endfunction
