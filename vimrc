@@ -676,6 +676,9 @@ set smartindent
 set autoindent
 
 if has('nvim')
+    set pumblend=20
+    set winblend=20
+
     " https://github.com/neovim/neovim/issues/2897#issuecomment-115464516
     let g:terminal_color_0 = '#4e4e4e'
     let g:terminal_color_1 = '#d68787'
