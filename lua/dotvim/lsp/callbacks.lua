@@ -101,4 +101,23 @@ M["textDocument/rename"] = function(_err, _method, result)
     vim.lsp.util.apply_workspace_edit(result)
 end
 
+M["textDocument/documentSymbol"] = function(_err, _method, result)
+    if not result or vim.tbl_isempty(result) then return end
+
+    local symbol_kinds = vim.lsp.protocol.SymbolKind
+
+    local bufname = vim.api.nvim_buf_get_name(0)
+
+    local source = {}
+    for _, symbol in ipairs(result) do
+        print(vim.inspect(symbol))
+        table.insert(source, string.format("[%s] %s\t%d\t%d\t%s", symbol_kinds[symbol.kind], symbol.name, symbol.range.start.line+1, symbol.range["end"].line+1, bufname))
+    end
+
+    vim.fn["fzf#run"](vim.fn["fzf#wrap"]("[LSP] Document Symbols", {
+        source = source,
+        options = {'+m', '+x', '--tiebreak=index', '--ansi', '-d', '\t', '--with-nth', '1,2,3', '--prompt', 'Symbols> ', '--preview', "bat --highlight-line={2}:{3} --theme=OneHalfDark --color=always {4}", '--preview-window', '+{2}-10'},
+    }))
+end
+
 return M
