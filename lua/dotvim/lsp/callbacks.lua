@@ -101,18 +101,61 @@ M["textDocument/rename"] = function(_err, _method, result)
     vim.lsp.util.apply_workspace_edit(result)
 end
 
+local fzf_run = vim.fn["fzf#run"]
+local fzf_wrap = vim.fn["fzf#wrap"]
+
 M["textDocument/documentSymbol"] = function(_err, _method, result)
     if not result or vim.tbl_isempty(result) then return end
 
+    local bufname = vim.api.nvim_buf_get_name(0)
     local symbol_kinds = vim.lsp.protocol.SymbolKind
 
     local source = {}
-    for _, symbol in ipairs(result) do
-        symbol.kind = symbol_kinds[symbol.kind]
-        table.insert(source, symbol)
+
+    local draw_symbols
+    draw_symbols = function(symbols, depth)
+        for _, symbol in ipairs(symbols) do
+            local line = string.format("%s\t%d\t%d\t%s%s: %s",
+                bufname,
+                symbol.range.start.line + 1,
+                symbol.range["end"].line + 1,
+                string.rep("  ", depth),
+                symbol_kinds[symbol.kind],
+                symbol.name
+            )
+            table.insert(source, line)
+
+            draw_symbols(symbol.children or {}, depth + 1)
+        end
     end
 
-    vim.fn["dotvim#lsp#DocumentSymbol"](source)
+    draw_symbols(result, 0)
+
+    local wrapped = fzf_wrap("document_symbols", {
+        source = source,
+        options = {
+            '+m', '+x',
+            '--tiebreak=index',
+            '--ansi',
+            '-d', '\t',
+            '--with-nth', '4..',
+            '--reverse',
+            '--color', 'dark',
+            '--prompt', 'LSP DocumentSymbols> ',
+            '--preview', 'bat --theme="Monokai Extended Origin" --highlight-line={2}:{3} --color=always {1}',
+            '--preview-window', '+{2}-10'
+        }
+    })
+
+    wrapped["sink*"] = nil
+    wrapped.sink = function(line)
+        if not line or type(line) ~= "string" or string.len(line) == 0 then return end
+        local parts = vim.fn.split(line, "\t")
+        local linenr = parts[2]
+        vim.fn.execute(linenr)
+    end
+
+    fzf_run(wrapped)
 end
 
 return M
