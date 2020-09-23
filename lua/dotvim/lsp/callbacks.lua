@@ -101,8 +101,89 @@ M["textDocument/rename"] = function(_err, _method, result)
     vim.lsp.util.apply_workspace_edit(result)
 end
 
+local effect_map = {
+    bold = 1,
+    italic = 3,
+    underline = 4,
+}
+
+local escapeKey = string.char(27)
+
+local function wrap_in_group(text, hl_group)
+    local syn_id = vim.fn.synIDtrans(vim.fn.hlID(hl_group))
+    local mode = "cterm"
+    if vim.fn.has('termguicolors') and vim.api.nvim_get_option("termguicolors") then
+        mode = "gui"
+    end
+
+    local prefixes = {}
+    local suffixes = {}
+
+    local effects = {}
+
+    if mode == "gui" then
+        local fg = vim.fn.synIDattr(syn_id, "fg#", mode)
+        -- local bg = vim.fn.synIDattr(syn_id, "bg#", mode)
+
+        local prefix = escapeKey .. "[38;2"
+        local suffix = escapeKey .. "[0m"
+
+        for v in string.gmatch(fg, "%x%x") do
+            prefix = prefix .. ";" .. tonumber(v, 16)
+        end
+        prefix = prefix .. "m"
+
+        table.insert(prefixes, prefix)
+        table.insert(suffixes, suffix)
+    else
+        local fg = vim.fn.synIDattr(syn_id, "fg#", mode)
+        table.insert(effects, "38;5;" .. fg)
+    end
+
+    for e, n in pairs(effect_map) do
+        local ok = vim.fn.synIDattr(syn_id, e, mode)
+        if ok and ok == "1" then
+            table.insert(effects, n)
+        end
+    end
+
+    if #effects > 0 then
+        table.insert(prefixes, escapeKey .. "[" .. vim.fn.join(effects, ";") .. "m")
+        table.insert(suffixes, escapeKey .. "[0m")
+    end
+
+    return vim.fn.join(prefixes, "") .. text .. vim.fn.join(suffixes, "")
+end
+
+
 local fzf_run = vim.fn["fzf#run"]
 local fzf_wrap = vim.fn["fzf#wrap"]
+
+local symbol_highlights = {
+    _mt = {
+        __index = function(_table, key)
+            local default = {
+                Variable = "Identifier",
+                Struct = "Structure",
+                Class = "Structure",
+                Field = "Identifier",
+                Method = "Function",
+                EnumMember = "Purple"
+            }
+            local ft = vim.api.nvim_buf_get_option(0, "filetype")
+            if ft ~= "" then
+                local group = ft .. key
+                local syn_id = vim.fn.hlID(ft .. key)
+                if syn_id and syn_id > 0 then
+                    print("hit:", key, group)
+                    return group
+                end
+            end
+            return default[key] or key
+        end
+    },
+}
+setmetatable(symbol_highlights, symbol_highlights._mt)
 
 M["textDocument/documentSymbol"] = function(_err, _method, result)
     if not result or vim.tbl_isempty(result) then return end
@@ -115,13 +196,14 @@ M["textDocument/documentSymbol"] = function(_err, _method, result)
     local draw_symbols
     draw_symbols = function(symbols, depth)
         for _, symbol in ipairs(symbols) do
-            local line = string.format("%s\t%d\t%d\t%s%s: %s",
+            local kind = symbol_kinds[symbol.kind]
+            local line = string.format("%s\t%d\t%d\t%s[%s]: %s",
                 bufname,
                 symbol.range.start.line + 1,
                 symbol.range["end"].line + 1,
                 string.rep("  ", depth),
-                symbol_kinds[symbol.kind],
-                symbol.name
+                kind,
+                wrap_in_group(symbol.name, symbol_highlights[kind])
             )
             table.insert(source, line)
 
@@ -152,7 +234,7 @@ M["textDocument/documentSymbol"] = function(_err, _method, result)
         if not line or type(line) ~= "string" or string.len(line) == 0 then return end
         local parts = vim.fn.split(line, "\t")
         local linenr = parts[2]
-        vim.fn.execute(linenr)
+        vim.fn.execute("normal! " .. linenr .. "zz")
     end
 
     fzf_run(wrapped)
