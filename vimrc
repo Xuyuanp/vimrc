@@ -539,10 +539,10 @@ if has('nvim-0.5')
     " GitLens
     augroup dotvim_git_lens
         autocmd!
-        autocmd CursorHold * lua require('dotvim/util/gitlens').blameVirtualText()
-        autocmd CursorMoved,CursorMovedI * lua require('dotvim/util/gitlens').clearBlameVirtualText()
+        autocmd CursorHold * lua require('dotvim/git/lens').show()
+        autocmd CursorMoved,CursorMovedI * lua require('dotvim/git/lens').clear()
     augroup end
-    highlight! link GitLens Comment
+    highlight! default link GitLens SpecialComment
 
     " Scrollbar
     augroup dotvim_scrollbar
