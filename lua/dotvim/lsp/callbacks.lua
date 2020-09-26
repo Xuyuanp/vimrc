@@ -1,4 +1,5 @@
 local vim = vim
+local api = vim.api
 local logger = require("dotvim/log")
 
 local M = {}
@@ -44,7 +45,7 @@ M["textDocument/signatureHelp"] = function(_, _method, result)
         end
     end
 
-    local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+    local filetype = api.nvim_buf_get_option(0, "filetype")
     if filetype and type(signature.label) == "string" then
         signature.label = string.format("```%s\n%s\n```", filetype, signature.label)
     end
@@ -59,11 +60,11 @@ M["textDocument/signatureHelp"] = function(_, _method, result)
         pad_left = 1, pad_right = 1
     })
     if #highlight_label > 0 then
-        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlight_label[1], highlight_label[2])
+        api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlight_label[1], highlight_label[2])
     end
     if highlight_document then
         local line_count = vim.api.nvim_buf_line_count(bufnr)
-        vim.api.nvim_buf_add_highlight(bufnr, -1, 'Label', line_count-1, 0, -1)
+        api.nvim_buf_add_highlight(bufnr, -1, 'Label', line_count-1, 0, -1)
     end
     util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
@@ -112,7 +113,7 @@ local escapeKey = string.char(27)
 local function wrap_in_group(text, hl_group)
     local syn_id = vim.fn.synIDtrans(vim.fn.hlID(hl_group))
     local mode = "cterm"
-    if vim.fn.has('termguicolors') and vim.api.nvim_get_option("termguicolors") then
+    if vim.fn.has('termguicolors') and api.nvim_get_option("termguicolors") then
         mode = "gui"
     end
 
@@ -175,7 +176,6 @@ local symbol_highlights = {
                 local group = ft .. key
                 local syn_id = vim.fn.hlID(ft .. key)
                 if syn_id and syn_id > 0 then
-                    print("hit:", key, group)
                     return group
                 end
             end
@@ -186,9 +186,12 @@ local symbol_highlights = {
 setmetatable(symbol_highlights, symbol_highlights._mt)
 
 M["textDocument/documentSymbol"] = function(_err, _method, result)
-    if not result or vim.tbl_isempty(result) then return end
+    if not result or vim.tbl_isempty(result) then
+        print("no symbols")
+        return
+    end
 
-    local bufname = vim.api.nvim_buf_get_name(0)
+    local bufname = api.nvim_buf_get_name(0)
     local symbol_kinds = vim.lsp.protocol.SymbolKind
 
     local source = {}
@@ -197,14 +200,29 @@ M["textDocument/documentSymbol"] = function(_err, _method, result)
     draw_symbols = function(symbols, depth)
         for _, symbol in ipairs(symbols) do
             local kind = symbol_kinds[symbol.kind]
-            local line = string.format("%s\t%d\t%d\t%s[%s]: %s",
-                bufname,
-                symbol.range.start.line + 1,
-                symbol.range["end"].line + 1,
-                string.rep("  ", depth),
-                kind,
-                wrap_in_group(symbol.name, symbol_highlights[kind])
-            )
+            local line
+            if symbol.location then
+                -- for SymbolInformation
+                line = string.format("%s\t%d\t%d\t%s[%s]: %s",
+                    bufname,
+                    symbol.location.range.start.line + 1,
+                    symbol.location.range["end"].line + 1,
+                    string.rep("  ", depth),
+                    kind,
+                    wrap_in_group(symbol.name, symbol_highlights[kind])
+                )
+            else
+                -- for DocumentSymbols
+                line = string.format("%s\t%d\t%d\t%s[%s]: %s %s",
+                    bufname,
+                    symbol.range.start.line + 1,
+                    symbol.range["end"].line + 1,
+                    string.rep("  ", depth),
+                    kind,
+                    wrap_in_group(symbol.name, symbol_highlights[kind]),
+                    wrap_in_group(symbol.detail or "", "Comment")
+                )
+            end
             table.insert(source, line)
 
             draw_symbols(symbol.children or {}, depth + 1)
@@ -238,6 +256,14 @@ M["textDocument/documentSymbol"] = function(_err, _method, result)
     end
 
     fzf_run(wrapped)
+end
+
+do
+    local originals = {}
+    for name, _ in pairs(M) do
+        originals[name] = vim.lsp.callbacks[name]
+    end
+    M.originals = originals
 end
 
 return M
