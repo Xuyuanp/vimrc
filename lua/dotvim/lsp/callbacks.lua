@@ -1,6 +1,10 @@
 local vim = vim
 local api = vim.api
+
+local highlights = require("dotvim/lsp/highlights")
 local logger = require("dotvim/log")
+
+highlights.setup()
 
 local M = {}
 
@@ -102,90 +106,27 @@ M["textDocument/rename"] = function(_err, _method, result)
     vim.lsp.util.apply_workspace_edit(result)
 end
 
-local effect_map = {
-    bold = 1,
-    italic = 3,
-    underline = 4,
-}
-
-local escapeKey = string.char(27)
-
-local function wrap_in_group(text, hl_group)
-    local syn_id = vim.fn.synIDtrans(vim.fn.hlID(hl_group))
-    local mode = "cterm"
-    if vim.fn.has('termguicolors') and api.nvim_get_option("termguicolors") then
-        mode = "gui"
-    end
-
-    local prefixes = {}
-    local suffixes = {}
-
-    local effects = {}
-
-    if mode == "gui" then
-        local fg = vim.fn.synIDattr(syn_id, "fg#", mode)
-        -- local bg = vim.fn.synIDattr(syn_id, "bg#", mode)
-
-        local prefix = escapeKey .. "[38;2"
-        local suffix = escapeKey .. "[0m"
-
-        for v in string.gmatch(fg, "%x%x") do
-            prefix = prefix .. ";" .. tonumber(v, 16)
-        end
-        prefix = prefix .. "m"
-
-        table.insert(prefixes, prefix)
-        table.insert(suffixes, suffix)
-    else
-        local fg = vim.fn.synIDattr(syn_id, "fg#", mode)
-        table.insert(effects, "38;5;" .. fg)
-    end
-
-    for e, n in pairs(effect_map) do
-        local ok = vim.fn.synIDattr(syn_id, e, mode)
-        if ok and ok == "1" then
-            table.insert(effects, n)
-        end
-    end
-
-    if #effects > 0 then
-        table.insert(prefixes, escapeKey .. "[" .. vim.fn.join(effects, ";") .. "m")
-        table.insert(suffixes, escapeKey .. "[0m")
-    end
-
-    return vim.fn.join(prefixes, "") .. text .. vim.fn.join(suffixes, "")
-end
-
-
 local fzf_run = vim.fn["fzf#run"]
 local fzf_wrap = vim.fn["fzf#wrap"]
 
 local symbol_highlights = {
     _mt = {
-        __index = function(_table, key)
-            local default = {
-                Variable = "Identifier",
-                Struct = "Structure",
-                Class = "Structure",
-                Field = "Identifier",
-                Method = "Function",
-                EnumMember = "Purple"
-            }
+        __index = function(_table, kind)
             local ft = vim.api.nvim_buf_get_option(0, "filetype")
             if ft ~= "" then
-                local group = ft .. key
-                local syn_id = vim.fn.hlID(ft .. key)
+                local group = ft .. kind
+                local syn_id = vim.fn.hlID(ft .. kind)
                 if syn_id and syn_id > 0 then
                     return group
                 end
             end
-            return default[key] or key
+            return "LspKind" .. kind
         end
     },
 }
 setmetatable(symbol_highlights, symbol_highlights._mt)
 
-M["textDocument/documentSymbol"] = function(_err, _method, result)
+local function symbol_callback(_err, _method, result)
     if not result or vim.tbl_isempty(result) then
         print("no symbols")
         return
@@ -204,12 +145,12 @@ M["textDocument/documentSymbol"] = function(_err, _method, result)
             if symbol.location then
                 -- for SymbolInformation
                 line = string.format("%s\t%d\t%d\t%s[%s]: %s",
-                    bufname,
+                    vim.uri_to_fname(symbol.location.uri),
                     symbol.location.range.start.line + 1,
                     symbol.location.range["end"].line + 1,
                     string.rep("  ", depth),
                     kind,
-                    wrap_in_group(symbol.name, symbol_highlights[kind])
+                    highlights.wrap_text_in_hl_group(symbol.name, symbol_highlights[kind])
                 )
             else
                 -- for DocumentSymbols
@@ -219,8 +160,8 @@ M["textDocument/documentSymbol"] = function(_err, _method, result)
                     symbol.range["end"].line + 1,
                     string.rep("  ", depth),
                     kind,
-                    wrap_in_group(symbol.name, symbol_highlights[kind]),
-                    wrap_in_group(symbol.detail or "", "Comment")
+                    highlights.wrap_text_in_hl_group(symbol.name, symbol_highlights[kind]),
+                    highlights.wrap_text_in_hl_group(symbol.detail or "", "SpecialComment")
                 )
             end
             table.insert(source, line)
@@ -242,7 +183,7 @@ M["textDocument/documentSymbol"] = function(_err, _method, result)
             '--reverse',
             '--color', 'dark',
             '--prompt', 'LSP DocumentSymbols> ',
-            '--preview', 'bat --theme="Monokai Extended Origin" --highlight-line={2}:{3} --color=always {1}',
+            '--preview', 'bat --theme="Monokai Extended Origin" --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
             '--preview-window', '+{2}-10'
         }
     })
@@ -257,6 +198,9 @@ M["textDocument/documentSymbol"] = function(_err, _method, result)
 
     fzf_run(wrapped)
 end
+
+M["textDocument/documentSymbol"] = symbol_callback
+M["workspace/symbol"] = symbol_callback
 
 do
     local originals = {}
