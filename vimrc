@@ -771,6 +771,13 @@ nnoremap <silent># #zz
 nnoremap <silent>g* g*zz
 " }}}
 
+" Mimic emacs line editing in insert mode only {{{
+inoremap <C-a> <Home>
+inoremap <C-b> <Left>
+inoremap <C-e> <End>
+inoremap <C-f> <Right>
+" }}}
+
 set background=dark
 silent! colorscheme gruvbox-material
 
