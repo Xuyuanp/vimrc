@@ -248,7 +248,7 @@ if v:true " UI
 
     let g:rainbow_active          = 1
     let g:rainbow_conf            = {}
-    let g:rainbow_conf.separately = {'nerdtree': 0}
+    let g:rainbow_conf.separately = {'nerdtree': 0, 'fzf': 0}
 endif
 
 if v:true " git
