@@ -206,6 +206,67 @@ end
 M["textDocument/documentSymbol"] = symbol_callback
 M["workspace/symbol"] = symbol_callback
 
+M["textDocument/codeAction"] = function(_err, _method, actions)
+    if not actions or vim.tbl_isempty(actions) then
+        print("No code actions available")
+        return
+    end
+
+    local source = {}
+    local max_width = 0
+    for i, action in ipairs(actions) do
+        local title = action.title:gsub("\r\n", "\\r\\n")
+        title = title:gsub("\n", "\\n")
+        local line = string.format("%d\t[%d] %s", i, i, title)
+        max_width = math.max(max_width, line:len())
+        table.insert(source, line)
+    end
+
+    local cursor = api.nvim_win_get_cursor(0)
+    local win_width = api.nvim_win_get_width(0)
+    local win_height = api.nvim_win_get_height(0)
+
+    local wrapped = fzf_wrap("code_actions", {
+        source = source,
+        options = {
+            "+m", "+x",
+            "--tiebreak=index",
+            "--ansi",
+            "-d", "\t",
+            "--with-nth", "2..",
+            "--reverse",
+            "--color", "dark",
+            "--prompt", "LSP CodeActions> ",
+            -- "--phony",
+        },
+        window = {
+            height = #source + 4,
+            width = max_width + 8,
+            xoffset = (cursor[2] + max_width/2) / win_width,
+            yoffset = (cursor[1] - vim.fn.line("w0")) / win_height,
+        },
+    })
+    wrapped["sink*"] = nil
+    wrapped.sink = function(line)
+        if not line or type(line) ~= "string" or line:len() == 0 then return end
+
+        local parts = vim.split(line, "\t")
+        local choice = tonumber(parts[1])
+        local action_chosen = actions[choice]
+
+        if action_chosen.edit or type(action_chosen.command) == "table" then
+            if action_chosen.edit then
+                vim.lsp.util.apply_workspace_edit(action_chosen.edit)
+            else
+                vim.lsp.buf.execute_command(action_chosen.command)
+            end
+        else
+            vim.lsp.buf.execute_command(action_chosen)
+        end
+    end
+    fzf_run(wrapped)
+end
+
 do
     local originals = {}
     for name, _ in pairs(M) do
