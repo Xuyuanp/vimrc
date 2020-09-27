@@ -126,13 +126,13 @@ local symbol_highlights = {
 }
 setmetatable(symbol_highlights, symbol_highlights._mt)
 
-local function symbol_callback(_err, _method, result)
+local function symbol_callback(_err, _method, result, _client_id, bufnr)
     if not result or vim.tbl_isempty(result) then
         print("no symbols")
         return
     end
 
-    local bufname = api.nvim_buf_get_name(0)
+    local bufname = api.nvim_buf_get_name(bufnr or 0)
     local symbol_kinds = vim.lsp.protocol.SymbolKind
 
     local source = {}
@@ -264,6 +264,48 @@ M["textDocument/codeAction"] = function(_err, _method, actions)
             vim.lsp.buf.execute_command(action_chosen)
         end
     end
+    fzf_run(wrapped)
+end
+
+M["textDocument/references"] = function(_err, _method, references, _client_id, _bufnr)
+    if not references or vim.tbl_isempty(references) then
+        print("No references available")
+        return
+    end
+    local source = {}
+    for i, ref in ipairs(references) do
+        local fname = vim.uri_to_fname(ref.uri)
+        local start_line = ref.range.start.line + 1
+        local end_line = ref.range["end"].line + 1
+        local line = string.format("%s\t%d\t%d\t%d\t%s |%d ~ %d|", fname, start_line, end_line, i, fname, start_line, end_line)
+        table.insert(source, line)
+    end
+
+    local wrapped = fzf_wrap("document_symbols", {
+        source = source,
+        options = {
+            '+m', '+x',
+            '--tiebreak=index',
+            '--ansi',
+            '-d', '\t',
+            '--with-nth', '5..',
+            '--reverse',
+            '--color', 'dark',
+            '--prompt', 'LSP References> ',
+            '--preview', 'bat --theme="Monokai Extended Origin" --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
+            '--preview-window', '+{2}-10'
+        }
+    })
+
+    wrapped["sink*"] = nil
+    wrapped.sink = function(line)
+        if not line or type(line) ~= "string" or string.len(line) == 0 then return end
+        local parts = vim.fn.split(line, "\t")
+        local choice = tonumber(parts[4])
+        local ref_chosen = references[choice]
+        vim.lsp.util.jump_to_location(ref_chosen)
+    end
+
     fzf_run(wrapped)
 end
 
