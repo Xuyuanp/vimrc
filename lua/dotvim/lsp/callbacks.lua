@@ -1,10 +1,13 @@
 local vim = vim
 local api = vim.api
 
-local highlights = require("dotvim/lsp/highlights")
 local logger = require("dotvim/log")
 
+local highlights = require("dotvim/lsp/highlights")
 highlights.setup()
+
+local fzf_run = vim.fn["fzf#run"]
+local fzf_wrap = vim.fn["fzf#wrap"]
 
 local M = {}
 
@@ -106,9 +109,6 @@ M["textDocument/rename"] = function(_err, _method, result)
     vim.lsp.util.apply_workspace_edit(result)
 end
 
-local fzf_run = vim.fn["fzf#run"]
-local fzf_wrap = vim.fn["fzf#wrap"]
-
 local symbol_highlights = {
     _mt = {
         __index = function(_table, kind)
@@ -192,7 +192,11 @@ local function symbol_callback(_err, _method, result)
     wrapped.sink = function(line)
         if not line or type(line) ~= "string" or string.len(line) == 0 then return end
         local parts = vim.fn.split(line, "\t")
+        local filename = parts[1]
         local linenr = parts[2]
+        if filename ~= bufname then
+            api.nvim_command("e " .. filename)
+        end
         vim.fn.execute("normal! " .. linenr .. "zz")
     end
 
