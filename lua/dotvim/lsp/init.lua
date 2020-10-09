@@ -123,7 +123,7 @@ local langs = {
                     },
                 },
                 runtime = {
-                    version = "Lua 5.1"
+                    version = "LuaJIT"
                 },
                 workspace = {
                     library = detect_lua_library(),
