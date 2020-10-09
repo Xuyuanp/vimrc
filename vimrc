@@ -588,8 +588,8 @@ set autoread
 
 set scrolloff=10
 
-" Have the mouse enabled all the time:
-set mouse=a
+" fuck mouse
+set mouse-=a
 
 set modifiable
 set nowrap
