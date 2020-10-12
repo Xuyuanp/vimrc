@@ -675,6 +675,8 @@ set textwidth=800
 set smartindent
 set autoindent
 
+let g:vimsyn_embed = 'lPr'
+
 if has('nvim')
     set pumblend=20
     set winblend=20
