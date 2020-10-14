@@ -1,2 +1,2 @@
 " auto format by 'goimport'
-call dotvim#lsp#DisableAutoFormat()
+let g:lsp_disable_auto_format = v:true

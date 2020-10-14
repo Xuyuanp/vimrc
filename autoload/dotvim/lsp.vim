@@ -13,6 +13,7 @@ endfunction
 
 function! dotvim#lsp#FormatOnSave(opts, timeout_ms) abort
     if &modifiable ==# 0 | return | endif
+    if b:lsp_disable_auto_format | return | endif
 
     if exists('*dotvim#lsp#' . &filetype . '#FormatOnSave')
         call call('dotvim#lsp#' . &filetype . '#FormatOnSave', [a:opts, a:timeout_ms])
