@@ -302,6 +302,7 @@ if has('nvim-0.5')
     Plug 'euclidianAce/BetterLua.vim'
 
     Plug 'Xuyuanp/scrollbar.nvim'
+    Plug 'Xuyuanp/yanil'
 else
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 
@@ -413,7 +414,7 @@ if v:true " NERDTree and plugins
                 \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
     Plug 'xuyuanp/viz-nr2char'
 
-    map <C-E> :NERDTreeToggle<CR>
+    " map <C-E> :NERDTreeToggle<CR>
     let g:NERDTreeShowHidden            = 1
     let g:NERDTreeChDirMode             = 2
     let g:NERDTreeMouseMode             = 2
@@ -569,6 +570,9 @@ if has('nvim-0.5')
                 \ 'body': 'String',
                 \ 'tail': 'String',
                 \ }
+    " Yanil
+    silent! lua require("yanil/ui").setup()
+    nmap <C-e> :YanilToggle<CR>
 endif
 
 " Rename tmux window name automatically
