@@ -573,6 +573,10 @@ if has('nvim-0.5')
     " Yanil
     silent! lua require("yanil/ui").setup()
     nmap <C-e> :YanilToggle<CR>
+    augroup dotvim_auto_close_yanil
+        autocmd!
+        autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif
+    augroup end
 endif
 
 " Rename tmux window name automatically
