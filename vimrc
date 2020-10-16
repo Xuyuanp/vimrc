@@ -560,7 +560,7 @@ if has('nvim-0.5')
         " autocmd FocusLost   * silent! lua require('scrollbar').clear()
     augroup end
 
-    let g:scrollbar_excluded_filetypes = ['nerdtree', 'vista_kind']
+    let g:scrollbar_excluded_filetypes = ['nerdtree', 'vista_kind', 'Yanil']
     let g:scrollbar_shape = {
                 \ 'head': '⍋',
                 \ 'tail': '⍒',
