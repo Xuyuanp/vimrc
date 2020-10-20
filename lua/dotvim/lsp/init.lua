@@ -103,6 +103,7 @@ local langs = {
     [nvim_lsp.vimls] = {},
     [nvim_lsp.clojure_lsp] = {},
     [nvim_lsp.rust_analyzer] = {},
+    [nvim_lsp.clangd] = {},
     -- LspInstall sumneko_lua
     [nvim_lsp.sumneko_lua] = {
         root_dir = function(fname)
