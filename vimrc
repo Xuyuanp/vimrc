@@ -300,6 +300,7 @@ if has('nvim-0.5')
 
     " This is required for syntax highlighting
     Plug 'euclidianAce/BetterLua.vim'
+    let g:BetterLua_enable_emmylua = 1
 
     Plug 'Xuyuanp/scrollbar.nvim'
     Plug 'Xuyuanp/yanil'
