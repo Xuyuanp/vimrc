@@ -572,8 +572,7 @@ if has('nvim-0.5')
                 \ 'tail': 'String',
                 \ }
     " Yanil
-    silent! lua require("yanil").setup()
-    silent! lua require("yanil").apply_authors_config()
+    silent! lua require("dotvim/yanil").setup()
     nmap <C-e> :YanilToggle<CR>
     augroup dotvim_auto_close_yanil
         autocmd!
