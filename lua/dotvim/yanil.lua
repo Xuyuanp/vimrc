@@ -87,11 +87,19 @@ function M.setup()
                 decorators.link_to,
             }
         },
+        filters = {
+            function(name)
+                local patterns = { "^%.git$", "%.pyc", "^%.idea$", "^%.iml$", "^%.DS_Store$", "%.o$" }
+                for _, pat in ipairs(patterns) do
+                    if string.find(name, pat) then return true end
+                end
+            end,
+        },
         keymaps = {
             ["]c"] = git.jump_next,
             ["[c"] = git.jump_prev,
             gd = git_diff,
-        }
+        },
     }
 
     canvas.register_hooks {
