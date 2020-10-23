@@ -14,6 +14,9 @@ local function git_diff(_tree, node)
     local diff = git.diff(node)
     if not diff then return end
 
+    local winnr_bak = vim.fn.winnr()
+    local altwinnr_bak = vim.fn.winnr("#")
+
     local width, height = vim.o.columns, vim.o.lines
 
     local win_width = math.ceil(width * 0.8) - 4
@@ -39,7 +42,9 @@ local function git_diff(_tree, node)
     end
     table.insert(border_lines, '╚' .. string.rep('═', win_width) .. '╝')
     vim.api.nvim_buf_set_lines(border_bufnr, 0, -1, false, border_lines)
-    local _ = api.nvim_open_win(border_bufnr, true, border_opts)
+    local border_winnr = api.nvim_open_win(border_bufnr, true, border_opts)
+    api.nvim_win_set_option(border_winnr, "winblend", 0)
+    api.nvim_win_set_option(border_winnr, "winhl", "NormalFloat:")
 
     -- content
     local bufnr = api.nvim_create_buf(false, true)
@@ -62,11 +67,12 @@ local function git_diff(_tree, node)
     api.nvim_win_set_option(winnr, "winblend", 0)
     api.nvim_win_set_option(winnr, "winhl", "NormalFloat:")
     api.nvim_win_set_option(winnr, "number", true)
-    api.nvim_command('au BufWipeout <buffer> exe "silent bwipeout! "' .. border_bufnr)
+    api.nvim_command(string.format([[autocmd BufWipeout <buffer> execute "silent bwipeout! %d"]], border_bufnr))
+    api.nvim_command(string.format([[autocmd WinClosed  <buffer> execute "%dwincmd w" | execute "%dwincmd w"]], altwinnr_bak, winnr_bak))
 
     api.nvim_command(string.format([[command! -buffer Apply lua require("yanil/git").apply_buf(%d)]], bufnr))
     api.nvim_buf_set_keymap(bufnr, "n", "q", ":q<CR>", {nowait = true, noremap = false, silent = false})
-    api.nvim_buf_set_keymap(bufnr, "n", "<ESC>", ":q<CR>", {nowait = true, noremap = false, silent = false})
+    api.nvim_buf_set_keymap(bufnr, "n", "<ESC><ESC>", ":q<CR>", {nowait = true, noremap = false, silent = false})
 end
 
 function M.setup()
