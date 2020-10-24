@@ -10,6 +10,41 @@ function M.Augroup(group, fn)
     vim.api.nvim_command("augroup end")
 end
 
+local border_symbols = {
+    vertical = "┃",
+    horizontal = "━",
+    fill = " ",
+    corner = {
+        topleft = "┏",
+        topright = "┓",
+        bottomleft = "┗",
+        bottomright = "┛",
+    }
+}
+
+function border_symbols:draw(width, height)
+    local border_lines = { table.concat({
+        border_symbols.corner.topleft,
+        string.rep(border_symbols.horizontal, width),
+        border_symbols.corner.topright
+    }) }
+    local middle_line = table.concat({
+        border_symbols.vertical,
+        string.rep(border_symbols.fill, width),
+        border_symbols.vertical
+    })
+    for _ = 1, height do
+        table.insert(border_lines, middle_line)
+    end
+    table.insert(border_lines, table.concat({
+        border_symbols.corner.bottomleft,
+        string.rep(border_symbols.horizontal, width),
+        border_symbols.corner.bottomright
+    }))
+
+    return border_lines
+end
+
 function M.floating_window(bufnr)
     local winnr_bak = vim.fn.winnr()
     local altwinnr_bak = vim.fn.winnr("#")
@@ -32,12 +67,7 @@ function M.floating_window(bufnr)
     }
 
     local border_bufnr = api.nvim_create_buf(false, true)
-    local border_lines = { '╔' .. string.rep('═', win_width) .. '╗' }
-    local middle_line = '║' .. string.rep(' ', win_width) .. '║'
-    for _ = 1, win_height do
-        table.insert(border_lines, middle_line)
-    end
-    table.insert(border_lines, '╚' .. string.rep('═', win_width) .. '╝')
+    local border_lines = border_symbols:draw(win_width, win_height)
     vim.api.nvim_buf_set_lines(border_bufnr, 0, -1, false, border_lines)
     local border_winnr = api.nvim_open_win(border_bufnr, true, border_opts)
     api.nvim_win_set_option(border_winnr, "winblend", 0)

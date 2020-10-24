@@ -1,13 +1,14 @@
 local vim = vim
 local api = vim.api
 
-local util = require("dotvim/util")
+local dotutil = require("dotvim/util")
 
 local yanil      = require("yanil")
 local git        = require("yanil/git")
 local decorators = require("yanil/decorators")
 local devicons   = require("yanil/devicons")
 local canvas     = require("yanil/canvas")
+local utils      = require("yanil/utils")
 
 local M = {}
 
@@ -22,7 +23,7 @@ local function git_diff(_tree, node)
     api.nvim_buf_set_option(bufnr, "swapfile", false)
     api.nvim_buf_set_lines(bufnr, 0, -1, false, diff)
 
-    local winnr = util.floating_window(bufnr)
+    local winnr = dotutil.floating_window(bufnr)
 
     api.nvim_win_set_option(winnr, "cursorline", true)
     api.nvim_win_set_option(winnr, "winblend", 0)
@@ -66,7 +67,12 @@ function M.setup()
     }
 
     canvas.register_hooks {
-        on_enter = function() git.update(tree.cwd) end,
+        on_enter = function()
+            git.update(tree.cwd)
+            utils.buf_set_keymap(canvas.bufnr, "n", "q", function()
+                vim.fn.execute("quit")
+            end)
+        end,
     }
 
     canvas.setup {
