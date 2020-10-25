@@ -84,7 +84,7 @@ function M.setup()
             {
                 event = "User",
                 pattern = "YanilGitStatusChanged",
-                cmd = function() tree:refresh() end,
+                cmd = function() git.refresh_tree(tree) end,
             },
         }
     }
