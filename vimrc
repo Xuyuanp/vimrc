@@ -304,6 +304,33 @@ if has('nvim-0.5')
 
     Plug 'Xuyuanp/scrollbar.nvim'
     Plug 'Xuyuanp/yanil'
+
+    Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'romgrk/lib.kom'
+    Plug 'romgrk/barbar.nvim'
+
+    " Magic buffer-picking mode
+    nmap <silent>      <A-s> :BufferPick<CR>
+    " Sort automatically by...
+    nmap <silent> <Space>bd :BufferOrderByDirectory<CR>
+    nmap <silent> <Space>bl :BufferOrderByLanguage<CR>
+    " Move to previous/next
+    nmap <silent>    <A-h> :BufferPrevious<CR>
+    nmap <silent>    <A-l> :BufferNext<CR>
+    " Re-order to previous/next
+    nmap <silent>    <A-,> :BufferMovePrevious<CR>
+    nmap <silent>    <A-.> :BufferMoveNext<CR>
+    " Goto buffer in position...
+    nmap <silent>    <A-1> :BufferGoto 1<CR>
+    nmap <silent>    <A-2> :BufferGoto 2<CR>
+    nmap <silent>    <A-3> :BufferGoto 3<CR>
+    nmap <silent>    <A-4> :BufferGoto 4<CR>
+    nmap <silent>    <A-5> :BufferGoto 5<CR>
+    nmap <silent>    <A-6> :BufferGoto 6<CR>
+    nmap <silent>    <A-7> :BufferGoto 7<CR>
+    nmap <silent>    <A-8> :BufferGoto 8<CR>
+    nmap <silent>    <A-9> :BufferGoto 9<CR>
+    nmap <silent>    <A-0> :BufferLast<CR>
 else
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 
@@ -577,6 +604,11 @@ if has('nvim-0.5')
     augroup dotvim_auto_close_yanil
         autocmd!
         autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif
+    augroup end
+
+    augroup dotvim_nvim_devicons
+        autocmd!
+        autocmd ColorScheme * lua require('nvim-web-devicons').setup()
     augroup end
 endif
 
