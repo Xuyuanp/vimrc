@@ -33,6 +33,25 @@ local function git_diff(_tree, node)
     api.nvim_command(string.format([[command! -buffer Apply lua require("yanil/git").apply_buf(%d)]], bufnr))
 end
 
+local fzf_files = vim.fn["fzf#vim#files"]
+
+local function fzf_find(tree)
+    local winnr_bak = vim.fn.winnr()
+    local altwinnr_bak = vim.fn.winnr("#")
+
+    fzf_files(tree.cwd, {
+        ["sink*"] = function(lines)
+            if #lines == 1 then return end
+            local path = lines[2]
+            local node = tree.root:find_node_by_path(tree.cwd .. path)
+            if not node then print("file", path, "is not found or ignored"); return end
+
+            tree:go_to_node(node)
+        end
+    })
+    api.nvim_command(string.format([[autocmd WinClosed <buffer> execute "%dwincmd w" | execute "%dwincmd w"]], altwinnr_bak, winnr_bak))
+end
+
 function M.setup()
     yanil.setup()
 
@@ -63,6 +82,7 @@ function M.setup()
             ["]c"] = git.jump_next,
             ["[c"] = git.jump_prev,
             gd = git_diff,
+            ["<A-/>"] = fzf_find,
         },
     }
 
