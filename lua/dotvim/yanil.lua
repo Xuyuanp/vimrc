@@ -1,5 +1,6 @@
 local vim = vim
 local api = vim.api
+local loop = vim.loop
 
 local dotutil = require("dotvim/util")
 
@@ -52,6 +53,49 @@ local function fzf_find(tree)
     api.nvim_command(string.format([[autocmd WinClosed <buffer> execute "%dwincmd w" | execute "%dwincmd w"]], altwinnr_bak, winnr_bak))
 end
 
+local function create_node(tree, node)
+    node = node:is_dir() and node or node.parent
+    local name = vim.fn.input(string.format([[Add a childnode
+==========================================================
+Enter the dir/file name to be created. Dirs end with a '/'
+%s]], node.abs_path))
+    if not name or name == "" then return end
+    local path = node.abs_path .. name
+
+    -- checking file exists in schedule function to make input prompt close
+    vim.schedule(function()
+        if tree.root:find_node_by_path(path) then
+            print("path", path, "is already exists")
+            return
+        end
+    end)
+
+    local refresh = vim.schedule_wrap(function()
+        tree:refresh(node, {}, function()
+            node:load(true)
+            node:open()
+        end)
+        git.update(tree.cwd)
+    end)
+
+    if vim.endswith(path, "/") then
+        -- 0755
+        loop.fs_mkdir(path, 16877, function(err, ok)
+            assert(not err, err)
+            assert(ok, "mkdir failed")
+            refresh()
+        end)
+        return
+    end
+
+    -- 0644
+    loop.fs_open(path, "w+", 33188, function(err, fd)
+        assert(not err, err)
+        loop.fs_close(fd, function(c_err, ok) assert(not c_err and ok, "create file failed") end)
+        refresh()
+    end)
+end
+
 function M.setup()
     yanil.setup()
 
@@ -83,6 +127,7 @@ function M.setup()
             ["[c"] = git.jump_prev,
             gd = git_diff,
             ["<A-/>"] = fzf_find,
+            ["<A-a>"] = create_node,
         },
     }
 
