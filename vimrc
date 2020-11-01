@@ -73,6 +73,11 @@ if v:true " Languages
 
     " this feature breaks visual selection
     let g:ale_hover_cursor  = 0
+    let g:ale_linters = {
+                \ 'c': [],
+                \ 'cpp': [],
+                \ 'asm': [],
+                \ }
 endif
 
 if v:true " unit testing
