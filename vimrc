@@ -158,7 +158,6 @@ if v:true " UI
     Plug 'itchyny/lightline.vim'                     " The lightline plugin is a light and configurable statusline/tabline for Vim.
     Plug 'maximbaz/lightline-ale'                    " ALE indicator for the lightline vim plugin
     Plug 'deponian/vim-lightline-whitespace'         " Port of vim-airline's whitespace extension to lightline
-    Plug 'mengelbrecht/lightline-bufferline'         " A lightweight plugin to display the list of buffers in the lightline vim plugin
     Plug 'liuchengxu/vista.vim'
 
     nmap <C-t> :Vista!!<CR>
@@ -202,7 +201,6 @@ if v:true " UI
                 \ 'linter_infos':    'lightline#ale#infos',
                 \ 'linter_warnings': 'lightline#ale#warnings',
                 \ 'linter_errors':   'lightline#ale#errors',
-                \ 'buffers':         'dotvim#lightline#Buffers',
                 \ 'whitespace':      'lightline#whitespace#check',
                 \ }
     let g:lightline.component_type = {
@@ -212,13 +210,12 @@ if v:true " UI
                 \ 'linter_infos':    'right',
                 \ 'linter_warnings': 'warning',
                 \ 'linter_errors':   'error',
-                \ 'buffers':         'tabsel',
                 \ 'whitespace':      'warning',
                 \ }
     let g:lightline.active.left = [
                 \ ['mode', 'paste'],
                 \ ['fugitive'],
-                \ ['buffers']
+                \ ['filename'],
                 \ ]
     let g:lightline.active.right = [
                 \ ['whitespace'],
