@@ -95,7 +95,7 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'godlygeek/tabular'            " tabular - Vim script for text filtering and alignment
     Plug 'jiangmiao/auto-pairs'         " auto-pairs - insert or delete brackets, parens, quotes in pair
     Plug 'tpope/vim-surround'           " Surround - quoting/parenthesizing made simple
-    Plug 'terryma/vim-multiple-cursors' " multiple cursors
+    Plug 'mg979/vim-visual-multi'
     Plug 'junegunn/vim-easy-align'      " EasyAlign - A simple, easy-to-use Vim alignment plugin.
     Plug 'tomtom/tcomment_vim'          " Tcomment - An extensible & universal comment vim-plugin that also handles embedded filetypes
     Plug 'tpope/vim-scriptease'         " A Vim plugin for Vim plugins
