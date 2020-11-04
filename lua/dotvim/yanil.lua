@@ -96,6 +96,44 @@ Enter the dir/file name to be created. Dirs end with a '/'
     end)
 end
 
+local function delete_node(tree, node)
+    if node == tree.root then
+        print("You can NOT delete the root")
+        return
+    end
+    if node:is_dir() then node:load() end
+    if node:is_dir() and #node.entries > 0 then
+        local answer = vim.fn.input(string.format([[Delete the current node
+==========================================================
+STOP! Directory is not empty! To delete, type 'yes'
+
+%s: ]], node.abs_path))
+        if answer:lower() ~= "yes" then return end
+    end
+
+    local handle
+    handle = loop.spawn("rm", {
+        args = { "-rf", node.abs_path },
+    }, function(code)
+        handle:close()
+        if code ~= 0 then
+            print("delete node failed")
+            return
+        end
+
+        vim.schedule(function()
+            local next_node = tree:find_neighbor(node, 1) or tree:find_neighbor(node, -1)
+            local path = next_node.abs_path
+            local parent = node.parent
+            tree:refresh(parent, {}, function()
+                parent:load(true)
+            end)
+            tree:go_to_node(tree.root:find_node_by_path(path))
+            git.update(tree.cwd)
+        end)
+    end)
+end
+
 function M.setup()
     yanil.setup()
 
@@ -128,6 +166,7 @@ function M.setup()
             gd = git_diff,
             ["<A-/>"] = fzf_find,
             ["<A-a>"] = create_node,
+            ["<A-x>"] = delete_node,
         },
     }
 
