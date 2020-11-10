@@ -31,7 +31,7 @@ function M.show()
     if hash == "00000000" then
         text = "Not Commit Yet"
     else
-        local cmd = string.format("git show %s", hash) .. " --format='@%an | %s | %ar'"
+        local cmd = string.format("git show %s", hash) .. " --quiet --format='@%an | %s | %ar'"
         text = vim.fn.systemlist(cmd)[1]
         if text:find("fatal") then return end
     end
