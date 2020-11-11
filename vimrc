@@ -78,6 +78,9 @@ if v:true " Languages
                 \ 'cpp': [],
                 \ 'asm': [],
                 \ }
+    if has('osx')
+        let g:ale_proto_protoc_gen_lint_options = "-I '/usr/local/opt/protobuf/include' -I 'api/thirdparty'"
+    endif
 endif
 
 if v:true " unit testing
