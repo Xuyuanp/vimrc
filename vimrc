@@ -168,12 +168,6 @@ if v:true " UI
         let g:vista_default_executive = 'coc'
     endif
 
-    let g:lightline#ale#indicator_checking = nr2char(0xf110)
-    let g:lightline#ale#indicator_infos    = nr2char(0xf129)
-    let g:lightline#ale#indicator_warnings = nr2char(0xf071)
-    let g:lightline#ale#indicator_errors   = nr2char(0xf05e)
-    let g:lightline#ale#indicator_ok       = nr2char(0xf00c)
-
     let s:lightline_themes = ['one', 'seoul256', 'powerline', 'gruvbox_material']
     let g:lightline = {
                 \ 'colorscheme':  s:lightline_themes[localtime()%len(s:lightline_themes)],
@@ -238,15 +232,11 @@ if v:true " UI
                 \ '\<C-s>': 'S-B',
                 \ 't':      'T',
                 \ }
-    let g:lightline#ale#indicator_checking       = nr2char(0xf110)
-    let g:lightline#ale#indicator_infos          = nr2char(0xf129)
-    let g:lightline#ale#indicator_warnings       = nr2char(0xf071)
-    let g:lightline#ale#indicator_errors         = nr2char(0xf05e)
-
-    let g:lightline#bufferline#modified          = ' ' . nr2char(0xf444)
-    let g:lightline#bufferline#read_only         = ''
-    let g:lightline#bufferline#filename_modifier = ':p:t'
-    let g:lightline#bufferline#unnamed           = '[No Name]'
+    let g:lightline#ale#indicator_checking = nr2char(0xf110) . ' '
+    let g:lightline#ale#indicator_infos    = nr2char(0xf129) . ' '
+    let g:lightline#ale#indicator_warnings = nr2char(0xf071) . ' '
+    let g:lightline#ale#indicator_errors   = nr2char(0xf05e) . ' '
+    let g:lightline#ale#indicator_ok       = nr2char(0xf00c)
 
     let g:rainbow_active          = 1
     let g:rainbow_conf            = {}
