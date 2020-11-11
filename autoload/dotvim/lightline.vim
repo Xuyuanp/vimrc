@@ -3,7 +3,7 @@ scriptencoding utf-8
 let s:max_length = 70
 
 function! dotvim#lightline#Modified() abort
-    return &filetype ==# 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+    return &filetype ==# 'help' ? '' : &modified ? nr2char(0xf444) : &modifiable ? '' : '-'
 endfunction
 
 function! dotvim#lightline#Readonly() abort
