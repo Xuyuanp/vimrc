@@ -599,6 +599,7 @@ if has('nvim-0.5')
     augroup dotvim_auto_close_yanil
         autocmd!
         autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif
+        autocmd FocusGained * silent! lua require('yanil/git').update()
     augroup end
 
     augroup dotvim_nvim_devicons
