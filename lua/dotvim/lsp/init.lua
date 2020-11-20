@@ -1,4 +1,5 @@
 local vim = vim
+local api = vim.api
 
 local completion = require('completion')
 local lspconfig   = require('lspconfig')
@@ -8,9 +9,10 @@ local util       = require('dotvim/util')
 
 lsp_status.register_progress()
 
-local on_attach = function(client, completion_opts)
+local on_attach = function(client, bufnr)
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
     lsp_status.on_attach(client)
-    completion.on_attach(completion_opts or {
+    completion.on_attach({
         syntax_at_point = require("dotvim/treesitter/util").syntax_at_point,
     })
 
@@ -27,8 +29,8 @@ local on_attach = function(client, completion_opts)
         -- rust_analyzer crashed if no delay
         vim.defer_fn(function()
             util.Augroup('dotvim_lsp_init_on_attach', function()
-                vim.api.nvim_command("autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()")
-                vim.api.nvim_command("autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()")
+                api.nvim_command(string.format("autocmd CursorHold <buffer=%d> lua vim.lsp.buf.document_highlight()", bufnr))
+                api.nvim_command(string.format("autocmd CursorMoved <buffer=%d> lua vim.lsp.buf.clear_references()", bufnr))
             end)
         end, 5000)
     end
@@ -39,30 +41,30 @@ local on_attach = function(client, completion_opts)
     end)
 
     -- Keybindings for LSPs
-    vim.fn.nvim_set_keymap("n", "gd",  "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
-    vim.fn.nvim_set_keymap("n", "K",   "<cmd>lua vim.lsp.buf.hover()<CR>",            {noremap = false, silent = true})
-    vim.fn.nvim_set_keymap("n", "gi",  "<cmd>lua vim.lsp.buf.implementation()<CR>",   {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gk",  "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gtd", "<cmd>lua vim.lsp.buf.type_definition()<CR>",  {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gR",  "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "grr", "<cmd>lua vim.lsp.buf.rename()<CR>",           {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
-    vim.fn.nvim_set_keymap("n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",      {noremap = true, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "gd",  "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "K",   "<cmd>lua vim.lsp.buf.hover()<CR>",            {noremap = false, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "gi",  "<cmd>lua vim.lsp.buf.implementation()<CR>",   {noremap = true, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "gk",  "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "gtd", "<cmd>lua vim.lsp.buf.type_definition()<CR>",  {noremap = true, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "gR",  "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "grr", "<cmd>lua vim.lsp.buf.rename()<CR>",           {noremap = true, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "gds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "gws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",      {noremap = true, silent = true})
 
     -- Keybindings for diagnostic
-    vim.fn.nvim_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = false, silent = true})
-    vim.fn.nvim_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = false, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = false, silent = true})
+    api.nvim_buf_set_keymap(bufnr, "n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = false, silent = true})
 
     vim.fn.sign_define("LspDiagnosticsErrorSign",       {text = "E", texthl = "LspDiagnosticsError"})
     vim.fn.sign_define("LspDiagnosticsWarningSign",     {text = "W", texthl = "LspDiagnosticsWarning"})
     vim.fn.sign_define("LspDiagnosticsInformationSign", {text = "I", texthl = "LspDiagnosticsInformation"})
     vim.fn.sign_define("LspDiagnosticsHintSign",        {text = "H", texthl = "LspDiagnosticsHint"})
 
-    vim.api.nvim_command([[highlight! default link LspDiagnosticsError       Error]])
-    vim.api.nvim_command([[highlight! default link LspDiagnosticsWarning     WarningMsg]])
-    vim.api.nvim_command([[highlight! default link LspDiagnosticsInformation Normal]])
-    vim.api.nvim_command([[highlight! default link LspDiagnosticsHint        SpecialComment]])
+    api.nvim_command([[highlight! default link LspDiagnosticsError       Error]])
+    api.nvim_command([[highlight! default link LspDiagnosticsWarning     WarningMsg]])
+    api.nvim_command([[highlight! default link LspDiagnosticsInformation Normal]])
+    api.nvim_command([[highlight! default link LspDiagnosticsHint        SpecialComment]])
 end
 
 local default_capabilities = lsp_status.capabilities
