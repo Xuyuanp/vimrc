@@ -285,8 +285,8 @@ if v:true " colorschemes
 endif
 
 if has('nvim-0.5')
-    " Plug 'nvim-treesitter/nvim-treesitter'
-    " Plug 'nvim-treesitter/playground'
+    Plug 'nvim-treesitter/nvim-treesitter'
+    Plug 'nvim-treesitter/playground'
     Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/completion-nvim'
