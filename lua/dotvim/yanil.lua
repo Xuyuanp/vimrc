@@ -35,6 +35,7 @@ local function git_diff(_tree, node)
 end
 
 local fzf_files = vim.fn["fzf#vim#files"]
+local fzf_with_preview = vim.fn["fzf#vim#with_preview"]
 
 local function fzf_find(tree)
     local winnr_bak = vim.fn.winnr()
@@ -48,7 +49,8 @@ local function fzf_find(tree)
             if not node then print("file", path, "is not found or ignored"); return end
 
             tree:go_to_node(node)
-        end
+        end,
+        options = fzf_with_preview().options
     })
     api.nvim_command(string.format([[autocmd WinClosed <buffer> execute "%dwincmd w" | execute "%dwincmd w"]], altwinnr_bak, winnr_bak))
 end
