@@ -289,7 +289,6 @@ if has('nvim-0.5')
     " Plug 'nvim-treesitter/playground'
     Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-lua/lsp-status.nvim'
-    Plug 'nvim-lua/diagnostic-nvim'
     Plug 'nvim-lua/completion-nvim'
     Plug 'steelsojka/completion-buffers'
 
@@ -494,13 +493,6 @@ if has('nvim-0.5')
 
     " lsp
     silent! lua require('dotvim/lsp')
-
-    " diagnostic
-    let g:diagnostic_insert_delay        = 1
-    let g:diagnostic_show_sign           = 1
-    let g:diagnostic_enable_virtual_text = 1
-    let g:diagnostic_sign_priority       = 10000
-    let g:space_before_virtual_text      = 4
 
     " completion-nvim
     let g:completion_enable_auto_popup      = 1

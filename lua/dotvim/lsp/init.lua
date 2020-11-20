@@ -1,16 +1,14 @@
 local vim = vim
 
-local diagnostic = require('diagnostic')
 local completion = require('completion')
-local nvim_lsp   = require('nvim_lsp')
+local lspconfig   = require('lspconfig')
 local lsp_status = require("lsp-status")
-local callbacks  = require('dotvim/lsp/callbacks')
+local handlers   = require('dotvim/lsp/handlers')
 local util       = require('dotvim/util')
 
 lsp_status.register_progress()
 
 local on_attach = function(client, completion_opts)
-    diagnostic.on_attach(client)
     lsp_status.on_attach(client)
     completion.on_attach(completion_opts or {
         syntax_at_point = require("dotvim/treesitter/util").syntax_at_point,
@@ -53,8 +51,8 @@ local on_attach = function(client, completion_opts)
     vim.fn.nvim_set_keymap("n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",      {noremap = true, silent = true})
 
     -- Keybindings for diagnostic
-    vim.fn.nvim_set_keymap("n", "]d", "<cmd>NextDiagnosticCycle<CR>", {noremap = false, silent = true})
-    vim.fn.nvim_set_keymap("n", "[d", "<cmd>PrevDiagnosticCycle<CR>", {noremap = false, silent = true})
+    vim.fn.nvim_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = false, silent = true})
+    vim.fn.nvim_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = false, silent = true})
 
     vim.fn.sign_define("LspDiagnosticsErrorSign",       {text = "E", texthl = "LspDiagnosticsError"})
     vim.fn.sign_define("LspDiagnosticsWarningSign",     {text = "W", texthl = "LspDiagnosticsWarning"})
@@ -73,7 +71,7 @@ default_capabilities.textDocument.completion.completionItem.snippetSupport = fal
 local default_config = {
     on_attach = on_attach,
     capabilities = default_capabilities,
-    callbacks = callbacks,
+    handlers = handlers,
 }
 
 local function detect_lua_library()
@@ -91,24 +89,24 @@ local function detect_lua_library()
 end
 
 local langs = {
-    [nvim_lsp.gopls] = {
+    [lspconfig.gopls] = {
         settings = {
             gopls = {
                 usePlaceholders = false,
             }
         }
     },
-    [nvim_lsp.pyls] = {},
+    [lspconfig.pyls] = {},
     -- LspInstall vim-language-server
-    [nvim_lsp.vimls] = {},
-    [nvim_lsp.clojure_lsp] = {},
-    [nvim_lsp.rust_analyzer] = {},
-    [nvim_lsp.clangd] = {},
+    [lspconfig.vimls] = {},
+    [lspconfig.clojure_lsp] = {},
+    [lspconfig.rust_analyzer] = {},
+    [lspconfig.clangd] = {},
     -- LspInstall sumneko_lua
-    [nvim_lsp.sumneko_lua] = {
+    [lspconfig.sumneko_lua] = {
         root_dir = function(fname)
             -- default is git find_git_ancestor or home dir
-            return require('nvim_lsp/util').find_git_ancestor(fname) or vim.fn.fnamemodify(fname, ':p:h')
+            return require('lspconfig/util').find_git_ancestor(fname) or vim.fn.fnamemodify(fname, ':p:h')
         end,
         settings = {
             -- https://github.com/sumneko/vscode-lua/blob/master/setting/schema.json

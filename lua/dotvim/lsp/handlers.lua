@@ -126,7 +126,7 @@ local symbol_highlights = {
 }
 setmetatable(symbol_highlights, symbol_highlights._mt)
 
-local function symbol_callback(_err, _method, result, _client_id, bufnr)
+local function symbol_handler(_err, _method, result, _client_id, bufnr)
     if not result or vim.tbl_isempty(result) then
         print("no symbols")
         return
@@ -203,8 +203,8 @@ local function symbol_callback(_err, _method, result, _client_id, bufnr)
     fzf_run(wrapped)
 end
 
-M["textDocument/documentSymbol"] = symbol_callback
-M["workspace/symbol"] = symbol_callback
+M["textDocument/documentSymbol"] = symbol_handler
+M["workspace/symbol"] = symbol_handler
 
 M["textDocument/codeAction"] = function(_err, _method, actions)
     if not actions or vim.tbl_isempty(actions) then
@@ -312,7 +312,7 @@ end
 do
     local originals = {}
     for name, _ in pairs(M) do
-        originals[name] = vim.lsp.callbacks[name]
+        originals[name] = vim.lsp.handlers[name]
     end
     M.originals = originals
 end
