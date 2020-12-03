@@ -22,7 +22,7 @@ function M.parse_messages(messages)
             end
 
             if msg.percentage then
-                contents = contents .. ' ' .. msg.percentage
+                contents = contents .. ' ' .. string.format("%0.2f %%", msg.percentage)
             end
 
             if msg.spinner then
