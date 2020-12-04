@@ -5,9 +5,11 @@ local M = {}
 local function get_node_at_cursor(cursor)
     if not (vim.g.loaded_nvim_treesitter and vim.g.loaded_nvim_treesitter > 0) then return end
 
-    local parsers = require("nvim-treesitter/parsers")
-    if not parsers.has_parser() then return end
-    local root = parsers.get_parser():parse():root()
+    local parser = vim.treesitter.get_parser()
+    if not parser then return end
+    local tstrees = parser:parse()
+    if not tstrees or #tstrees == 0 then return end
+    local root = tstrees[1]:root()
     return root:named_descendant_for_range(cursor[1]-1, cursor[2]-1, cursor[1]-1, cursor[2]-1)
 end
 
