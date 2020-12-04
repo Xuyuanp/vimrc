@@ -14,6 +14,8 @@ local ignored_filetypes = {
 
 local ns_id = api.nvim_create_namespace("GitLens")
 
+local spaces = 10
+
 function M.show()
     local filetype = vim.api.nvim_buf_get_option(0, "filetype")
     if not filetype or filetype == "" or ignored_filetypes[filetype:lower()] then return end
@@ -23,8 +25,8 @@ function M.show()
 
     M.clear()
 
-    local line = api.nvim_win_get_cursor(0)
-    local blame = vim.fn.system(string.format("git blame -c -L %d,%d %s", line[1], line[1], fname))
+    local cursor = api.nvim_win_get_cursor(0)
+    local blame = vim.fn.system(string.format("git blame -c -L %d,%d %s", cursor[1], cursor[1], fname))
     if vim.v.shell_error > 0 then return end
     local hash = vim.split(blame, '%s')[1]
     local text
@@ -36,9 +38,9 @@ function M.show()
         if text:find("fatal") then return end
     end
 
-    text = " : " .. text
+    text = string.rep(" ", spaces) .. ": " .. text
 
-    api.nvim_buf_set_virtual_text(0, ns_id, line[1]-1, {{ text, "GitLens" }}, {})
+    api.nvim_buf_set_virtual_text(0, ns_id, cursor[1]-1, {{ text, "GitLens" }}, {})
 end
 
 function M.clear()
