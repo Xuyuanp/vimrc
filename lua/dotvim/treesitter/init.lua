@@ -1,11 +1,5 @@
 local ts_configs = require('nvim-treesitter.configs')
 
-local hlmap = require("nvim-treesitter.highlight").hl_map
-
--- for rainbow brackets
-hlmap["punctuation.delimiter"] = "Delimiter"
-hlmap["punctuation.bracket"] = nil
-
 ts_configs.setup {
     ensure_installed = {'go', 'python'},      -- one of "all", "language", or a list of languages
     highlight = {
@@ -51,6 +45,10 @@ ts_configs.setup {
             ["structure"] = "Structure",
             ["include"] = "Include",
 
+            -- for rainbow
+            ["punctuation.delimiter"] = "Delimiter",
+            ["punctuation.bracket"] = "",
+
             -- variable
             -- ["variable"] = "TSVariable",
             -- ["variable.builtin"] = "TSVariableBuiltin",
@@ -73,12 +71,12 @@ ts_configs.setup {
     refactor = {
         highlight_definitions = { enable = true },
         highlight_current_scope = {
-            enable = false
+            enable = true
         },
         navigation = { enable = false },
         smart_rename = { enable = false }
     },
-    textobjects = { enable = false },
+    textobjects = { enable = true },
     playground = {
         enable = true,
         disable = {},
