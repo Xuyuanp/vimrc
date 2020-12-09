@@ -180,6 +180,7 @@ local function symbol_handler(_err, _method, result, _client_id, bufnr)
             '--ansi',
             '-d', '\t',
             '--with-nth', '4..',
+            '--cycle',
             '--reverse',
             '--color', 'dark',
             '--prompt', 'LSP DocumentSymbols> ',
