@@ -310,6 +310,10 @@ if has('nvim-0.5')
     Plug 'romgrk/lib.kom'
     Plug 'romgrk/barbar.nvim'
 
+    let g:bufferline = get(g:, 'bufferline', {})
+    let g:bufferline.icons = v:true
+    let g:bufferline.closable = v:false
+    let g:bufferline.clickable = v:false
     " Magic buffer-picking mode
     nmap <silent>      <A-s> :BufferPick<CR>
     " Sort automatically by...
