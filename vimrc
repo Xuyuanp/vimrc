@@ -30,6 +30,14 @@ endtry
 
 silent! source $VIMRC_PLUG_FIRST
 
+Plug 'voldikss/vim-translator'
+
+let g:translator_history_enable = v:true
+
+if v:true " haskell
+    Plug 'neovimhaskell/haskell-vim'
+endif
+
 if v:true " Languages
     Plug 'fatih/vim-go', { 'tag': '*' }                     " go
     Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
@@ -77,6 +85,7 @@ if v:true " Languages
                 \ 'c': [],
                 \ 'cpp': [],
                 \ 'asm': [],
+                \ 'haskell': [],
                 \ }
     if has('osx')
         let g:ale_proto_protoc_gen_lint_options = "-I '/usr/local/opt/protobuf/include' -I 'api/thirdparty'"
