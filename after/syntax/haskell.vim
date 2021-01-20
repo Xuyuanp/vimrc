@@ -26,13 +26,22 @@ syntax match hsNiceOperator "\\\\\ze[[:alpha:][:space:]_([]" conceal cchar=∖
 " syntax match hsNiceOperator "||\ze[[:alpha:][:space:]_([]" conceal cchar=∨
 " syntax match hsNiceOperator "&&\ze[[:alpha:][:space:]_([]" conceal cchar=∧
 
+syntax match hsNiceOperator ">>=" conceal cchar=
 syntax match hsNiceOperator "<\*>"      conceal cchar=⊛
-syntax match hsNiceOperator "`mappend`" conceal cchar=⊕
-syntax match hsNiceOperator "\<mappend\>" conceal cchar=⊕
-syntax match hsNiceOperator "<>"        conceal cchar=⊕
+" syntax match hsNiceOperator "`mappend`" conceal cchar=⊕
+" syntax match hsNiceOperator "\<mappend\>" conceal cchar=⊕
+" syntax match hsNiceOperator "<>"        conceal cchar=⊕
 syntax match hsNiceOperator "\<empty\>" conceal cchar=∅
 syntax match hsNiceOperator "\<mzero\>" conceal cchar=∅
 syntax match hsNiceOperator "\<mempty\>" conceal cchar=∅
+
+" syntax match hsNiceOperator "<\*>"      conceal cchar=硫
+syntax match hsNiceOperator "`mappend`" conceal cchar=落
+syntax match hsNiceOperator "\<mappend\>" conceal cchar=落
+syntax match hsNiceOperator "<>"        conceal cchar=落
+" syntax match hsNiceOperator "\<empty\>" conceal cchar=
+" syntax match hsNiceOperator "\<mzero\>" conceal cchar=
+" syntax match hsNiceOperator "\<mempty\>" conceal cchar=
 
 hi link hsNiceOperator Operator
 hi! link Conceal Operator
