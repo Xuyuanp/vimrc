@@ -309,6 +309,8 @@ if has('nvim-0.5')
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/completion-nvim'
     Plug 'steelsojka/completion-buffers'
+    Plug 'wellle/tmux-complete.vim'
+    Plug 'albertoCaroM/completion-tmux', { 'branch': 'main' }
 
     " This is required for syntax highlighting
     Plug 'euclidianAce/BetterLua.vim'
@@ -534,11 +536,11 @@ if has('nvim-0.5')
                 \   ],
                 \   'string': [
                 \      {'complete_items': ['path']},
-                \      {'complete_items': ['buffer', 'buffers']},
+                \      {'complete_items': ['buffer', 'buffers', 'tmux']},
                 \   ],
                 \   'comment': [
                 \      {'complete_items': ['path']},
-                \      {'complete_items': ['buffer', 'buffers']},
+                \      {'complete_items': ['buffer', 'buffers', 'tmux']},
                 \   ],
                 \ },
                 \ }
