@@ -38,6 +38,10 @@ if v:true " haskell
     Plug 'neovimhaskell/haskell-vim'
 endif
 
+if v:true " kOS
+    Plug 'KSP-KOS/EditorTools', { 'branch': 'develop', 'rtp': 'VIM/vim-kerboscript'}
+endif
+
 if v:true " Languages
     Plug 'fatih/vim-go', { 'tag': '*' }                     " go
     Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
