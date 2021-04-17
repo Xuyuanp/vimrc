@@ -7,7 +7,15 @@ local highlights = require("dotvim/lsp/highlights")
 highlights.setup()
 
 local fzf_run = vim.fn["fzf#run"]
-local fzf_wrap = vim.fn["fzf#wrap"]
+local _fzf_wrap = vim.fn["fzf#wrap"]
+local fzf_wrap = function(name, spec, fullscreen)
+    local wrapped = _fzf_wrap(name, spec, fullscreen or false)
+
+    wrapped["sink*"] = spec["sink*"]
+    wrapped.sink = spec["sink"]
+
+    return wrapped
+end
 
 local M = {}
 
@@ -186,20 +194,18 @@ local function symbol_handler(_err, _method, result, _client_id, bufnr)
             '--prompt', 'LSP DocumentSymbols> ',
             '--preview', 'bat --theme="Monokai Extended Origin" --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
             '--preview-window', '+{2}-10'
-        }
+        },
+        sink = function(line)
+            if not line or type(line) ~= "string" or string.len(line) == 0 then return end
+            local parts = vim.fn.split(line, "\t")
+            local filename = parts[1]
+            local linenr = parts[2]
+            if filename ~= bufname then
+                api.nvim_command("e " .. filename)
+            end
+            vim.fn.execute("normal! " .. linenr .. "zz")
+        end,
     })
-
-    wrapped["sink*"] = nil
-    wrapped.sink = function(line)
-        if not line or type(line) ~= "string" or string.len(line) == 0 then return end
-        local parts = vim.fn.split(line, "\t")
-        local filename = parts[1]
-        local linenr = parts[2]
-        if filename ~= bufname then
-            api.nvim_command("e " .. filename)
-        end
-        vim.fn.execute("normal! " .. linenr .. "zz")
-    end
 
     fzf_run(wrapped)
 end
@@ -246,25 +252,25 @@ M["textDocument/codeAction"] = function(_err, _method, actions)
             xoffset = (cursor[2] + max_width/2) / win_width,
             yoffset = (cursor[1] - vim.fn.line("w0")) / win_height,
         },
-    })
-    wrapped["sink*"] = nil
-    wrapped.sink = function(line)
-        if not line or type(line) ~= "string" or line:len() == 0 then return end
+        sink = function(line)
+            if not line or type(line) ~= "string" or line:len() == 0 then return end
 
-        local parts = vim.split(line, "\t")
-        local choice = tonumber(parts[1])
-        local action_chosen = actions[choice]
+            local parts = vim.split(line, "\t")
+            local choice = tonumber(parts[1])
+            local action_chosen = actions[choice]
 
-        if action_chosen.edit or type(action_chosen.command) == "table" then
-            if action_chosen.edit then
-                vim.lsp.util.apply_workspace_edit(action_chosen.edit)
+            if action_chosen.edit or type(action_chosen.command) == "table" then
+                if action_chosen.edit then
+                    vim.lsp.util.apply_workspace_edit(action_chosen.edit)
+                end
+                if type(action_chosen.command) == "table" then
+                    vim.lsp.buf.execute_command(action_chosen.command)
+                end
             else
-                vim.lsp.buf.execute_command(action_chosen.command)
+                vim.lsp.buf.execute_command(action_chosen)
             end
-        else
-            vim.lsp.buf.execute_command(action_chosen)
-        end
-    end
+        end,
+    })
     fzf_run(wrapped)
 end
 
@@ -295,17 +301,15 @@ M["textDocument/references"] = function(_err, _method, references, _client_id, _
             '--prompt', 'LSP References> ',
             '--preview', 'bat --theme="Monokai Extended Origin" --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
             '--preview-window', '+{2}-10'
-        }
+        },
+        sink = function(line)
+            if not line or type(line) ~= "string" or string.len(line) == 0 then return end
+            local parts = vim.fn.split(line, "\t")
+            local choice = tonumber(parts[4])
+            local ref_chosen = references[choice]
+            vim.lsp.util.jump_to_location(ref_chosen)
+        end,
     })
-
-    wrapped["sink*"] = nil
-    wrapped.sink = function(line)
-        if not line or type(line) ~= "string" or string.len(line) == 0 then return end
-        local parts = vim.fn.split(line, "\t")
-        local choice = tonumber(parts[4])
-        local ref_chosen = references[choice]
-        vim.lsp.util.jump_to_location(ref_chosen)
-    end
 
     fzf_run(wrapped)
 end
