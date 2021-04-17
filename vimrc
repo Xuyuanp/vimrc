@@ -30,18 +30,6 @@ endtry
 
 silent! source $VIMRC_PLUG_FIRST
 
-Plug 'voldikss/vim-translator'
-
-let g:translator_history_enable = v:true
-
-if v:true " haskell
-    Plug 'neovimhaskell/haskell-vim'
-endif
-
-if v:true " kOS
-    Plug 'KSP-KOS/EditorTools', { 'branch': 'develop', 'rtp': 'VIM/vim-kerboscript'}
-endif
-
 if v:true " Languages
     Plug 'fatih/vim-go', { 'tag': '*' }                     " go
     Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
@@ -52,6 +40,8 @@ if v:true " Languages
     Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
     Plug 'plasticboy/vim-markdown'
     Plug 'rust-lang/rust.vim'
+    Plug 'neovimhaskell/haskell-vim'
+    Plug 'KSP-KOS/EditorTools', { 'branch': 'develop', 'rtp': 'VIM/vim-kerboscript'}
 
     let g:go_highlight_build_constraints      = 1
     let g:go_highlight_types                  = 1
@@ -94,6 +84,11 @@ if v:true " Languages
     if has('osx')
         let g:ale_proto_protoc_gen_lint_options = "-I '/usr/local/opt/protobuf/include' -I 'api/thirdparty'"
     endif
+
+    augroup dotvim_python_header
+        autocmd!
+        autocmd BufNewFile python o#!/usr/bin/env python\n<ESC>
+    augroup END
 endif
 
 if v:true " unit testing
@@ -117,6 +112,7 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'tpope/vim-scriptease'         " A Vim plugin for Vim plugins
     Plug 'bronson/vim-trailing-whitespace'
     Plug 'dstein64/vim-startuptime'
+    Plug 'voldikss/vim-translator'
 
     vnoremap <CR><Space>   :EasyAlign\<CR>
     vnoremap <CR>2<Space>  :EasyAlign2\<CR>
@@ -128,6 +124,8 @@ if v:true " Productive tools (align, comment, tabular...)
     vnoremap <CR>"         :EasyAlign"<CR>
 
     nnoremap <silent><leader><space> :FixWhitespace<CR>
+
+    let g:translator_history_enable = v:true
 endif
 
 if v:true " FZF
