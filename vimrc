@@ -113,6 +113,7 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'bronson/vim-trailing-whitespace'
     Plug 'dstein64/vim-startuptime'
     Plug 'voldikss/vim-translator'
+    Plug 'sunjon/shade.nvim'            " An Nvim lua plugin that dims your inactive windows
 
     vnoremap <CR><Space>   :EasyAlign\<CR>
     vnoremap <CR>2<Space>  :EasyAlign2\<CR>
@@ -625,6 +626,9 @@ if has('nvim-0.5')
         autocmd!
         autocmd ColorScheme * lua require('nvim-web-devicons').setup()
     augroup end
+
+    " shade.nvim
+    silent! lua require('dotvim')
 endif
 
 " Rename tmux window name automatically
