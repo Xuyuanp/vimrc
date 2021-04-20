@@ -297,6 +297,8 @@ if has('nvim-0.5')
     Plug 'nvim-treesitter/playground'
     Plug 'romgrk/nvim-treesitter-context'
 
+    Plug 'nvim-lua/plenary.nvim'
+
     Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/completion-nvim'

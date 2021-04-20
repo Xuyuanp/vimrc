@@ -4,6 +4,8 @@ local loop = vim.loop
 
 local dotutil = require("dotvim/util")
 
+local pjob = require("plenary/job")
+
 local yanil      = require("yanil")
 local git        = require("yanil/git")
 local decorators = require("yanil/decorators")
@@ -113,27 +115,27 @@ STOP! Directory is not empty! To delete, type 'yes'
         if answer:lower() ~= "yes" then return end
     end
 
-    local handle
-    handle = loop.spawn("rm", {
+    pjob:new({
+        command = "rm",
         args = { "-rf", node.abs_path },
-    }, function(code)
-        handle:close()
-        if code ~= 0 then
-            print("delete node failed")
-            return
-        end
+        on_exit = function(_job, code, _signal)
+            if code ~= 0 then
+                print("delete node failed")
+                return
+            end
 
-        vim.schedule(function()
-            local next_node = tree:find_neighbor(node, 1) or tree:find_neighbor(node, -1)
-            local path = next_node.abs_path
-            local parent = node.parent
-            tree:refresh(parent, {}, function()
-                parent:load(true)
+            vim.schedule(function()
+                local next_node = tree:find_neighbor(node, 1) or tree:find_neighbor(node, -1)
+                local path = next_node.abs_path
+                local parent = node.parent
+                tree:refresh(parent, {}, function()
+                    parent:load(true)
+                end)
+                tree:go_to_node(tree.root:find_node_by_path(path))
+                git.update(tree.cwd)
             end)
-            tree:go_to_node(tree.root:find_node_by_path(path))
-            git.update(tree.cwd)
-        end)
-    end)
+        end,
+    }):start()
 end
 
 function M.setup()
