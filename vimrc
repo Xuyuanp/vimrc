@@ -14,19 +14,7 @@ let g:plug_home = has('nvim') ?
 
 silent! source $VIMRC_PLUG_PRE
 
-try
-    call plug#begin()
-catch /Unknown\ function/
-    call dotvim#log#warn('Plug not found, installing...')
-    call dotvim#plug#Install(
-                \ has('nvim') ?
-                \ stdpath('data') . '/site/autoload/plug.vim' :
-                \ expand('~/.vim/autoload/plug.vim')
-                \ )
-    call dotvim#log#info('Plug installed')
-
-    call plug#begin()
-endtry
+call dotvim#plug#must_begin()
 
 silent! source $VIMRC_PLUG_FIRST
 
