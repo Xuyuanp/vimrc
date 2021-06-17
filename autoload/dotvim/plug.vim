@@ -2,28 +2,32 @@ let s:is_win = has('win16') || has('win32') || has('win64')
 
 let s:plug_url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-function! dotvim#plug#must_begin() abort
+function! dotvim#plug#MustBegin() abort
     try
         call plug#begin()
     catch /Unknown\ function/
         call dotvim#log#warn('Plug not found, installing...')
-        call dotvim#plug#Install(
+        let l:ret = dotvim#plug#Install(
                     \ has('nvim') ?
                     \ stdpath('data') . '/site/autoload/plug.vim' :
                     \ expand('~/.vim/autoload/plug.vim')
                     \ )
-        call dotvim#log#info('Plug installed')
+        if l:ret == 0
+            call dotvim#log#info('Plug installed')
+        endif
+        execute 'quit'
     endtry
 endfunction
 
 function! dotvim#plug#Install(plug_file) abort
     if !executable('curl')
         call dotvim#log#error("'curl' command not found")
-        return
+        return -1
     endif
 
     let l:curl_bin = s:is_win ? 'curl.ps1' : 'curl'
     call system(join([l:curl_bin, '-fLo', a:plug_file, '--create-dirs', s:plug_url], ' '))
+    return v:shell_error
 endfunction
 
 " open GitHub URLs on browser

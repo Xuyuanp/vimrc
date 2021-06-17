@@ -14,7 +14,7 @@ let g:plug_home = has('nvim') ?
 
 silent! source $VIMRC_PLUG_PRE
 
-call dotvim#plug#must_begin()
+call dotvim#plug#MustBegin()
 
 silent! source $VIMRC_PLUG_FIRST
 
