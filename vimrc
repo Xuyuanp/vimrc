@@ -31,6 +31,9 @@ if v:true " Languages
     Plug 'neovimhaskell/haskell-vim'
     Plug 'KSP-KOS/EditorTools', { 'branch': 'develop', 'rtp': 'VIM/vim-kerboscript'}
 
+    Plug 'milisims/nvim-luaref'
+    Plug 'nanotee/luv-vimdocs'
+
     let g:go_highlight_build_constraints      = 1
     let g:go_highlight_types                  = 1
     let g:go_highlight_extra_types            = 1
