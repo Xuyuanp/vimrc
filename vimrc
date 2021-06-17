@@ -300,6 +300,7 @@ if has('nvim-0.5')
     Plug 'nvim-lua/plenary.nvim'
 
     Plug 'neovim/nvim-lspconfig'
+    Plug 'kabouzeid/nvim-lspinstall', { 'branch': 'main' }
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/completion-nvim'
     Plug 'steelsojka/completion-buffers'
@@ -419,11 +420,9 @@ if has('osx') && executable('cliclick')
     augroup end
 endif
 
-if has('nvim')
-    silent! lua require'colorizer'.setup()
-endif
-
 if has('nvim-0.5')
+    silent! lua require'colorizer'.setup()
+
     " treesitter
     silent! lua require('dotvim/treesitter')
 
