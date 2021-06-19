@@ -71,7 +71,7 @@ M["textDocument/signatureHelp"] = function(_, _method, result)
         return
     end
 
-    local bufnr, winnr = util.fancy_floating_markdown(lines, {
+    local bufnr, winnr = util.open_floating_preview(lines, "markdown", {
         pad_left = 1, pad_right = 1
     })
     if #highlight_label > 0 then
