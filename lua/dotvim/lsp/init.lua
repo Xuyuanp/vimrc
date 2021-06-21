@@ -99,7 +99,6 @@ local langs = {
             }
         }
     },
-    -- LspInstall sumneko_lua
     lua = {
         root_dir = function(fname)
             -- default is git find_git_ancestor or home dir
