@@ -105,6 +105,7 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'dstein64/vim-startuptime'
     Plug 'voldikss/vim-translator'
     Plug 'sunjon/shade.nvim'            " An Nvim lua plugin that dims your inactive windows
+    Plug 'matze/vim-move'               " Plugin to move lines and selections up and down
 
     vnoremap <CR><Space>   :EasyAlign\<CR>
     vnoremap <CR>2<Space>  :EasyAlign2\<CR>
