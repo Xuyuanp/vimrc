@@ -192,7 +192,7 @@ local function symbol_handler(_err, _method, result, _client_id, bufnr)
             '--reverse',
             '--color', 'dark',
             '--prompt', 'LSP DocumentSymbols> ',
-            '--preview', 'bat --theme="Monokai Extended Origin" --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
+            '--preview', 'bat --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
             '--preview-window', '+{2}-10'
         },
         sink = function(line)
@@ -299,7 +299,7 @@ M["textDocument/references"] = function(_err, _method, references, _client_id, _
             '--reverse',
             '--color', 'dark',
             '--prompt', 'LSP References> ',
-            '--preview', 'bat --theme="Monokai Extended Origin" --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
+            '--preview', 'bat --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
             '--preview-window', '+{2}-10'
         },
         sink = function(line)
