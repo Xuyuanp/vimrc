@@ -2,20 +2,13 @@ local vim = vim
 local api = vim.api
 
 local logger = require("dotvim/log")
+local dotutil = require("dotvim/util")
 
 local highlights = require("dotvim/lsp/highlights")
 highlights.setup()
 
-local fzf_run = vim.fn["fzf#run"]
-local _fzf_wrap = vim.fn["fzf#wrap"]
-local fzf_wrap = function(name, spec, fullscreen)
-    local wrapped = _fzf_wrap(name, spec, fullscreen or false)
-
-    wrapped["sink*"] = spec["sink*"]
-    wrapped.sink = spec["sink"]
-
-    return wrapped
-end
+local fzf_run = dotutil.fzf_run
+local fzf_wrap = dotutil.fzf_wrap
 
 local M = {}
 

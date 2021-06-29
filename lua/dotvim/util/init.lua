@@ -1,13 +1,25 @@
 local vim = vim
 local api = vim.api
+local vfn = vim.fn
 
 local M = {}
 
+M.fzf_run = vfn["fzf#run"]
+local _fzf_wrap = vfn["fzf#wrap"]
+M.fzf_wrap = function(name, spec, fullscreen)
+    local wrapped = _fzf_wrap(name, spec, fullscreen or false)
+
+    wrapped["sink*"] = spec["sink*"]
+    wrapped.sink = spec["sink"]
+
+    return wrapped
+end
+
 function M.Augroup(group, fn)
-    vim.api.nvim_command("augroup "..group)
-    vim.api.nvim_command("autocmd!")
+    api.nvim_command("augroup "..group)
+    api.nvim_command("autocmd!")
     fn()
-    vim.api.nvim_command("augroup end")
+    api.nvim_command("augroup end")
 end
 
 local border_symbols = {
@@ -46,8 +58,8 @@ function border_symbols:draw(width, height)
 end
 
 function M.floating_window(bufnr)
-    local winnr_bak = vim.fn.winnr()
-    local altwinnr_bak = vim.fn.winnr("#")
+    local winnr_bak = vfn.winnr()
+    local altwinnr_bak = vfn.winnr("#")
 
     local width, height = vim.o.columns, vim.o.lines
 
@@ -68,7 +80,7 @@ function M.floating_window(bufnr)
 
     local border_bufnr = api.nvim_create_buf(false, true)
     local border_lines = border_symbols:draw(win_width, win_height)
-    vim.api.nvim_buf_set_lines(border_bufnr, 0, -1, false, border_lines)
+    api.nvim_buf_set_lines(border_bufnr, 0, -1, false, border_lines)
     local border_winnr = api.nvim_open_win(border_bufnr, true, border_opts)
     api.nvim_win_set_option(border_winnr, "winblend", 0)
     api.nvim_win_set_option(border_winnr, "winhl", "NormalFloat:")
