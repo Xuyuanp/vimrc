@@ -127,7 +127,12 @@ if v:true " FZF
 
     let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
-    let g:fzf_layout = {'window': {'width': 0.9, 'height': 0.6}}
+    let g:fzf_layout = {}
+    let g:fzf_layout.window = {
+                \ 'width': 0.9,
+                \ 'height': 0.8,
+                \ 'border': 'sharp'
+                \ }
     let g:fzf_action = {
                 \ 'ctrl-x': 'split',
                 \ 'ctrl-v': 'vsplit'
