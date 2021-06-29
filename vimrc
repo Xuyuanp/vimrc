@@ -106,6 +106,7 @@ if v:true " Productive tools (align, comment, tabular...)
     Plug 'voldikss/vim-translator'
     Plug 'sunjon/shade.nvim'            " An Nvim lua plugin that dims your inactive windows
     Plug 'matze/vim-move'               " Plugin to move lines and selections up and down
+    Plug 'jbyuki/venn.nvim'             " Draw ASCII diagrams in Neovim
 
     vnoremap <CR><Space>   :EasyAlign\<CR>
     vnoremap <CR>2<Space>  :EasyAlign2\<CR>
@@ -119,6 +120,8 @@ if v:true " Productive tools (align, comment, tabular...)
     nnoremap <silent><leader><space> :FixWhitespace<CR>
 
     let g:translator_history_enable = v:true
+
+    vnoremap <Leader>vb    :VBox<CR>
 endif
 
 if v:true " FZF
