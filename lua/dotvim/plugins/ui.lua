@@ -167,5 +167,46 @@ return {
             vim.opt.termguicolors = true
             require('colorizer').setup()
         end
+    },
+
+    {
+        'Xuyuanp/yanil',
+        config = function()
+            require('dotvim/yanil').setup()
+            local vim = vim
+            local execute = vim.api.nvim_command
+
+            execute [[ nmap <C-e> :YanilToggle<CR> ]]
+            execute [[ autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif ]]
+            execute [[ autocmd FocusGained * lua require('yanil/git').update() ]]
+        end
+    },
+
+    {
+        'Xuyuanp/scrollbar.nvim',
+        config = function()
+            vim.g.scrollbar_excluded_filetypes = {
+                'nerdtree', 'vista_kind', 'Yanil'
+            }
+            vim.g.scrollbar_highlight = {
+                head = 'String',
+                body = 'String',
+                tail = 'String',
+            }
+            vim.g.shape = {
+                head = '⍋',
+                tail = '⍒',
+            }
+
+            local execute = vim.api.nvim_command
+
+            execute [[ augroup dotvim_scrollbar ]]
+            execute [[ autocmd! ]]
+            execute [[ autocmd BufEnter * silent! lua require('scrollbar').show() ]]
+            execute [[ autocmd BufLeave * silent! lua require('scrollbar').clear() ]]
+            execute [[ autocmd CursorMoved * silent! lua require('scrollbar').show() ]]
+            execute [[ autocmd VimResized  * silent! lua require('scrollbar').show() ]]
+            execute [[ augroup end ]]
+        end
     }
 }

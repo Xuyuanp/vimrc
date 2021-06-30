@@ -161,8 +161,8 @@ if has('nvim-0.5')
     Plug 'euclidianAce/BetterLua.vim'
     let g:BetterLua_enable_emmylua = 1
 
-    Plug 'Xuyuanp/scrollbar.nvim'
-    Plug 'Xuyuanp/yanil'
+    " Plug 'Xuyuanp/scrollbar.nvim'
+    " Plug 'Xuyuanp/yanil'
 
     Plug 'kyazdani42/nvim-web-devicons'
     Plug 'romgrk/lib.kom'
@@ -346,38 +346,38 @@ if has('nvim-0.5')
     highlight! default link GitLens SpecialComment
 
     " Scrollbar
-    augroup dotvim_scrollbar
-        autocmd!
-        autocmd BufEnter * silent! lua require('scrollbar').show()
-        autocmd BufLeave * silent! lua require('scrollbar').clear()
-
-        autocmd CursorMoved * silent! lua require('scrollbar').show()
-        autocmd VimResized  * silent! lua require('scrollbar').show()
-
-        " autocmd CursorHold  * silent! lua require('scrollbar').clear()
-
-        " autocmd FocusGained * silent! lua require('scrollbar').show()
-        " autocmd FocusLost   * silent! lua require('scrollbar').clear()
-    augroup end
-
-    let g:scrollbar_excluded_filetypes = ['nerdtree', 'vista_kind', 'Yanil']
-    let g:scrollbar_shape = {
-                \ 'head': '⍋',
-                \ 'tail': '⍒',
-                \ }
-    let g:scrollbar_highlight = {
-                \ 'head': 'String',
-                \ 'body': 'String',
-                \ 'tail': 'String',
-                \ }
+    " augroup dotvim_scrollbar
+    "     autocmd!
+    "     autocmd BufEnter * silent! lua require('scrollbar').show()
+    "     autocmd BufLeave * silent! lua require('scrollbar').clear()
+    "
+    "     autocmd CursorMoved * silent! lua require('scrollbar').show()
+    "     autocmd VimResized  * silent! lua require('scrollbar').show()
+    "
+    "     " autocmd CursorHold  * silent! lua require('scrollbar').clear()
+    "
+    "     " autocmd FocusGained * silent! lua require('scrollbar').show()
+    "     " autocmd FocusLost   * silent! lua require('scrollbar').clear()
+    " augroup end
+    "
+    " let g:scrollbar_excluded_filetypes = ['nerdtree', 'vista_kind', 'Yanil']
+    " let g:scrollbar_shape = {
+    "             \ 'head': '⍋',
+    "             \ 'tail': '⍒',
+    "             \ }
+    " let g:scrollbar_highlight = {
+    "             \ 'head': 'String',
+    "             \ 'body': 'String',
+    "             \ 'tail': 'String',
+    "             \ }
     " Yanil
-    silent! lua require("dotvim/yanil").setup()
-    nmap <C-e> :YanilToggle<CR>
-    augroup dotvim_auto_close_yanil
-        autocmd!
-        autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif
-        autocmd FocusGained * silent! lua require('yanil/git').update()
-    augroup end
+    " silent! lua require("dotvim/yanil").setup()
+    " nmap <C-e> :YanilToggle<CR>
+    " augroup dotvim_auto_close_yanil
+    "     autocmd!
+    "     autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif
+    "     autocmd FocusGained * silent! lua require('yanil/git').update()
+    " augroup end
 
     augroup dotvim_nvim_devicons
         autocmd!
