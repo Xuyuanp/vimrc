@@ -22,6 +22,10 @@ return require('packer').startup(function(use)
         use(plug)
     end
 
+    for _, plug in ipairs(require('dotvim/plugins/ui')) do
+        use(plug)
+    end
+
     use 'thinca/vim-themis'
 
     use {

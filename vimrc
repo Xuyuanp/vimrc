@@ -20,7 +20,7 @@ call dotvim#plug#MustBegin()
 
 silent! source $VIMRC_PLUG_FIRST
 
-if v:true " UI
+if v:false " UI
     Plug 'mhinz/vim-startify'                        " 🔗 The fancy start screen for Vim.
     Plug 'luochen1990/rainbow'                       " help you read complex code by showing diff level of parentheses in diff color !!
     Plug 'itchyny/lightline.vim'                     " The lightline plugin is a light and configurable statusline/tabline for Vim.
@@ -111,7 +111,7 @@ if v:true " UI
     let g:rainbow_conf.separately = {'nerdtree': 0, 'fzf': 0}
 endif
 
-if v:true " colorschemes
+if v:false " colorschemes
     Plug 'fatih/molokai'
     Plug 'morhetz/gruvbox'
     Plug 'altercation/vim-colors-solarized'
@@ -136,6 +136,7 @@ if v:true " colorschemes
     let g:solarized_visibility = 'low'
 
     let g:gruvbox_material_enable_italic      = 1
+    let g:gruvbox_material_disable_italic_comment = 1
     let g:gruvbox_material_enable_bold        = 1
     let g:gruvbox_material_better_performance = 1
     let g:gruvbox_material_palette            = 'mix'
@@ -200,7 +201,7 @@ if v:true " snippets
     Plug 'hrsh7th/vim-vsnip-integ'
 endif
 
-if v:true " DB
+if v:false " DB
     Plug 'tpope/vim-dadbod'
     Plug 'kristijanhusak/vim-dadbod-ui'
 
@@ -214,7 +215,7 @@ if v:true " DB
     augroup end
 endif
 
-if v:true " NERDTree and plugins
+if v:false " NERDTree and plugins
     Plug 'preservim/nerdtree', {'on': 'NERDTreeToggle'} |
                 \ Plug 'jistr/vim-nerdtree-tabs' |
                 \ Plug 'Xuyuanp/nerdtree-git-plugin' |
@@ -245,9 +246,9 @@ if v:true " NERDTree and plugins
     let g:viz_nr2char_auto = 1
 endif
 
-if has('nvim')
-    Plug 'norcalli/nvim-colorizer.lua'
-endif
+" if has('nvim')
+"     Plug 'norcalli/nvim-colorizer.lua'
+" endif
 
 silent! source $VIMRC_PLUG_LAST
 
@@ -270,7 +271,7 @@ if has('osx') && executable('cliclick')
 endif
 
 if has('nvim-0.5')
-    silent! lua require'colorizer'.setup()
+    " silent! lua require'colorizer'.setup()
 
     " treesitter
     silent! lua require('dotvim/treesitter')
@@ -595,9 +596,5 @@ inoremap <C-b> <Left>
 inoremap <C-e> <End>
 inoremap <C-f> <Right>
 " }}}
-
-set background=dark
-silent! colorscheme gruvbox-material
-" silent! colorscheme zephyr
 
 silent! source $VIMRC_AFTER
