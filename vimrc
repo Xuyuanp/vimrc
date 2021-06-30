@@ -8,6 +8,8 @@ set shell=/bin/sh
 " redefine leader key
 let g:mapleader = ','
 
+lua require('dotvim/plugins')
+
 let g:plug_home = has('nvim') ?
             \ stdpath('data') . '/plugged' :
             \ expand('~/.vim/.plugged')
@@ -17,155 +19,6 @@ silent! source $VIMRC_PLUG_PRE
 call dotvim#plug#MustBegin()
 
 silent! source $VIMRC_PLUG_FIRST
-
-if v:true " Languages
-    Plug 'fatih/vim-go', { 'tag': '*' }                     " go
-    Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'} " python pep8 indent
-    Plug 'spacewander/openresty-vim', {'for': 'nginx'}      " openrestry script syntax highlight
-    Plug 'neoclide/jsonc.vim', {'for': 'jsonc'}             " jsonc
-    Plug 'dense-analysis/ale'                               " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
-    Plug 'stephpy/vim-yaml', {'for': 'yaml'}                " Override vim syntax for yaml files
-    Plug 'zinit-zsh/zinit-vim-syntax', {'for': 'zsh'}       " A Vim syntax definition for Zinit commands in any file of type zsh.
-    Plug 'plasticboy/vim-markdown'
-    Plug 'rust-lang/rust.vim'
-    Plug 'neovimhaskell/haskell-vim'
-    Plug 'KSP-KOS/EditorTools', { 'branch': 'develop', 'rtp': 'VIM/vim-kerboscript'}
-
-    Plug 'milisims/nvim-luaref'
-    Plug 'nanotee/luv-vimdocs'
-
-    let g:go_highlight_build_constraints      = 1
-    let g:go_highlight_types                  = 1
-    let g:go_highlight_extra_types            = 1
-    let g:go_highlight_fields                 = 1
-    let g:go_highlight_methods                = 1
-    let g:go_highlight_functions              = 1
-    let g:go_highlight_function_parameters    = 1
-    let g:go_highlight_function_calls         = 1
-    let g:go_highlight_operators              = 1
-    let g:go_highlight_structs                = 1
-    let g:go_highlight_generate_tags          = 1
-    let g:go_highlight_format_strings         = 1
-    let g:go_highlight_variable_declarations  = 1
-    let g:go_highlight_variable_assignments   = 1
-    let g:go_highlight_array_whitespace_error = 1
-    let g:go_highlight_chan_whitespace_error  = 1
-    let g:go_highlight_space_tab_error        = 1
-    let g:go_auto_type_info                   = 0
-    let g:go_fmt_command                      = 'goimports'
-    let g:go_fmt_fail_silently                = 1
-    let g:go_def_mapping_enabled              = 0
-    let g:go_echo_go_info                     = 0
-    if has('nvim-0.5')
-        let g:go_code_completion_enabled = 0
-        let g:go_gopls_enabled           = 0
-        let g:go_doc_keywordprg_enabled  = 0
-    endif
-
-    let g:vim_markdown_folding_disabled = 1
-
-    " this feature breaks visual selection
-    let g:ale_hover_cursor  = 0
-    let g:ale_linters = {
-                \ 'c': [],
-                \ 'cpp': [],
-                \ 'asm': [],
-                \ 'haskell': [],
-                \ }
-    if has('osx')
-        let g:ale_proto_protoc_gen_lint_options = "-I '/usr/local/opt/protobuf/include' -I 'api/thirdparty'"
-    endif
-
-    augroup dotvim_python_header
-        autocmd!
-        autocmd BufNewFile python o#!/usr/bin/env python\n<ESC>
-    augroup END
-endif
-
-if v:true " unit testing
-    Plug 'thinca/vim-themis'
-endif
-
-if v:true
-    " Fix CursorHold Performance.
-    Plug 'antoinemadec/FixCursorHold.nvim'
-
-    let g:cursorhold_updatetime = 800
-endif
-
-if v:true " Productive tools (align, comment, tabular...)
-    Plug 'godlygeek/tabular'            " tabular - Vim script for text filtering and alignment
-    Plug 'jiangmiao/auto-pairs'         " auto-pairs - insert or delete brackets, parens, quotes in pair
-    Plug 'tpope/vim-surround'           " Surround - quoting/parenthesizing made simple
-    Plug 'mg979/vim-visual-multi'
-    Plug 'junegunn/vim-easy-align'      " EasyAlign - A simple, easy-to-use Vim alignment plugin.
-    Plug 'tomtom/tcomment_vim'          " Tcomment - An extensible & universal comment vim-plugin that also handles embedded filetypes
-    Plug 'tpope/vim-scriptease'         " A Vim plugin for Vim plugins
-    Plug 'bronson/vim-trailing-whitespace'
-    Plug 'dstein64/vim-startuptime'
-    Plug 'voldikss/vim-translator'
-    Plug 'sunjon/shade.nvim'            " An Nvim lua plugin that dims your inactive windows
-    Plug 'matze/vim-move'               " Plugin to move lines and selections up and down
-    Plug 'jbyuki/venn.nvim'             " Draw ASCII diagrams in Neovim
-
-    vnoremap <CR><Space>   :EasyAlign\<CR>
-    vnoremap <CR>2<Space>  :EasyAlign2\<CR>
-    vnoremap <CR>-<Space>  :EasyAlign-\<CR>
-    vnoremap <CR>-2<Space> :EasyAlign-2\<CR>
-    vnoremap <CR>:         :EasyAlign:<CR>
-    vnoremap <CR>=         :EasyAlign=<CR>
-    vnoremap <CR><CR>=     :EasyAlign!=<CR>
-    vnoremap <CR>"         :EasyAlign"<CR>
-
-    nnoremap <silent><leader><space> :FixWhitespace<CR>
-
-    let g:translator_history_enable = v:true
-
-    vnoremap <Leader>vb    :VBox<CR>
-endif
-
-if v:true " FZF
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() }  }
-    Plug 'junegunn/fzf.vim'
-
-    let $FZF_DEFAULT_OPTS .= ' --inline-info'
-
-    let g:fzf_layout = {}
-    let g:fzf_layout.window = {
-                \ 'width': 0.9,
-                \ 'height': 0.8,
-                \ 'border': 'sharp'
-                \ }
-    let g:fzf_action = {
-                \ 'ctrl-x': 'split',
-                \ 'ctrl-v': 'vsplit'
-                \ }
-
-    " Terminal buffer options for fzf
-    augroup dotvim_fzf
-        autocmd!
-        autocmd  FileType fzf set noshowmode noruler nonu
-    augroup end
-
-    " All files
-    command! -nargs=? -complete=dir AF
-                \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
-                \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
-                \ })))
-
-    nnoremap <silent> <leader>ag       :Ag<CR>
-    nnoremap <silent> <leader>rg       :Rg<CR>
-    nnoremap <silent> <leader>af       :AF<CR>
-    imap <C-x><C-k> <Plug>(fzf-complete-word)
-    imap <C-x><C-j> <Plug>(fzf-complete-file-ag)
-    imap <C-x><C-l> <Plug>(fzf-complete-line)
-endif
-
-if v:true " tmux
-    Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
-    Plug 'tmux-plugins/vim-tmux-focus-events' |
-                \ Plug 'roxma/vim-tmux-clipboard'
-endif
 
 if v:true " UI
     Plug 'mhinz/vim-startify'                        " 🔗 The fancy start screen for Vim.
@@ -256,22 +109,6 @@ if v:true " UI
     let g:rainbow_active          = 1
     let g:rainbow_conf            = {}
     let g:rainbow_conf.separately = {'nerdtree': 0, 'fzf': 0}
-endif
-
-if v:true " git
-    Plug 'tpope/vim-fugitive'     " fugitive.vim: A Git wrapper so awesome, it should be illegal
-    Plug 'airblade/vim-gitgutter' " show a git diff in the gutter(sign column) and stages/reverts hunks'
-
-    let g:gitgutter_highlight_lines = 0
-    let g:gitgutter_realtime        = 1
-    let g:gitgutter_eager           = 1
-
-    let g:gitgutter_sign_added                   = '┃'
-    let g:gitgutter_sign_modified                = '┃'
-    let g:gitgutter_sign_removed                 = '┃'
-    let g:gitgutter_sign_removed_first_line      = '‾'
-    let g:gitgutter_sign_removed_above_and_below = '_¯'
-    let g:gitgutter_sign_modified_removed        = '~_'
 endif
 
 if v:true " colorschemes
@@ -760,7 +597,7 @@ inoremap <C-f> <Right>
 " }}}
 
 set background=dark
-" silent! colorscheme gruvbox-material
-silent! colorscheme zephyr
+silent! colorscheme gruvbox-material
+" silent! colorscheme zephyr
 
 silent! source $VIMRC_AFTER
