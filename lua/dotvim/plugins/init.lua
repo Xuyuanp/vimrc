@@ -14,15 +14,11 @@ execute 'packadd packer.nvim'
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
 
-    for _, plug in ipairs(require('dotvim/plugins/langs')) do
-        use(plug)
-    end
+    local groups = { 'langs', 'tools', 'ui', 'lsp' }
 
-    for _, plug in ipairs(require('dotvim/plugins/tools')) do
-        use(plug)
-    end
-
-    for _, plug in ipairs(require('dotvim/plugins/ui')) do
-        use(plug)
+    for _, group in ipairs(groups) do
+        for _, plug in ipairs(require('dotvim/plugins/' .. group)) do
+            use(plug)
+        end
     end
 end)

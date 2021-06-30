@@ -149,8 +149,8 @@ if has('nvim-0.5')
 
     Plug 'nvim-lua/plenary.nvim'
 
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'kabouzeid/nvim-lspinstall', { 'branch': 'main' }
+    " Plug 'neovim/nvim-lspconfig'
+    " Plug 'kabouzeid/nvim-lspinstall', { 'branch': 'main' }
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/completion-nvim'
     Plug 'steelsojka/completion-buffers'
@@ -277,7 +277,7 @@ if has('nvim-0.5')
     silent! lua require('dotvim/treesitter')
 
     " lsp
-    silent! lua require('dotvim/lsp')
+    " silent! lua require('dotvim/lsp')
 
     " completion-nvim
     let g:completion_enable_auto_popup      = 1
