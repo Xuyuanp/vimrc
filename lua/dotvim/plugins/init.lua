@@ -25,13 +25,4 @@ return require('packer').startup(function(use)
     for _, plug in ipairs(require('dotvim/plugins/ui')) do
         use(plug)
     end
-
-    use 'thinca/vim-themis'
-
-    use {
-        'antoinemadec/FixCursorHold.nvim',
-        setup = function()
-            vim.g.cursorhold_updatetime = 800
-        end
-    }
 end)

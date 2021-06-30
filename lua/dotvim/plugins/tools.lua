@@ -5,6 +5,15 @@ return {
     'mg979/vim-visual-multi',
 
     {
+        'antoinemadec/FixCursorHold.nvim',
+        setup = function()
+            vim.g.cursorhold_updatetime = 800
+        end
+    },
+
+    'thinca/vim-themis',
+
+    {
         'junegunn/vim-easy-align',
         config = function()
             local set_keymap = vim.api.nvim_set_keymap
