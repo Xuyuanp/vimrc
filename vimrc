@@ -5,72 +5,10 @@ scriptencoding utf-8
 
 set shell=/bin/sh
 
-" redefine leader key
-let g:mapleader = ','
-
 lua require('dotvim/plugins')
 
-let g:plug_home = has('nvim') ?
-            \ stdpath('data') . '/plugged' :
-            \ expand('~/.vim/.plugged')
-
-silent! source $VIMRC_PLUG_PRE
-
-call dotvim#plug#MustBegin()
-
-silent! source $VIMRC_PLUG_FIRST
-
-if has('nvim-0.5')
-    " Plug 'nvim-treesitter/nvim-treesitter'
-    " Plug 'nvim-treesitter/playground'
-    " Plug 'romgrk/nvim-treesitter-context'
-
-    " Plug 'nvim-lua/plenary.nvim'
-endif
-
-if v:false " NERDTree and plugins
-    Plug 'preservim/nerdtree', {'on': 'NERDTreeToggle'} |
-                \ Plug 'jistr/vim-nerdtree-tabs' |
-                \ Plug 'Xuyuanp/nerdtree-git-plugin' |
-                \ Plug 'ryanoasis/vim-devicons' |
-                \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-    Plug 'xuyuanp/viz-nr2char'
-
-    " map <C-E> :NERDTreeToggle<CR>
-    let g:NERDTreeShowHidden            = 1
-    let g:NERDTreeChDirMode             = 2
-    let g:NERDTreeMouseMode             = 2
-    let g:NERDTreeStatusline            = 'NERDTree'
-    let g:NERDTreeCascadeSingleChildDir = 0
-    let g:NERDTreeShowBookmarks         = 1
-    let g:NERDTreeIgnore                = ['\.idea', '\.iml', '\.pyc', '\~$', '\.swo$', '\.git$', '\.hg', '\.svn', '\.bzr', '\.DS_Store', 'tmp', 'gin-bin']
-    let g:NERDTreeDirArrowExpandable    = ' '
-    let g:NERDTreeDirArrowCollapsible   = ' '
-    let g:NERDTreeGlyphReadOnly         = ''
-
-    let g:NERDTreeGitStatusUseNerdFonts = 1
-
-    let g:NERDTreeUpdateOnCursorHold = 0
-
-    let g:nerdtree_tabs_open_on_gui_startup = '1'
-
-    let g:DevIconsEnableFoldersOpenClose  = 1
-
-    let g:viz_nr2char_auto = 1
-endif
-
-silent! source $VIMRC_PLUG_LAST
-
-call plug#end()
-
-silent! source $VIMRC_PLUG_POST
-
-augroup dotvim_plug
-    autocmd!
-    autocmd FileType vim nnoremap <buffer><silent> gx :call dotvim#plug#OpenGithub()<CR>
-    " Checking if has ruby here will slow down startup time.
-    autocmd FileType vim inoremap <buffer><silent> <C-x><C-v> <C-r>=dotvim#plug#VimAwesomeComplete()<CR>
-augroup end
+" redefine leader key
+let g:mapleader = ','
 
 if has('osx') && executable('cliclick')
     augroup auto_change_input_source
@@ -79,23 +17,13 @@ if has('osx') && executable('cliclick')
     augroup end
 endif
 
-if has('nvim-0.5')
-    " treesitter
-    " silent! lua require('dotvim/treesitter')
-
-    " GitLens
-    augroup dotvim_git_lens
-        autocmd!
-        autocmd CursorHold * lua require('dotvim/git/lens').show()
-        autocmd CursorMoved,CursorMovedI * lua require('dotvim/git/lens').clear()
-    augroup end
-    highlight! default link GitLens SpecialComment
-
-    augroup dotvim_nvim_devicons
-        autocmd!
-        autocmd ColorScheme * lua require('nvim-web-devicons').setup()
-    augroup end
-endif
+" GitLens
+augroup dotvim_git_lens
+    autocmd!
+    autocmd CursorHold * lua require('dotvim/git/lens').show()
+    autocmd CursorMoved,CursorMovedI * lua require('dotvim/git/lens').clear()
+augroup end
+highlight! default link GitLens SpecialComment
 
 " Rename tmux window name automatically
 if exists('$TMUX')
