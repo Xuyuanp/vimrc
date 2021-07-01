@@ -158,8 +158,8 @@ if has('nvim-0.5')
     " Plug 'albertoCaroM/completion-tmux', { 'branch': 'main' }
 
     " This is required for syntax highlighting
-    Plug 'euclidianAce/BetterLua.vim'
-    let g:BetterLua_enable_emmylua = 1
+    " Plug 'euclidianAce/BetterLua.vim'
+    " let g:BetterLua_enable_emmylua = 1
 
     " Plug 'Xuyuanp/scrollbar.nvim'
     " Plug 'Xuyuanp/yanil'

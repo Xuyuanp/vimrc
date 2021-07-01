@@ -95,6 +95,14 @@ return {
         branch = 'develop'
     },
 
+    {
+        'euclidianAce/BetterLua.vim',
+        ft = { 'lua' },
+        setup = function()
+            vim.g.BetterLua_enable_emmylua = 1
+        end
+    },
+
     'milisims/nvim-luaref',
     'nanotee/luv-vimdocs',
 }
