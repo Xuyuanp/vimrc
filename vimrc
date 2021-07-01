@@ -151,11 +151,11 @@ if has('nvim-0.5')
 
     " Plug 'neovim/nvim-lspconfig'
     " Plug 'kabouzeid/nvim-lspinstall', { 'branch': 'main' }
-    Plug 'nvim-lua/lsp-status.nvim'
-    Plug 'nvim-lua/completion-nvim'
-    Plug 'steelsojka/completion-buffers'
-    Plug 'wellle/tmux-complete.vim'
-    Plug 'albertoCaroM/completion-tmux', { 'branch': 'main' }
+    " Plug 'nvim-lua/lsp-status.nvim'
+    " Plug 'nvim-lua/completion-nvim'
+    " Plug 'steelsojka/completion-buffers'
+    " Plug 'wellle/tmux-complete.vim'
+    " Plug 'albertoCaroM/completion-tmux', { 'branch': 'main' }
 
     " This is required for syntax highlighting
     Plug 'euclidianAce/BetterLua.vim'
@@ -196,7 +196,7 @@ if has('nvim-0.5')
     nmap <silent>    <A-0> :BufferLast<CR>
 endif
 
-if v:true " snippets
+if v:false " snippets
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
 endif
@@ -280,62 +280,62 @@ if has('nvim-0.5')
     " silent! lua require('dotvim/lsp')
 
     " completion-nvim
-    let g:completion_enable_auto_popup      = 1
-    let g:completion_trigger_on_delete      = 1
-    let g:completion_auto_change_source     = 1
-    let g:completion_enable_auto_paren      = 1
-    let g:completion_matching_ignore_case   = 1
-    let g:completion_enable_snippet         = 'vim-vsnip'
-    let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
-    let g:completion_sorting                = 'none'
-    let g:completion_chain_complete_list = {
-                \ 'default': {
-                \   'default': [
-                \      {'complete_items': ['lsp', 'snippet']},
-                \      {'complete_items': ['buffer', 'buffers']},
-                \      {'mode': '<c-n>'},
-                \   ],
-                \   'string': [
-                \      {'complete_items': ['path']},
-                \      {'complete_items': ['buffer', 'buffers', 'tmux']},
-                \   ],
-                \   'comment': [
-                \      {'complete_items': ['path']},
-                \      {'complete_items': ['buffer', 'buffers', 'tmux']},
-                \   ],
-                \ },
-                \ }
-
-    let g:completion_confirm_key = ''
-    imap <expr> <CR>  pumvisible() ?
-                \ complete_info()["selected"] != "-1" ? "\<Plug>(completion_confirm_completion)" : "\<c-e>\<CR>" :
-                \ "\<CR>"
-
-    function! <SID>check_back_space() abort
-        let l:col = col('.') - 1
-        return !l:col || getline('.')[l:col - 1]  =~# '\s'
-    endfunction
-
-    inoremap <silent><expr> <TAB>
-                \ pumvisible() ? "\<C-n>" :
-                \ <SID>check_back_space() ? "\<TAB>" :
-                \ completion#trigger_completion()
-    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-    augroup dotvim_completion_nvim
-        autocmd!
-        autocmd BufEnter * lua require'completion'.on_attach()
-    augroup end
-
-    set omnifunc=v:lua.vim.lsp.omnifunc
+    " let g:completion_enable_auto_popup      = 1
+    " let g:completion_trigger_on_delete      = 1
+    " let g:completion_auto_change_source     = 1
+    " let g:completion_enable_auto_paren      = 1
+    " let g:completion_matching_ignore_case   = 1
+    " let g:completion_enable_snippet         = 'vim-vsnip'
+    " let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
+    " let g:completion_sorting                = 'none'
+    " let g:completion_chain_complete_list = {
+    "             \ 'default': {
+    "             \   'default': [
+    "             \      {'complete_items': ['lsp', 'snippet']},
+    "             \      {'complete_items': ['buffer', 'buffers']},
+    "             \      {'mode': '<c-n>'},
+    "             \   ],
+    "             \   'string': [
+    "             \      {'complete_items': ['path']},
+    "             \      {'complete_items': ['buffer', 'buffers', 'tmux']},
+    "             \   ],
+    "             \   'comment': [
+    "             \      {'complete_items': ['path']},
+    "             \      {'complete_items': ['buffer', 'buffers', 'tmux']},
+    "             \   ],
+    "             \ },
+    "             \ }
+    "
+    " let g:completion_confirm_key = ''
+    " imap <expr> <CR>  pumvisible() ?
+    "             \ complete_info()["selected"] != "-1" ? "\<Plug>(completion_confirm_completion)" : "\<c-e>\<CR>" :
+    "             \ "\<CR>"
+    "
+    " function! <SID>check_back_space() abort
+    "     let l:col = col('.') - 1
+    "     return !l:col || getline('.')[l:col - 1]  =~# '\s'
+    " endfunction
+    "
+    " inoremap <silent><expr> <TAB>
+    "             \ pumvisible() ? "\<C-n>" :
+    "             \ <SID>check_back_space() ? "\<TAB>" :
+    "             \ completion#trigger_completion()
+    " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    "
+    " augroup dotvim_completion_nvim
+    "     autocmd!
+    "     autocmd BufEnter * lua require'completion'.on_attach()
+    " augroup end
+    "
+    " set omnifunc=v:lua.vim.lsp.omnifunc
 
     " vim-vsnip
-    let g:vsnip_snippet_dir = expand('<sfile>:p:h') . '/snippets'
-
-    imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
-    smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
-    imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
-    smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+    " let g:vsnip_snippet_dir = expand('<sfile>:p:h') . '/snippets'
+    "
+    " imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+    " smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
+    " imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+    " smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
 
     " GitLens
     augroup dotvim_git_lens
