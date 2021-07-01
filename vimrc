@@ -20,199 +20,12 @@ call dotvim#plug#MustBegin()
 
 silent! source $VIMRC_PLUG_FIRST
 
-if v:false " UI
-    Plug 'mhinz/vim-startify'                        " 🔗 The fancy start screen for Vim.
-    Plug 'luochen1990/rainbow'                       " help you read complex code by showing diff level of parentheses in diff color !!
-    Plug 'itchyny/lightline.vim'                     " The lightline plugin is a light and configurable statusline/tabline for Vim.
-    Plug 'maximbaz/lightline-ale'                    " ALE indicator for the lightline vim plugin
-    Plug 'deponian/vim-lightline-whitespace'         " Port of vim-airline's whitespace extension to lightline
-    Plug 'liuchengxu/vista.vim'
-
-    nmap <C-t> :Vista!!<CR>
-
-    if has('nvim-0.5')
-        let g:vista_default_executive = 'nvim_lsp'
-    else
-        let g:vista_default_executive = 'coc'
-    endif
-
-    let s:lightline_themes = ['one', 'seoul256', 'powerline', 'gruvbox_material']
-    let g:lightline = {
-                \ 'colorscheme':  s:lightline_themes[localtime()%len(s:lightline_themes)],
-                \ 'active':       {},
-                \ 'inactive':     {},
-                \ 'separator':    { 'left': '', 'right': '' },
-                \ 'subseparator': { 'left': '', 'right': '' }
-                \ }
-    let g:lightline.component_function = {
-                \ 'fugitive':     'dotvim#lightline#Fugitive',
-                \ 'readonly':     'dotvim#lightline#Readonly',
-                \ 'filetype':     'dotvim#lightline#FileType',
-                \ 'fileformat':   'dotvim#lightline#FileFormat',
-                \ 'filename':     'dotvim#lightline#Filename',
-                \ 'fileencoding': 'dotvim#lightline#Fileencoding',
-                \ 'mode':         'dotvim#lightline#Mode',
-                \ 'percent':      'dotvim#lightline#Percent',
-                \ 'lineinfo':     'dotvim#lightline#Lineinfo',
-                \ 'synName':      'dotvim#lightline#SynName',
-                \ 'lspStatus':    'dotvim#lightline#LspStatus',
-                \ }
-    let g:lightline.component_expand = {
-                \ 'linter_checking': 'lightline#ale#checking',
-                \ 'linter_ok':       'lightline#ale#ok',
-                \ 'linter_infos':    'lightline#ale#infos',
-                \ 'linter_warnings': 'lightline#ale#warnings',
-                \ 'linter_errors':   'lightline#ale#errors',
-                \ 'whitespace':      'lightline#whitespace#check',
-                \ }
-    let g:lightline.component_type = {
-                \ 'readonly':        'warning',
-                \ 'linter_checking': 'right',
-                \ 'linter_ok':       'right',
-                \ 'linter_infos':    'right',
-                \ 'linter_warnings': 'warning',
-                \ 'linter_errors':   'error',
-                \ 'whitespace':      'warning',
-                \ }
-    let g:lightline.active.left = [
-                \ ['mode', 'paste'],
-                \ ['fugitive'],
-                \ ['filename'],
-                \ ]
-    let g:lightline.active.right = [
-                \ ['whitespace'],
-                \ ['percent', 'lineinfo'],
-                \ ['fileformat', 'fileencoding', 'filetype'],
-                \ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
-                \ ['lspStatus'],
-                \ ]
-    let g:lightline.inactive.right = []
-    let g:lightline.mode_map = {
-                \ 'n':      'N',
-                \ 'i':      'I',
-                \ 'R':      'R',
-                \ 'v':      'V',
-                \ 'V':      'V-L',
-                \ '\<C-v>': 'V-B',
-                \ 'c':      'C',
-                \ 's':      'S',
-                \ 'S':      'S-L',
-                \ '\<C-s>': 'S-B',
-                \ 't':      'T',
-                \ }
-    let g:lightline#ale#indicator_checking = nr2char(0xf110) . ' '
-    let g:lightline#ale#indicator_infos    = nr2char(0xf129) . ' '
-    let g:lightline#ale#indicator_warnings = nr2char(0xf071) . ' '
-    let g:lightline#ale#indicator_errors   = nr2char(0xf05e) . ' '
-    let g:lightline#ale#indicator_ok       = nr2char(0xf00c)
-
-    let g:rainbow_active          = 1
-    let g:rainbow_conf            = {}
-    let g:rainbow_conf.separately = {'nerdtree': 0, 'fzf': 0}
-endif
-
-if v:false " colorschemes
-    Plug 'fatih/molokai'
-    Plug 'morhetz/gruvbox'
-    Plug 'altercation/vim-colors-solarized'
-    Plug 'sainnhe/gruvbox-material'
-    Plug 'glepnir/zephyr-nvim', { 'branch': 'main' }
-
-    if exists('+termguicolors')
-        let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-        let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-        " enable italic font
-        let &t_ZH = "\e[3m"
-        let &t_ZR = "\e[23m"
-        set termguicolors
-    endif
-
-    let g:rehash256        = 1
-    let g:molokai_original = 1
-
-    let g:solarized_termcolors = 256
-    let g:solarized_termtrans  = 1
-    let g:solarized_contrast   = 'normal'
-    let g:solarized_visibility = 'low'
-
-    let g:gruvbox_material_enable_italic      = 1
-    let g:gruvbox_material_disable_italic_comment = 1
-    let g:gruvbox_material_enable_bold        = 1
-    let g:gruvbox_material_better_performance = 1
-    let g:gruvbox_material_palette            = 'mix'
-endif
-
 if has('nvim-0.5')
     Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'nvim-treesitter/playground'
     Plug 'romgrk/nvim-treesitter-context'
 
     Plug 'nvim-lua/plenary.nvim'
-
-    " Plug 'neovim/nvim-lspconfig'
-    " Plug 'kabouzeid/nvim-lspinstall', { 'branch': 'main' }
-    " Plug 'nvim-lua/lsp-status.nvim'
-    " Plug 'nvim-lua/completion-nvim'
-    " Plug 'steelsojka/completion-buffers'
-    " Plug 'wellle/tmux-complete.vim'
-    " Plug 'albertoCaroM/completion-tmux', { 'branch': 'main' }
-
-    " This is required for syntax highlighting
-    " Plug 'euclidianAce/BetterLua.vim'
-    " let g:BetterLua_enable_emmylua = 1
-
-    " Plug 'Xuyuanp/scrollbar.nvim'
-    " Plug 'Xuyuanp/yanil'
-
-    Plug 'kyazdani42/nvim-web-devicons'
-    Plug 'romgrk/lib.kom'
-    Plug 'romgrk/barbar.nvim'
-
-    let g:bufferline = get(g:, 'bufferline', {})
-    let g:bufferline.icons = v:true
-    let g:bufferline.closable = v:false
-    let g:bufferline.clickable = v:false
-    " Magic buffer-picking mode
-    nmap <silent>      <A-s> :BufferPick<CR>
-    " Sort automatically by...
-    nmap <silent> <Space>bd :BufferOrderByDirectory<CR>
-    nmap <silent> <Space>bl :BufferOrderByLanguage<CR>
-    " Move to previous/next
-    nmap <silent>    <A-h> :BufferPrevious<CR>
-    nmap <silent>    <A-l> :BufferNext<CR>
-    " Re-order to previous/next
-    nmap <silent>    <A-,> :BufferMovePrevious<CR>
-    nmap <silent>    <A-.> :BufferMoveNext<CR>
-    " Goto buffer in position...
-    nmap <silent>    <A-1> :BufferGoto 1<CR>
-    nmap <silent>    <A-2> :BufferGoto 2<CR>
-    nmap <silent>    <A-3> :BufferGoto 3<CR>
-    nmap <silent>    <A-4> :BufferGoto 4<CR>
-    nmap <silent>    <A-5> :BufferGoto 5<CR>
-    nmap <silent>    <A-6> :BufferGoto 6<CR>
-    nmap <silent>    <A-7> :BufferGoto 7<CR>
-    nmap <silent>    <A-8> :BufferGoto 8<CR>
-    nmap <silent>    <A-9> :BufferGoto 9<CR>
-    nmap <silent>    <A-0> :BufferLast<CR>
-endif
-
-if v:false " snippets
-    Plug 'hrsh7th/vim-vsnip'
-    Plug 'hrsh7th/vim-vsnip-integ'
-endif
-
-if v:false " DB
-    Plug 'tpope/vim-dadbod'
-    Plug 'kristijanhusak/vim-dadbod-ui'
-
-    let g:db_ui_use_nerd_fonts     = 1
-    let g:db_ui_execute_on_save    = 0
-    let g:db_ui_win_position       = 'right'
-    let g:db_ui_show_database_icon = 1
-    augroup dadbod-config
-        autocmd!
-        autocmd BufReadPost *.dbout setlocal nofoldenable
-    augroup end
 endif
 
 if v:false " NERDTree and plugins
@@ -246,10 +59,6 @@ if v:false " NERDTree and plugins
     let g:viz_nr2char_auto = 1
 endif
 
-" if has('nvim')
-"     Plug 'norcalli/nvim-colorizer.lua'
-" endif
-
 silent! source $VIMRC_PLUG_LAST
 
 call plug#end()
@@ -271,71 +80,8 @@ if has('osx') && executable('cliclick')
 endif
 
 if has('nvim-0.5')
-    " silent! lua require'colorizer'.setup()
-
     " treesitter
     silent! lua require('dotvim/treesitter')
-
-    " lsp
-    " silent! lua require('dotvim/lsp')
-
-    " completion-nvim
-    " let g:completion_enable_auto_popup      = 1
-    " let g:completion_trigger_on_delete      = 1
-    " let g:completion_auto_change_source     = 1
-    " let g:completion_enable_auto_paren      = 1
-    " let g:completion_matching_ignore_case   = 1
-    " let g:completion_enable_snippet         = 'vim-vsnip'
-    " let g:completion_matching_strategy_list = ['exact', 'fuzzy', 'substring']
-    " let g:completion_sorting                = 'none'
-    " let g:completion_chain_complete_list = {
-    "             \ 'default': {
-    "             \   'default': [
-    "             \      {'complete_items': ['lsp', 'snippet']},
-    "             \      {'complete_items': ['buffer', 'buffers']},
-    "             \      {'mode': '<c-n>'},
-    "             \   ],
-    "             \   'string': [
-    "             \      {'complete_items': ['path']},
-    "             \      {'complete_items': ['buffer', 'buffers', 'tmux']},
-    "             \   ],
-    "             \   'comment': [
-    "             \      {'complete_items': ['path']},
-    "             \      {'complete_items': ['buffer', 'buffers', 'tmux']},
-    "             \   ],
-    "             \ },
-    "             \ }
-    "
-    " let g:completion_confirm_key = ''
-    " imap <expr> <CR>  pumvisible() ?
-    "             \ complete_info()["selected"] != "-1" ? "\<Plug>(completion_confirm_completion)" : "\<c-e>\<CR>" :
-    "             \ "\<CR>"
-    "
-    " function! <SID>check_back_space() abort
-    "     let l:col = col('.') - 1
-    "     return !l:col || getline('.')[l:col - 1]  =~# '\s'
-    " endfunction
-    "
-    " inoremap <silent><expr> <TAB>
-    "             \ pumvisible() ? "\<C-n>" :
-    "             \ <SID>check_back_space() ? "\<TAB>" :
-    "             \ completion#trigger_completion()
-    " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-    "
-    " augroup dotvim_completion_nvim
-    "     autocmd!
-    "     autocmd BufEnter * lua require'completion'.on_attach()
-    " augroup end
-    "
-    " set omnifunc=v:lua.vim.lsp.omnifunc
-
-    " vim-vsnip
-    " let g:vsnip_snippet_dir = expand('<sfile>:p:h') . '/snippets'
-    "
-    " imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
-    " smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
-    " imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
-    " smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
 
     " GitLens
     augroup dotvim_git_lens
@@ -345,47 +91,10 @@ if has('nvim-0.5')
     augroup end
     highlight! default link GitLens SpecialComment
 
-    " Scrollbar
-    " augroup dotvim_scrollbar
-    "     autocmd!
-    "     autocmd BufEnter * silent! lua require('scrollbar').show()
-    "     autocmd BufLeave * silent! lua require('scrollbar').clear()
-    "
-    "     autocmd CursorMoved * silent! lua require('scrollbar').show()
-    "     autocmd VimResized  * silent! lua require('scrollbar').show()
-    "
-    "     " autocmd CursorHold  * silent! lua require('scrollbar').clear()
-    "
-    "     " autocmd FocusGained * silent! lua require('scrollbar').show()
-    "     " autocmd FocusLost   * silent! lua require('scrollbar').clear()
-    " augroup end
-    "
-    " let g:scrollbar_excluded_filetypes = ['nerdtree', 'vista_kind', 'Yanil']
-    " let g:scrollbar_shape = {
-    "             \ 'head': '⍋',
-    "             \ 'tail': '⍒',
-    "             \ }
-    " let g:scrollbar_highlight = {
-    "             \ 'head': 'String',
-    "             \ 'body': 'String',
-    "             \ 'tail': 'String',
-    "             \ }
-    " Yanil
-    " silent! lua require("dotvim/yanil").setup()
-    " nmap <C-e> :YanilToggle<CR>
-    " augroup dotvim_auto_close_yanil
-    "     autocmd!
-    "     autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif
-    "     autocmd FocusGained * silent! lua require('yanil/git').update()
-    " augroup end
-
     augroup dotvim_nvim_devicons
         autocmd!
         autocmd ColorScheme * lua require('nvim-web-devicons').setup()
     augroup end
-
-    " shade.nvim
-    silent! lua require('dotvim')
 endif
 
 " Rename tmux window name automatically

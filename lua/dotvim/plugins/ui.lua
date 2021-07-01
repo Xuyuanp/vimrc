@@ -256,5 +256,20 @@ return {
                 set_keymap('n', k, a, { silent = true, noremap = true })
             end
         end
+    },
+
+    {
+        'sunjon/shade.nvim',
+        config = function()
+            require'shade'.setup({
+                overlay_opacity = 70,
+                opacity_step = 5,
+                keys = {
+                    brightness_up   = '<C-Up>', -- FIXME: conflict with vim-visual-multi
+                    brightness_down = '<C-Down>',
+                    toggle          = '<Leader>s',
+                }
+            })
+        end
     }
 }

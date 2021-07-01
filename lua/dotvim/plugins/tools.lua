@@ -47,7 +47,6 @@ return {
         end
     },
 
-    'sunjon/shade.nvim',
     'matze/vim-move',
 
     {
