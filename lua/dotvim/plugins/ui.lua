@@ -157,7 +157,7 @@ return {
             local execute = vim.api.nvim_command
 
             vim.opt.background = 'dark'
-            execute [[ colorscheme gruvbox-material ]]
+            execute [[ colorscheme zephyr ]]
         end
     },
 
