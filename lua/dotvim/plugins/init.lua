@@ -11,6 +11,8 @@ end
 
 execute 'packadd packer.nvim'
 
+execute [[ autocmd User PackerComplete :PackerCompile<CR> ]]
+
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
 
