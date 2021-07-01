@@ -208,5 +208,53 @@ return {
             execute [[ autocmd VimResized  * silent! lua require('scrollbar').show() ]]
             execute [[ augroup end ]]
         end
+    },
+
+    {
+        'romgrk/barbar.nvim',
+        requires = {
+            'romgrk/lib.kom',
+            'kyazdani42/nvim-web-devicons'
+        },
+        event = 'BufEnter',
+        config = function()
+            local vim = vim
+            local set_keymap = vim.api.nvim_set_keymap
+
+            local bufferline = vim.g.bufferline or {}
+            bufferline.icons = true
+            bufferline.closable = false
+            bufferline.clickable = false
+            vim.g.bufferline = bufferline
+
+            local keymaps = {
+                -- Goto buffer in position...
+                ['<A-1>'] = ':BufferGoto 1<CR>',
+                ['<A-2>'] = ':BufferGoto 2<CR>',
+                ['<A-3>'] = ':BufferGoto 3<CR>',
+                ['<A-4>'] = ':BufferGoto 4<CR>',
+                ['<A-5>'] = ':BufferGoto 5<CR>',
+                ['<A-6>'] = ':BufferGoto 6<CR>',
+                ['<A-7>'] = ':BufferGoto 7<CR>',
+                ['<A-8>'] = ':BufferGoto 8<CR>',
+                ['<A-9>'] = ':BufferGoto 9<CR>',
+                ['<A-0>'] = ':BufferLast<CR>',
+                -- Magic buffer-picking mode
+                ['<A-s>'] = ':BufferPick<CR>',
+                -- Move to previous/next
+                ['<A-h>'] = ':BufferPrevious<CR>',
+                ['<A-l>'] = ':BufferNext<CR>',
+                -- Re-order to previous/next
+                ['<A-,>'] = ':BufferMovePrevious<CR>',
+                ['<A-.>'] = ':BufferMoveNext<CR>',
+                -- Sort automatically by...
+                ['<Leader>bd'] = ':BufferOrderByDirectory<CR>',
+                ['<Leader>bl'] = ':BufferOrderByLanguage<CR>',
+            }
+
+            for k, a in pairs(keymaps) do
+                set_keymap('n', k, a, { silent = true, noremap = true })
+            end
+        end
     }
 }
