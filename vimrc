@@ -21,9 +21,9 @@ call dotvim#plug#MustBegin()
 silent! source $VIMRC_PLUG_FIRST
 
 if has('nvim-0.5')
-    Plug 'nvim-treesitter/nvim-treesitter'
-    Plug 'nvim-treesitter/playground'
-    Plug 'romgrk/nvim-treesitter-context'
+    " Plug 'nvim-treesitter/nvim-treesitter'
+    " Plug 'nvim-treesitter/playground'
+    " Plug 'romgrk/nvim-treesitter-context'
 
     " Plug 'nvim-lua/plenary.nvim'
 endif
@@ -81,7 +81,7 @@ endif
 
 if has('nvim-0.5')
     " treesitter
-    silent! lua require('dotvim/treesitter')
+    " silent! lua require('dotvim/treesitter')
 
     " GitLens
     augroup dotvim_git_lens

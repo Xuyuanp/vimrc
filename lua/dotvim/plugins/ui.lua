@@ -274,5 +274,17 @@ return {
                 }
             })
         end
-    }
+    },
+
+    {
+        'nvim-treesitter/nvim-treesitter',
+        requires = {
+            'nvim-treesitter/playground',
+            'romgrk/nvim-treesitter-context'
+        },
+        run = 'TSUpdate',
+        config = function()
+            require('dotvim/treesitter')
+        end
+    },
 }
