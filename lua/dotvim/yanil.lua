@@ -100,6 +100,15 @@ Enter the dir/file name to be created. Dirs end with a '/'
     end)
 end
 
+local function clear_buffer(path)
+    for _, bufnr in ipairs(api.nvim_list_bufs()) do
+        if path == api.nvim_buf_get_name(bufnr) then
+            api.nvim_command(':bwipeout ' .. bufnr)
+            return
+        end
+    end
+end
+
 local function delete_node(tree, node)
     if node == tree.root then
         print("You can NOT delete the root")
@@ -125,6 +134,8 @@ STOP! Directory is not empty! To delete, type 'yes'
             end
 
             vim.schedule(function()
+                clear_buffer(node.abs_path)
+
                 local next_node = tree:find_neighbor(node, 1) or tree:find_neighbor(node, -1)
                 local path = next_node.abs_path
                 local parent = node.parent
