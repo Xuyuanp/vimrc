@@ -217,7 +217,12 @@ return {
         'romgrk/barbar.nvim',
         requires = {
             'romgrk/lib.kom',
-            'kyazdani42/nvim-web-devicons'
+            {
+                'kyazdani42/nvim-web-devicons',
+                config = function()
+                    vim.api.nvim_command[[ autocmd ColorScheme * lua require('nvim-web-devicons').setup() ]]
+                end
+            },
         },
         event = 'BufEnter',
         config = function()
