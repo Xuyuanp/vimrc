@@ -171,6 +171,9 @@ return {
 
     {
         'Xuyuanp/yanil',
+        requires = {
+            'nvim-lua/plenary.nvim'
+        },
         config = function()
             require('dotvim/yanil').setup()
             local vim = vim

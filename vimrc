@@ -25,7 +25,7 @@ if has('nvim-0.5')
     Plug 'nvim-treesitter/playground'
     Plug 'romgrk/nvim-treesitter-context'
 
-    Plug 'nvim-lua/plenary.nvim'
+    " Plug 'nvim-lua/plenary.nvim'
 endif
 
 if v:false " NERDTree and plugins
