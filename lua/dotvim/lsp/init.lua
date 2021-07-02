@@ -12,6 +12,8 @@ local util       = require('dotvim/util')
 
 lsp_status.register_progress()
 
+local enable_auto_format = vfn['dotvim#lsp#EnableAutoFormat']
+
 local function rename(new_name)
     if new_name then return vlsp.buf.rename(new_name) end
 
@@ -65,50 +67,50 @@ local on_attach = function(client, bufnr)
     end
 
     if server_capabilities.documentFormattingProvider then
-        vim.fn["dotvim#lsp#EnableAutoFormat"]()
+        enable_auto_format()
     end
 
     if server_capabilities.documentHighlightProvider then
-        -- rust_analyzer crashed if no delay
-        vim.defer_fn(function()
-            util.Augroup('dotvim_lsp_init_on_attach', function()
-                api.nvim_command(string.format("autocmd CursorHold <buffer=%d> lua vim.lsp.buf.document_highlight()", bufnr))
-                api.nvim_command(string.format("autocmd CursorMoved <buffer=%d> lua vim.lsp.buf.clear_references()", bufnr))
-            end)
-        end, 5000)
+        util.Augroup('dotvim_lsp_init_on_attach', function()
+            api.nvim_command(string.format("autocmd CursorHold <buffer=%d> lua vim.lsp.buf.document_highlight()", bufnr))
+            api.nvim_command(string.format("autocmd CursorMoved <buffer=%d> lua vim.lsp.buf.clear_references()", bufnr))
+        end)
     end
 
     util.Augroup("dotvim_lsp_status", function()
-        vim.api.nvim_command("autocmd User LspMessageUpdate call lightline#update()")
-        vim.api.nvim_command("autocmd User LspStatusUpdate call lightline#update()")
+        api.nvim_command("autocmd User LspMessageUpdate call lightline#update()")
+        api.nvim_command("autocmd User LspStatusUpdate call lightline#update()")
     end)
 
+    local buf_set_keymap = api.nvim_buf_set_keymap
     -- Keybindings for LSPs
-    api.nvim_buf_set_keymap(bufnr, "n", "gd",  "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "K",   "<cmd>lua vim.lsp.buf.hover()<CR>",            {noremap = false, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "gi",  "<cmd>lua vim.lsp.buf.implementation()<CR>",   {noremap = true, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "gk",  "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "gtd", "<cmd>lua vim.lsp.buf.type_definition()<CR>",  {noremap = true, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "gR",  "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "grr", "<cmd>lua require('dotvim/lsp').rename()<CR>", {noremap = true, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "gds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "gws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",      {noremap = true, silent = true})
+    buf_set_keymap(bufnr, "n", "gd",  "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
+    buf_set_keymap(bufnr, "n", "K",   "<cmd>lua vim.lsp.buf.hover()<CR>",            {noremap = false, silent = true})
+    buf_set_keymap(bufnr, "n", "gi",  "<cmd>lua vim.lsp.buf.implementation()<CR>",   {noremap = true, silent = true})
+    buf_set_keymap(bufnr, "n", "gk",  "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
+    buf_set_keymap(bufnr, "n", "gtd", "<cmd>lua vim.lsp.buf.type_definition()<CR>",  {noremap = true, silent = true})
+    buf_set_keymap(bufnr, "n", "gR",  "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
+    buf_set_keymap(bufnr, "n", "grr", "<cmd>lua require('dotvim/lsp').rename()<CR>", {noremap = true, silent = true})
+    buf_set_keymap(bufnr, "n", "gds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
+    buf_set_keymap(bufnr, "n", "gws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
+    buf_set_keymap(bufnr, "n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",      {noremap = true, silent = true})
 
     -- Keybindings for diagnostic
-    api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = false, silent = true})
-    api.nvim_buf_set_keymap(bufnr, "n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = false, silent = true})
-
-    vim.fn.sign_define("LspDiagnosticsErrorSign",       {text = "E", texthl = "LspDiagnosticsError"})
-    vim.fn.sign_define("LspDiagnosticsWarningSign",     {text = "W", texthl = "LspDiagnosticsWarning"})
-    vim.fn.sign_define("LspDiagnosticsInformationSign", {text = "I", texthl = "LspDiagnosticsInformation"})
-    vim.fn.sign_define("LspDiagnosticsHintSign",        {text = "H", texthl = "LspDiagnosticsHint"})
-
-    api.nvim_command([[highlight! default link LspDiagnosticsError       Error]])
-    api.nvim_command([[highlight! default link LspDiagnosticsWarning     WarningMsg]])
-    api.nvim_command([[highlight! default link LspDiagnosticsInformation Normal]])
-    api.nvim_command([[highlight! default link LspDiagnosticsHint        SpecialComment]])
+    buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = false, silent = true})
+    buf_set_keymap(bufnr, "n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = false, silent = true})
+    buf_set_keymap(bufnr, "n", "<leader>sd", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", {noremap = false, silent = true})
 end
+
+vfn.sign_define("LspDiagnosticsSignError",       {text = "E", texthl = "LspDiagnosticsSignError"})
+vfn.sign_define("LspDiagnosticsSignWarning",     {text = "W", texthl = "LspDiagnosticsSignWarning"})
+vfn.sign_define("LspDiagnosticsSignInformation", {text = "I", texthl = "LspDiagnosticsSignInformation"})
+vfn.sign_define("LspDiagnosticsSignHint",        {text = "H", texthl = "LspDiagnosticsSignHint"})
+
+api.nvim_command([[highlight! link LspDiagnosticsSignError       Error]])
+api.nvim_command([[highlight! link LspDiagnosticsSignWarning     WarningMsg]])
+api.nvim_command([[highlight! link LspDiagnosticsSignInformation Normal]])
+api.nvim_command([[highlight! link LspDiagnosticsSignHint        SpecialComment]])
+
 
 local default_capabilities = lsp_status.capabilities
 default_capabilities.textDocument.completion.completionItem.snippetSupport = false
@@ -122,10 +124,10 @@ local default_config = {
 local function detect_lua_library()
     local library = {}
 
-    local cwd = vim.fn.getcwd()
+    local cwd = vfn.getcwd()
     local paths = vim.api.nvim_list_runtime_paths()
     for _, path in ipairs(paths) do
-        if not vim.startswith(cwd, path) and vim.fn.isdirectory(path..'/lua') > 0 then
+        if not vim.startswith(cwd, path) and vfn.isdirectory(path..'/lua') > 0 then
             library[path] = true
         end
     end
@@ -144,7 +146,7 @@ local langs = {
     lua = {
         root_dir = function(fname)
             -- default is git find_git_ancestor or home dir
-            return require('lspconfig/util').find_git_ancestor(fname) or vim.fn.fnamemodify(fname, ':p:h')
+            return require('lspconfig/util').find_git_ancestor(fname) or vfn.fnamemodify(fname, ':p:h')
         end,
         settings = {
             -- https://github.com/sumneko/vscode-lua/blob/master/setting/schema.json
