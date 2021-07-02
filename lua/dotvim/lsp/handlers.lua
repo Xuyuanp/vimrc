@@ -68,7 +68,7 @@ M["textDocument/signatureHelp"] = function(_, _method, result)
         pad_left = 1, pad_right = 1
     })
     if #highlight_label > 0 then
-        api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlight_label[1], highlight_label[2])
+        api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlight_label[1]-1, highlight_label[2]-1)
     end
     if highlight_document then
         local line_count = vim.api.nvim_buf_line_count(bufnr)
