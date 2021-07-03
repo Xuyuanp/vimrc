@@ -20,13 +20,13 @@ return {
         config = function()
             local vim = vim
             local vfn = vim.fn
-            local execute = vim.api.nvim_command
+            local command = vim.api.nvim_command
 
             vim.g.vsnip_snippet_dir = vfn.stdpath('config') .. '/snippets'
-            execute [[ imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>' ]]
-            execute [[ smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>' ]]
-            execute [[ imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>' ]]
-            execute [[ smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>' ]]
+            command [[ imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>' ]]
+            command [[ smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>' ]]
+            command [[ imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>' ]]
+            command [[ smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>' ]]
         end
     },
 
@@ -41,7 +41,8 @@ return {
         before = { 'kabouzeid/nvim-lspinstall' },
         config = function()
             local vim = vim
-            local execute = vim.api.nvim_command
+            local set_keymap = vim.api.nvim_set_keymap
+            local command = vim.api.nvim_command
 
             vim.g.completion_enable_auto_popup      = 1
             vim.g.completion_trigger_on_delete      = 1
@@ -70,18 +71,11 @@ return {
             }
             vim.g.completion_confirm_key = ''
 
-            execute [[ imap <expr> <CR> pumvisible() ? complete_info()['selected'] != '-1' ? "\<Plug>(completion_confirm_completion)" : "\<c-e>\<CR>" : "\<CR>" ]]
-            execute [[
-                function! <SID>check_back_space() abort
-                    let l:col = col('.') - 1
-                    return !l:col || getline('.')[l:col - 1] =~# '\s'
-                endfunction
-
-                inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : completion#trigger_completion()
-                inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-                autocmd BufEnter * lua require'completion'.on_attach()
-            ]]
+            set_keymap('i', '<CR>', [[ pumvisible() ? complete_info()['selected'] != '-1' ? "\<Plug>(completion_confirm_completion)" : "\<C-e>\<CR>": "\<CR>" ]], { noremap = false, silent = false, expr = true })
+            set_keymap('i', '<TAB>', [[ pumvisible() ? "\<C-n>" : dotvim#lsp#CheckBackSpace() ? "\<TAB>" : completion#trigger_completion() ]],
+                { noremap = false, silent = false, expr = true })
+            set_keymap('i', '<S-TAB>', [[ pumvisible() ? "\<C-p>" : "\<C-h>" ]], { noremap = false, silent = false, expr = true })
+            command [[ autocmd BufEnter * lua require'completion'.on_attach() ]]
         end
     }
 }
