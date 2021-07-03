@@ -85,7 +85,7 @@ return {
     {
         'maximbaz/lightline-ale',
         requires = { 'itchyny/lightline.vim' },
-        config = function()
+        setup = function()
             local nr2char = vim.fn.nr2char
             vim.g['lightline#ale#indicator_checking'] = nr2char(0xf110) .. ' '
             vim.g['lightline#ale#indicator_infos']    = nr2char(0xf129) .. ' '
