@@ -103,7 +103,7 @@ end
 local function clear_buffer(path)
     for _, bufnr in ipairs(api.nvim_list_bufs()) do
         if path == api.nvim_buf_get_name(bufnr) then
-            api.nvim_command(':bwipeout ' .. bufnr)
+            api.nvim_buf_delete(bufnr, { force = true })
             return
         end
     end

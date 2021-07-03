@@ -31,3 +31,8 @@ function! dotvim#lsp#FormatOnSave(opts, timeout_ms) abort
         endtry
     endif
 endfunction
+
+function! dotvim#lsp#CheckBackSpace() abort
+    let l:col = col('.') - 1
+    return !l:col || getline('.')[l:col-1] =~# '\s'
+endfunction
