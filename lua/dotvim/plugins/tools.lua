@@ -106,17 +106,36 @@ return {
    'tpope/vim-fugitive',
 
    {
-       'airblade/vim-gitgutter',
-       setup = function()
-           vim.g.gitgutter_highlight_lines              = 0
-           vim.g.gitgutter_realtime                     = 1
-           vim.g.gitgutter_eager                        = 1
-           vim.g.gitgutter_sign_added                   = '┃'
-           vim.g.gitgutter_sign_modified                = '┃'
-           vim.g.gitgutter_sign_removed                 = '┃'
-           vim.g.gitgutter_sign_removed_first_line      = '‾'
-           vim.g.gitgutter_sign_removed_above_and_below = '_¯'
-           vim.g.gitgutter_sign_modified_removed        = '~_'
+       'lewis6991/gitsigns.nvim',
+       requires = {
+           'nvim-lua/plenary.nvim'
+       },
+       config = function()
+           require('gitsigns').setup({
+               -- signs = {},
+               keymaps = {
+                   noremap = true,
+                   buffer = true,
+
+                   ['n ]c'] = { expr = true, [[&diff ? ']c' : '<cmd>lua require"gitsigns.actions".next_hunk()<CR>']]},
+                   ['n [c'] = { expr = true, [[&diff ? '[c' : '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>']]},
+
+                   ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+                   ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+                   ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+                   ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+                   ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+                   ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+                   ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+                   ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
+
+                   -- Text objects
+                   ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+                   ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+               },
+               current_line_blame = false,
+               use_internal_diff = true
+           })
        end
-   },
+   }
 }
