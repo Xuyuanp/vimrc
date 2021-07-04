@@ -277,7 +277,7 @@ return {
             'romgrk/nvim-treesitter-context',
             'p00f/nvim-ts-rainbow'
         },
-        run = 'TSUpdate',
+        run = ':TSUpdate',
         config = function()
             require('dotvim/treesitter')
         end
