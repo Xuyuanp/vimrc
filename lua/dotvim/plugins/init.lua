@@ -1,7 +1,11 @@
 local vfn = vim.fn
 local execute = vim.api.nvim_command
+local packer = require('packer')
 
-local install_path = vfn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local std_data_path = vfn.stdpath('data')
+
+local install_path = std_data_path .. '/site/pack/packer/start/packer.nvim'
+local compile_path = std_data_path .. '/site/plugin/packer_compiled.vim'
 
 if vfn.empty(vfn.glob(install_path)) > 0 then
     print("Installing packer...")
@@ -13,7 +17,11 @@ execute 'packadd packer.nvim'
 
 execute [[ autocmd User PackerComplete :PackerCompile<CR> ]]
 
-return require('packer').startup(function(use)
+return packer.startup(function(use)
+    packer.init({
+        compile_path = compile_path,
+    })
+
     use 'wbthomason/packer.nvim'
 
     local groups = { 'langs', 'tools', 'ui', 'lsp' }
@@ -23,4 +31,6 @@ return require('packer').startup(function(use)
             use(plug)
         end
     end
+
+    if vfn.empty(vfn.glob(compile_path)) > 0 then packer.compile() end
 end)
