@@ -82,5 +82,10 @@ ts_configs.setup {
         disable = {},
         updatetime = 25,
         persist_queries = false,
+    },
+    rainbow = {
+        enable = true,
+        extend_mode = true,
+        max_file_lines = 2000
     }
 }

@@ -101,19 +101,6 @@ return {
     },
 
     {
-        'luochen1990/rainbow',
-        config = function()
-            vim.g.rainbow_active = 1
-            vim.rainbow_conf = {
-                separately = {
-                    nerdtree = 0,
-                    fzf = 0,
-                }
-            }
-        end
-    },
-
-    {
         'liuchengxu/vista.vim',
         config = function()
             vim.g.vista_default_executive = 'nvim_lsp'
@@ -287,7 +274,8 @@ return {
         'nvim-treesitter/nvim-treesitter',
         requires = {
             'nvim-treesitter/playground',
-            'romgrk/nvim-treesitter-context'
+            'romgrk/nvim-treesitter-context',
+            'p00f/nvim-ts-rainbow'
         },
         run = 'TSUpdate',
         config = function()
