@@ -156,8 +156,6 @@ return {
         end
     },
 
-    'nvim-lua/plenary.nvim',
-
     {
         'Xuyuanp/yanil',
         requires = {
