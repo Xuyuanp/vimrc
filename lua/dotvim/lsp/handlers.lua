@@ -41,11 +41,11 @@ M["textDocument/signatureHelp"] = function(_, _method, result)
                 if label_type == "string" then
                     local l, r = string.find(signature.label, parameter.label, 1, true)
                     if l and r then
-                        highlight_label = {l, r + 1}
+                        highlight_label = {l-1, r} -- lua is 1-indexed
                     end
                 elseif label_type == "table" then
                     local l, r = unpack(parameter.label)
-                    highlight_label = {l + 1, r + 1}
+                    highlight_label = {l, r}
                 end
             end
 
@@ -54,27 +54,23 @@ M["textDocument/signatureHelp"] = function(_, _method, result)
     end
 
     local filetype = api.nvim_buf_get_option(0, "filetype")
-    if filetype and type(signature.label) == "string" then
-        signature.label = string.format("```%s\n%s\n```", filetype, signature.label)
-    end
-
-    local lines = util.convert_signature_help_to_markdown_lines(result)
+    local lines = util.convert_signature_help_to_markdown_lines(result, filetype)
     lines = util.trim_empty_lines(lines)
     if vim.tbl_isempty(lines) then
         return
     end
 
-    local bufnr, winnr = util.open_floating_preview(lines, "markdown", {
-        pad_left = 1, pad_right = 1
+    local bufnr, _ = util.open_floating_preview(lines, "markdown", {
+        pad_left = 1, pad_right = 1,
+        border = 'rounded',
     })
     if #highlight_label > 0 then
-        api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlight_label[1]-1, highlight_label[2]-1)
+        api.nvim_buf_add_highlight(bufnr, -1, 'Underlined', 0, highlight_label[1], highlight_label[2])
     end
     if highlight_document then
         local line_count = vim.api.nvim_buf_line_count(bufnr)
         api.nvim_buf_add_highlight(bufnr, -1, 'Label', line_count-1, 0, -1)
     end
-    util.close_preview_autocmd({"CursorMoved", "CursorMovedI", "BufHidden", "BufLeave"}, winnr)
 end
 
 -- for rust-analyzer. Fixed https://github.com/rust-analyzer/rust-analyzer/issues/4901
@@ -306,6 +302,8 @@ M["textDocument/references"] = function(_err, _method, references, _client_id, _
 
     fzf_run(wrapped)
 end
+
+M["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
 do
     local originals = {}
