@@ -71,7 +71,7 @@ return {
                 window = {
                     width = 0.9,
                     height = 0.9,
-                    border = 'sharp'
+                    border = 'rounded'
                 }
             }
             vim.g.fzf_action = {
@@ -88,6 +88,7 @@ return {
             set_keymap('n', '<leader>ag', ':Ag<CR>', { silent = true, noremap = true })
             set_keymap('n', '<leader>rg', ':Rg<CR>', { silent = true, noremap = true })
             set_keymap('n', '<leader>ag', ':AF<CR>', { silent = true, noremap = true })
+            set_keymap('n', '<A-m>', ':Commands<CR>', { silent = true, noremap = true })
         end
     },
 
