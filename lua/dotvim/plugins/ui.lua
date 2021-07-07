@@ -280,4 +280,18 @@ return {
             require('dotvim/treesitter')
         end
     },
+
+    {
+        "numtostr/FTerm.nvim",
+        config = function()
+            require("FTerm").setup({
+                border = 'rounded',
+            })
+
+            local set_keymap = vim.api.nvim_set_keymap
+            local opts = { noremap = false, silent = true }
+            set_keymap('n', '<A-o>', '<cmd>lua require("FTerm").toggle()<CR>', opts)
+            set_keymap('t', '<A-o>', '<C-\\><C-n><cmd>lua require("FTerm").toggle()<CR>', opts)
+        end
+    }
 }
