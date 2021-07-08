@@ -54,8 +54,8 @@ return {
                 active = {
                     left = {
                         { 'mode', 'paste' },
-                        { 'fugitive' },
-                        { 'filename' }
+                        { 'filename' },
+                        { 'fugitive' }
                     },
                     right = {
                         { 'whitespace' },
