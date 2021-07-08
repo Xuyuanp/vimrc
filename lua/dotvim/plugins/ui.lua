@@ -1,11 +1,25 @@
 return {
-    'mhinz/vim-startify',
+    {
+        'mhinz/vim-startify',
+        requires = {
+            'ryanoasis/vim-devicons'
+        },
+        config = function()
+            local command = vim.api.nvim_command
+            command[[
+            function! StartifyEntryFormat()
+                return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+            endfunction
+            ]]
+        end
+    },
 
     {
         'itchyny/lightline.vim',
         requires = {
             'maximbaz/lightline-ale',
             'deponian/vim-lightline-whitespace',
+            'ryanoasis/vim-devicons'
         },
         setup = function()
             local vim = vim
