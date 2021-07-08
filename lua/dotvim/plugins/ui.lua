@@ -39,7 +39,7 @@ return {
                 },
                 active = {
                     left = {
-                        { 'mode' },
+                        { 'mode', 'paste' },
                         { 'fugitive' },
                         { 'filename' }
                     },
@@ -61,6 +61,9 @@ return {
                 subseparator = {
                     left= '',
                     right= ''
+                },
+                component = {
+                    paste = '%{&paste?"":""}',
                 },
                 component_function = {
                     fugitive     = 'dotvim#lightline#Fugitive',
