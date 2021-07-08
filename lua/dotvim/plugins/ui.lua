@@ -3,25 +3,39 @@ return {
 
     {
         'itchyny/lightline.vim',
+        requires = {
+            'maximbaz/lightline-ale',
+            'deponian/vim-lightline-whitespace',
+        },
         setup = function()
             local vim = vim
             local vfn = vim.fn
 
+            -- lightline-ale
+            local nr2char = vim.fn.nr2char
+            vim.g['lightline#ale#indicator_checking'] = nr2char(0xf110) .. ' '
+            vim.g['lightline#ale#indicator_infos']    = nr2char(0xf129) .. ' '
+            vim.g['lightline#ale#indicator_warnings'] = nr2char(0xf071) .. ' '
+            vim.g['lightline#ale#indicator_errors']   = nr2char(0xf05e) .. ' '
+            vim.g['lightline#ale#indicator_ok']       = nr2char(0xf00c)
+
+            -- lightline
             local themes = {'one', 'seoul256', 'powerline', 'gruvbox_material'}
             vim.g.lightline = {
                 colorscheme = themes[vfn.localtime()%vim.tbl_count(themes)],
                 mode_map = {
                     n = 'N',
                     i = 'I',
-                    R = 'R',
+                    r = 'R',
+                    R = 'R-L',
                     v = 'V',
                     V = 'V-L',
                     t = 'T',
                     c = 'C',
                     s = 'S',
                     S = 'S-L',
-                    ['\\<C-v>'] = 'V-B',
-                    ['\\<C-s>'] = 'S-B',
+                    ['\22'] = 'V-B', -- CTRL-V
+                    ['\19'] = 'S-B', -- CTRL-S
                 },
                 active = {
                     left = {
@@ -80,24 +94,6 @@ return {
                 }
             }
         end
-    },
-
-    {
-        'maximbaz/lightline-ale',
-        requires = { 'itchyny/lightline.vim' },
-        setup = function()
-            local nr2char = vim.fn.nr2char
-            vim.g['lightline#ale#indicator_checking'] = nr2char(0xf110) .. ' '
-            vim.g['lightline#ale#indicator_infos']    = nr2char(0xf129) .. ' '
-            vim.g['lightline#ale#indicator_warnings'] = nr2char(0xf071) .. ' '
-            vim.g['lightline#ale#indicator_errors']   = nr2char(0xf05e) .. ' '
-            vim.g['lightline#ale#indicator_ok']       = nr2char(0xf00c)
-        end
-    },
-
-    {
-        'deponian/vim-lightline-whitespace',
-        requires = { 'itchyny/lightline.vim' },
     },
 
     {
