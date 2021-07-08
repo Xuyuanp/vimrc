@@ -24,14 +24,11 @@ endfunction
 
 function! dotvim#lightline#Filename() abort
     let l:fname = expand('%:t')
-    return l:fname ==# 'ControlP' && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
-                \ l:fname =~# '^__Tagbar__\|__Gundo' ? '' :
-                \ &filetype ==# 'nerdtree' ? 'NERDTree' :
-                \ &filetype ==# 'vimfiler' ? vimfiler#get_status_string() :
-                \ &filetype ==# 'unite' ? unite#get_status_string() :
-                \ &filetype ==# 'vimshell' ? vimshell#get_status_string() :
+    return  &filetype ==# 'nerdtree' ? 'NERDTree' :
                 \ (dotvim#lightline#Readonly() !=# '' ? dotvim#lightline#Readonly() . ' ' : '') .
+                \ (get(g:, 'loaded_webdevicons', 0) ? WebDevIconsGetFileTypeSymbol() . ' ' : '') .
                 \ (l:fname !=# '' ? l:fname : '[No Name]') .
+                \ (luaeval("require('dotvim/lsp/status').get_name()") ==# '' ? '' : ' ') .
                 \ (dotvim#lightline#Modified() !=# '' ? ' ' . dotvim#lightline#Modified() : '')
 endfunction
 
@@ -96,4 +93,10 @@ function! dotvim#lightline#LspStatus() abort
     endif
 
     return ''
+endfunction
+
+function! dotvim#lightline#LspName() abort
+    let l:name = luaeval("require('dotvim/lsp/status').get_name()")
+    if l:name ==# '' | return '' | endif
+    return ''
 endfunction

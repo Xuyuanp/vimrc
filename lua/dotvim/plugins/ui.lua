@@ -60,7 +60,7 @@ return {
                     right = {
                         { 'whitespace' },
                         { 'percent', 'lineinfo' },
-                        { 'fileformat', 'fileencoding', 'filetype' },
+                        { 'fileformat', 'fileencoding' },
                         { 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' },
                         { 'lspStatus' }
                     },
