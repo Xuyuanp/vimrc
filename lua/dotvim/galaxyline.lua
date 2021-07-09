@@ -135,6 +135,11 @@ end
 
 local space = printer(' ')
 
+local lsp_status = function()
+    return require('dotvim/lsp/status').get_messages()
+end
+
+
 --[[/* GALAXYLINE CONFIG */]]
 
 galaxyline.short_line_list =
@@ -202,10 +207,10 @@ section.left =
         separator_highlight = {_HEX_COLORS.green_dark, _HEX_COLORS.bar.middle},
     }},
 
-    {LeftEnd = {
-        provider = printer(_SEPARATORS.left),
+    {RightEnd = {
+        provider = printer(_SEPARATORS.right),
         condition = negated(find_git_root),
-        highlight = {_HEX_COLORS.bar.middle, find_git_root() and _HEX_COLORS.green_dark or _HEX_COLORS.bar.side}
+        highlight = {find_git_root() and _HEX_COLORS.green_dark or _HEX_COLORS.bar.side, _HEX_COLORS.bar.middle}
     }},
 
     {DiffAdd = {
