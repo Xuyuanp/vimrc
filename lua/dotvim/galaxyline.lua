@@ -148,6 +148,7 @@ galaxyline.short_line_list =
     'undotree',
     'vista',
     'vista_markdown',
+    'vista_kind',
     'Yanil'
 }
 
