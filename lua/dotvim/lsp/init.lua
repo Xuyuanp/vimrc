@@ -77,11 +77,6 @@ local on_attach = function(client, bufnr)
         end)
     end
 
-    util.Augroup("dotvim_lsp_status", function()
-        api.nvim_command("autocmd User LspMessageUpdate call lightline#update()")
-        api.nvim_command("autocmd User LspStatusUpdate call lightline#update()")
-    end)
-
     local buf_set_keymap = api.nvim_buf_set_keymap
     -- Keybindings for LSPs
     buf_set_keymap(bufnr, "n", "gd",  "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
