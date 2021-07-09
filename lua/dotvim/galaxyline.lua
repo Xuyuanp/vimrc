@@ -9,6 +9,7 @@ local section = galaxyline.section
 local _COLORS =
 {
     black = {'#202020', 0,   'black'},
+    black2 = {'#282828', 0,   'black'},
     gray  = {'#808080', 244, 'gray'},
     gray_dark   = {'#353535', 236, 'darkgrey'},
     gray_darker = {'#505050', 244, 'gray'},
@@ -168,7 +169,7 @@ section.left =
         icon = '▊ ',
         highlight = {_HEX_COLORS.bar.side, _HEX_COLORS.bar.side},
         separator = _SEPARATORS.right,
-        separator_highlight = {_HEX_COLORS.bar.side, get_file_icon_color}
+        separator_highlight = {_HEX_COLORS.black2, get_file_icon_color} -- bar.side != black here, I don't know why
     }},
 
     {FileIcon = {
