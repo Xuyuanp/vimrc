@@ -305,6 +305,69 @@ end
 
 M["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
+local function gen_location_handler(name)
+    return function(_, _method, result)
+        if result == nil or vim.tbl_isempty(result) then
+            -- local _ = log.info() and log.info(method, 'No location found')
+            return nil
+        end
+
+        -- textDocument/definition can return Location or Location[]
+        -- https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_definition
+
+        local util = vim.lsp.util
+        if not vim.tbl_islist(result) then
+            util.jump_to_location(result)
+            return
+        end
+
+        if #result == 1 then
+            util.jump_to_location(result[1])
+            return
+        end
+
+        local source = {}
+        for i, ref in ipairs(result) do
+            local fname = vim.uri_to_fname(ref.uri)
+            local start_line = ref.range.start.line + 1
+            local end_line = ref.range["end"].line + 1
+            local line = string.format("%s\t%d\t%d\t%d\t%s |%d ~ %d|", fname, start_line, end_line, i, vim.fn.fnamemodify(fname, ':~:.'), start_line, end_line)
+            table.insert(source, line)
+        end
+
+        local wrapped = fzf_wrap("location", {
+            source = source,
+            options = {
+                '+m', '+x',
+                '--tiebreak=index',
+                '--ansi',
+                '-d', '\t',
+                '--with-nth', '5..',
+                '--reverse',
+                '--color', 'dark',
+                '--prompt', 'LSP ' .. name .. '> ',
+                '--preview', 'bat --highlight-line={2}:{3} --color=always --map-syntax=vimrc:VimL {1}',
+                '--preview-window', '+{2}-10'
+            },
+            sink = function(line)
+                if not line or type(line) ~= "string" or string.len(line) == 0 then return end
+                local parts = vim.fn.split(line, "\t")
+                local choice = tonumber(parts[4])
+                local ref_chosen = result[choice]
+                util.jump_to_location(ref_chosen)
+            end,
+        })
+
+        fzf_run(wrapped)
+    end
+end
+
+M['textDocument/declaration'] = gen_location_handler('Declaration')
+M['textDocument/definition'] = gen_location_handler('Definition')
+M['textDocument/typeDefinition'] = gen_location_handler('TypeDefinition')
+M['textDocument/implementation'] = gen_location_handler('Implementation')
+
+
 do
     local originals = {}
     for name, _ in pairs(M) do
