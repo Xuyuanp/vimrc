@@ -22,7 +22,7 @@ function M.parse_messages(messages)
         end
 
         if msg.percentage then
-            contents = contents .. ' ' .. string.format("%0.2f %%", msg.percentage)
+            contents = contents .. ' ' .. string.format("%0.1f%%", msg.percentage)
         end
 
         if msg.spinner then
@@ -44,7 +44,7 @@ function M.parse_messages(messages)
         contents = msg.content
     end
 
-    return client_name .. ' ' .. contents
+    return client_name .. ' ' .. contents .. ' '
 end
 
 function M.get_messages()

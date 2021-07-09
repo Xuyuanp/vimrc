@@ -15,105 +15,6 @@ return {
     },
 
     {
-        'itchyny/lightline.vim',
-        requires = {
-            'maximbaz/lightline-ale',
-            'deponian/vim-lightline-whitespace',
-            'ryanoasis/vim-devicons'
-        },
-        setup = function()
-            local vim = vim
-            local vfn = vim.fn
-
-            -- lightline-ale
-            local nr2char = vim.fn.nr2char
-            vim.g['lightline#ale#indicator_checking'] = nr2char(0xf110) .. ' '
-            vim.g['lightline#ale#indicator_infos']    = nr2char(0xf129) .. ' '
-            vim.g['lightline#ale#indicator_warnings'] = nr2char(0xf071) .. ' '
-            vim.g['lightline#ale#indicator_errors']   = nr2char(0xf05e) .. ' '
-            vim.g['lightline#ale#indicator_ok']       = nr2char(0xf00c)
-
-            -- lightline
-            local themes = {'one', 'seoul256', 'powerline', 'gruvbox_material'}
-            vim.g.lightline = {
-                colorscheme = themes[vfn.localtime()%vim.tbl_count(themes)],
-                mode_map = {
-                    n = 'N',
-                    i = 'I',
-                    r = 'R',
-                    R = 'R-L',
-                    v = 'V',
-                    V = 'V-L',
-                    t = 'T',
-                    c = 'C',
-                    s = 'S',
-                    S = 'S-L',
-                    ['\22'] = 'V-B', -- CTRL-V
-                    ['\19'] = 'S-B', -- CTRL-S
-                },
-                active = {
-                    left = {
-                        { 'mode', 'paste' },
-                        { 'filename' },
-                        { 'fugitive' }
-                    },
-                    right = {
-                        { 'whitespace' },
-                        { 'percent', 'lineinfo' },
-                        { 'fileformat', 'fileencoding' },
-                        { 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' },
-                        { 'lspStatus' }
-                    },
-                },
-                inactive = {
-                    right = {}
-                },
-                separator = {
-                    left= '',
-                    right= ''
-                },
-                subseparator = {
-                    left= '',
-                    right= ''
-                },
-                component = {
-                    paste = '%{&paste?"":""}',
-                },
-                component_function = {
-                    fugitive     = 'dotvim#lightline#Fugitive',
-                    readonly     = 'dotvim#lightline#Readonly',
-                    filetype     = 'dotvim#lightline#FileType',
-                    fileformat   = 'dotvim#lightline#FileFormat',
-                    filename     = 'dotvim#lightline#Filename',
-                    fileencoding = 'dotvim#lightline#Fileencoding',
-                    mode         = 'dotvim#lightline#Mode',
-                    percent      = 'dotvim#lightline#Percent',
-                    lineinfo     = 'dotvim#lightline#Lineinfo',
-                    synName      = 'dotvim#lightline#SynName',
-                    lspStatus    = 'dotvim#lightline#LspStatus',
-                },
-                component_expand = {
-                    linter_checking = 'lightline#ale#checking',
-                    linter_ok       = 'lightline#ale#ok',
-                    linter_infos    = 'lightline#ale#infos',
-                    linter_warnings = 'lightline#ale#warnings',
-                    linter_errors   = 'lightline#ale#errors',
-                    whitespace      = 'lightline#whitespace#check',
-                },
-                component_type = {
-                    readonly        = 'warning',
-                    linter_checking = 'right',
-                    linter_ok       = 'right',
-                    linter_infos    = 'right',
-                    linter_warnings = 'warning',
-                    linter_errors   = 'error',
-                    whitespace      = 'warning',
-                }
-            }
-        end
-    },
-
-    {
         'liuchengxu/vista.vim',
         config = function()
             vim.g.vista_default_executive = 'nvim_lsp'
@@ -306,5 +207,17 @@ return {
             set_keymap('n', '<A-o>', '<cmd>lua require("FTerm").toggle()<CR>', opts)
             set_keymap('t', '<A-o>', '<C-\\><C-n><cmd>lua require("FTerm").toggle()<CR>', opts)
         end
+    },
+
+    {
+        'glepnir/galaxyline.nvim',
+        branch = 'main',
+        config = function()
+            require('dotvim/galaxyline')
+        end,
+        requires = {
+            'kyazdani42/nvim-web-devicons',
+            'Iron-E/nvim-highlite',
+        }
     }
 }
