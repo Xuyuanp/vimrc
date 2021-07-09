@@ -85,7 +85,7 @@ local _MODES =
     ['TABLES']  = _COLORS.orange_light,
 }
 
--- local _LSP_ICON = ''
+local _LSP_ICON = ''
 
 local _SEPARATORS =
 {
@@ -135,10 +135,6 @@ end
 
 local space = printer(' ')
 
-local lsp_status = function()
-    return require('dotvim/lsp/status').get_messages()
-end
-
 --[[/* GALAXYLINE CONFIG */]]
 
 galaxyline.short_line_list =
@@ -180,7 +176,13 @@ section.left =
     }},
 
     {FileName = {
-        provider  = {space, 'FileName', 'FileSize'},
+        provider  = {space, function()
+            if require('dotvim/lsp/status').get_name() == '' then
+                return ''
+            else
+                return _LSP_ICON .. ' '
+            end
+        end, 'FileName', 'FileSize'},
         condition = buffer_not_empty,
         highlight = {_HEX_COLORS.text, _HEX_COLORS.bar.side, 'bold'}
     }},
@@ -209,27 +211,27 @@ section.left =
     {DiffAdd = {
         provider = 'DiffAdd',
         condition = all(checkwidth, find_git_root),
-        icon = '+',
+        icon = '',
         highlight = {_HEX_COLORS.green_light, _HEX_COLORS.bar.middle},
     }},
 
     {DiffModified = {
         provider = 'DiffModified',
         condition = checkwidth,
-        icon = '~',
+        icon = '',
         highlight = {_HEX_COLORS.orange_light, _HEX_COLORS.bar.middle},
     }},
 
     {DiffRemove = {
         provider = 'DiffRemove',
         condition = checkwidth,
-        icon = '-',
+        icon = '',
         highlight = {_HEX_COLORS.red_light, _HEX_COLORS.bar.middle},
     }},
 
     {DiagnosticError = {
         provider = 'DiagnosticError',
-        icon = 'Ⓧ ',
+        icon = 'E',
         highlight = {_HEX_COLORS.red, _HEX_COLORS.bar.middle},
         separator = ' ',
         separator_highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.middle},
@@ -237,7 +239,7 @@ section.left =
 
     {DiagnosticWarn = {
         provider = 'DiagnosticWarn',
-        icon = '⚠️ ',
+        icon = 'W',
         highlight = {_HEX_COLORS.yellow, _HEX_COLORS.bar.middle},
         separator = ' ',
         separator_highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.middle},
@@ -245,7 +247,7 @@ section.left =
 
     {DiagnosticHint = {
         provider = 'DiagnosticHint',
-        icon = '💡',
+        icon = 'H',
         highlight = {_HEX_COLORS.magenta, _HEX_COLORS.bar.middle},
         separator = ' ',
         separator_highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.middle},
@@ -253,7 +255,7 @@ section.left =
 
     {DiagnosticInfo = {
         provider = 'DiagnosticInfo',
-        icon = 'ⓘ ',
+        icon = 'I',
         highlight = {_HEX_COLORS.white, _HEX_COLORS.bar.middle},
         separator = ' ',
         separator_highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.middle},
