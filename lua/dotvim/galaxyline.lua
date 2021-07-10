@@ -2,6 +2,7 @@ local mode = vim.fn.mode
 
 local galaxyline = require('galaxyline')
 local section = galaxyline.section
+local condition = require('galaxyline.condition')
 
 --[[/* CONSTANTS */]]
 
@@ -44,7 +45,6 @@ local _COLORS =
     magenta_dark = {'#bb0099', 126, 'darkmagenta'},
     pink_light   = {'#ffb7b7', 38,  'white'},
     purple_light = {'#af60af', 63,  'magenta'},
-
 }
 
 _COLORS.bar = {middle=_COLORS.gray_dark, side=_COLORS.black}
@@ -135,10 +135,17 @@ end
 
 local space = printer(' ')
 
-local lsp_status = function()
+local lsp_messages = function()
     return require('dotvim/lsp/status').get_messages()
 end
 
+local lsp_icon = function()
+    if require('dotvim/lsp/status').get_name() == '' then
+        return ''
+    else
+        return _LSP_ICON .. ' '
+    end
+end
 
 --[[/* GALAXYLINE CONFIG */]]
 
@@ -181,13 +188,7 @@ section.left =
     }},
 
     {FileName = {
-        provider  = {space, function()
-            if require('dotvim/lsp/status').get_name() == '' then
-                return ''
-            else
-                return _LSP_ICON .. ' '
-            end
-        end, 'FileName', 'FileSize'},
+        provider  = {space, lsp_icon, 'FileName', 'FileSize'},
         condition = buffer_not_empty,
         highlight = {_HEX_COLORS.text, _HEX_COLORS.bar.side, 'bold'}
     }},
@@ -269,8 +270,9 @@ section.left =
 
 section.right =
 {
-    {LspStatus = {
-        provider = { lsp_status },
+    {LspMessages = {
+        provider = { lsp_messages },
+        condition = condition.check_active_lsp,
         highlight = { _HEX_COLORS.text, _HEX_COLORS.bar.middle },
     }},
 
@@ -316,7 +318,13 @@ section.right =
             highlight = {_HEX_COLORS.text, _HEX_COLORS.bar.side},
             separator = ' ',
             separator_highlight = {_HEX_COLORS.bar.side, _HEX_COLORS.bar.side},
-        }
+        },
+
+        WhiteSpace = {
+            provider = { space, space, 'WhiteSpace' }, -- why one more space is required?
+            condition = function() return require('galaxyline.provider_whitespace').get_item() ~= '' end,
+            highlight = {_HEX_COLORS.yellow, _HEX_COLORS.bar.side}
+        },
     },
 
     {PerCentSeparator = {
