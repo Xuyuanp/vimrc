@@ -1,8 +1,8 @@
 local mode = vim.fn.mode
+local lsp = vim.lsp
 
 local galaxyline = require('galaxyline')
 local section = galaxyline.section
-local condition = require('galaxyline.condition')
 
 --[[/* CONSTANTS */]]
 
@@ -55,6 +55,12 @@ local _HEX_COLORS = setmetatable(
 {['bar'] = setmetatable({}, {['__index'] = function(_, key) return _COLORS.bar[key] and _COLORS.bar[key][1] or nil end})},
 {['__index'] = function(_, key) local color = _COLORS[key] return color and color[1] or nil end}
 )
+
+local _BG = {
+    file = _HEX_COLORS.bar.side,
+    git = _HEX_COLORS.blue,
+    diagnotic = _HEX_COLORS.bar.middle,
+}
 
 local _MODES =
 {
@@ -129,8 +135,13 @@ local function printer(str)
     return function() return str end
 end
 
-local function negated(fn)
-    return function() return not fn() end
+-- local function negated(fn)
+--     return function() return not fn() end
+-- end
+
+local function lsp_diagnostic_count(bufnr)
+    local cnt = #lsp.diagnostic.get(bufnr)
+    return cnt
 end
 
 local space = printer(' ')
@@ -143,7 +154,7 @@ local lsp_icon = function()
     if require('dotvim/lsp/status').get_name() == '' then
         return ''
     else
-        return _LSP_ICON .. ' '
+        return ' ' .. _LSP_ICON .. ' '
     end
 end
 
@@ -184,95 +195,98 @@ section.left =
         provider  = {space, 'FileIcon'},
         highlight = {_HEX_COLORS.bar.side, get_file_icon_color},
         separator = _SEPARATORS.left,
-        separator_highlight = {_HEX_COLORS.bar.side, get_file_icon_color}
+        separator_highlight = {_BG.file, get_file_icon_color}
+    }},
+
+    {LspIcon = {
+        provider = lsp_icon,
+        highlight = { _HEX_COLORS.green_light, _BG.file },
     }},
 
     {FileName = {
-        provider  = {space, lsp_icon, 'FileName', 'FileSize'},
+        provider  = {space, 'FileName', 'FileSize'},
         condition = buffer_not_empty,
-        highlight = {_HEX_COLORS.text, _HEX_COLORS.bar.side, 'bold'}
+        highlight = {_HEX_COLORS.text, _BG.file, 'bold'}
     }},
 
     {GitSeparator = {
         provider = printer(_SEPARATORS.right),
         condition = find_git_root,
-        highlight = {_HEX_COLORS.bar.side, _HEX_COLORS.green_dark},
+        highlight = {_BG.file, _BG.git},
     }},
 
     {GitBranch = {
-        provider = 'GitBranch',
-        icon = '   ',
+        provider = {space , printer('  '), 'GitBranch', space},
         condition = find_git_root,
-        highlight = {_HEX_COLORS.bar.side, _HEX_COLORS.green_dark, 'bold'},
-        separator = _SEPARATORS.right,
-        separator_highlight = {_HEX_COLORS.green_dark, _HEX_COLORS.bar.middle},
-    }},
-
-    {RightEnd = {
-        provider = printer(_SEPARATORS.right),
-        condition = negated(find_git_root),
-        highlight = {find_git_root() and _HEX_COLORS.green_dark or _HEX_COLORS.bar.side, _HEX_COLORS.bar.middle}
+        highlight = {_HEX_COLORS.bar.side, _BG.git, 'bold'},
     }},
 
     {DiffAdd = {
         provider = 'DiffAdd',
         condition = all(checkwidth, find_git_root),
         icon = '',
-        highlight = {_HEX_COLORS.green_light, _HEX_COLORS.bar.middle},
+        highlight = {_HEX_COLORS.green_light, _BG.git},
     }},
 
     {DiffModified = {
         provider = 'DiffModified',
-        condition = checkwidth,
+        condition = all(checkwidth, find_git_root),
         icon = '',
-        highlight = {_HEX_COLORS.orange_light, _HEX_COLORS.bar.middle},
+        highlight = {_HEX_COLORS.orange_light, _BG.git},
     }},
 
     {DiffRemove = {
         provider = 'DiffRemove',
-        condition = checkwidth,
+        condition = all(checkwidth, find_git_root),
         icon = '',
-        highlight = {_HEX_COLORS.red_light, _HEX_COLORS.bar.middle},
+        highlight = {_HEX_COLORS.red_light, _BG.git},
+    }},
+
+    {GitRightEnd = {
+        provider = printer(_SEPARATORS.right),
+        highlight = {find_git_root() and _BG.git or _BG.file, _HEX_COLORS.bar.middle}
+    }},
+
+    {DiagnosticSpace = {
+        provider = function()
+            if lsp_diagnostic_count() > 0 then
+                return ' '
+            end
+            return ''
+        end,
+        highlight = {_BG.diagnotic, _BG.diagnotic}
     }},
 
     {DiagnosticError = {
         provider = 'DiagnosticError',
-        icon = 'E',
-        highlight = {_HEX_COLORS.red, _HEX_COLORS.bar.middle},
-        separator = ' ',
-        separator_highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.middle},
+        icon = 'ﮊ',
+        highlight = {_HEX_COLORS.red, _BG.diagnotic},
     }},
 
     {DiagnosticWarn = {
         provider = 'DiagnosticWarn',
-        icon = 'W',
-        highlight = {_HEX_COLORS.yellow, _HEX_COLORS.bar.middle},
-        separator = ' ',
-        separator_highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.middle},
+        icon = '',
+        highlight = {_HEX_COLORS.yellow, _BG.diagnotic},
     }},
 
     {DiagnosticHint = {
         provider = 'DiagnosticHint',
-        icon = 'H',
-        highlight = {_HEX_COLORS.magenta, _HEX_COLORS.bar.middle},
-        separator = ' ',
-        separator_highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.middle},
+        icon = '',
+        highlight = {_HEX_COLORS.magenta, _BG.diagnotic},
     }},
 
     {DiagnosticInfo = {
         provider = 'DiagnosticInfo',
-        icon = 'I',
-        highlight = {_HEX_COLORS.white, _HEX_COLORS.bar.middle},
-        separator = ' ',
-        separator_highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.middle},
+        icon = '',
+        highlight = {_HEX_COLORS.white, _BG.diagnotic},
     }},
+
 } -- section.left
 
 section.right =
 {
     {LspMessages = {
         provider = { lsp_messages },
-        condition = condition.check_active_lsp,
         highlight = { _HEX_COLORS.text, _HEX_COLORS.bar.middle },
     }},
 
