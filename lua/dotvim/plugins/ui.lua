@@ -219,5 +219,10 @@ return {
             'kyazdani42/nvim-web-devicons',
             'Iron-E/nvim-highlite',
         }
+    },
+
+    {
+        'nvim-telescope/telescope.nvim',
+        requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
     }
 }
