@@ -87,7 +87,7 @@ return {
             local set_keymap = vim.api.nvim_set_keymap
             set_keymap('n', '<leader>ag', ':Ag<CR>', { silent = true, noremap = true })
             set_keymap('n', '<leader>rg', ':Rg<CR>', { silent = true, noremap = true })
-            set_keymap('n', '<leader>ag', ':AF<CR>', { silent = true, noremap = true })
+            set_keymap('n', '<leader>af', ':AF<CR>', { silent = true, noremap = true })
             set_keymap('n', '<A-m>', ':Commands<CR>', { silent = true, noremap = true })
         end
     },
