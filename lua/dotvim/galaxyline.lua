@@ -169,7 +169,9 @@ galaxyline.short_line_list =
     'vista',
     'vista_markdown',
     'vista_kind',
-    'Yanil'
+    'Yanil',
+    'man',
+    'help'
 }
 
 section.left =
