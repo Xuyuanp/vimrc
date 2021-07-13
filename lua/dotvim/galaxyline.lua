@@ -64,8 +64,8 @@ local _BG = {
 
 local _MODES =
 {
-    ['c']   = {'C',        _COLORS.red},
-    ['ce']  = {'CE',       _COLORS.red_dark},
+    ['c']   = {'',        _COLORS.red},
+    ['ce']  = {'',        _COLORS.red_dark},
     ['cv']  = {'EX',       _COLORS.red_light},
     ['i']   = {'I',        _COLORS.green},
     ['ic']  = {'IC',       _COLORS.green_light},
