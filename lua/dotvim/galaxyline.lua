@@ -218,7 +218,7 @@ section.left =
     }},
 
     {GitBranch = {
-        provider = {space , printer('  '), 'GitBranch', space},
+        provider = {space , printer('  '), 'GitBranch', space},
         condition = find_git_root,
         highlight = {_HEX_COLORS.bar.side, _BG.git, 'bold'},
     }},
