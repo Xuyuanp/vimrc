@@ -261,7 +261,7 @@ section.left =
 
     {DiagnosticError = {
         provider = 'DiagnosticError',
-        icon = 'ﮊ',
+        icon = '',
         highlight = {_HEX_COLORS.red, _BG.diagnotic},
     }},
 
