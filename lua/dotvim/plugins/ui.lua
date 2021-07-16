@@ -229,6 +229,8 @@ return {
     {
         'lukas-reineke/indent-blankline.nvim',
         config = function()
+            vim.wo.colorcolumn = '99999'
+
             vim.g.indent_blankline_char = '│'
             vim.g.indent_blankline_use_treesitter = true
             vim.g.indent_blankline_show_first_indent_level = true
@@ -253,7 +255,8 @@ return {
                 'type',
                 '^if',
                 '^while',
-                '^for'
+                '^for',
+                '^loop'
             }
         end
     }
