@@ -78,6 +78,10 @@ local on_attach = function(client, bufnr)
         end)
     end
 
+    util.Augroup('dotvim_lsp_init_diagnostic', function()
+        api.nvim_command(string.format("autocmd CursorHold <buffer=%d> lua vim.lsp.diagnostic.show_line_diagnostics()", bufnr))
+    end)
+
     local buf_set_keymap = api.nvim_buf_set_keymap
     -- Keybindings for LSPs
     buf_set_keymap(bufnr, "n", "gd",  "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
