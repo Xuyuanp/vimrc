@@ -253,10 +253,15 @@ return {
                 'array',
                 'body',
                 'type',
+                '^with',
+                '^try',
+                '^except',
+                '^catch',
                 '^if',
+                '^else',
                 '^while',
                 '^for',
-                '^loop'
+                '^loop',
             }
         end
     },
