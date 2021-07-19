@@ -19,6 +19,7 @@ local function rename(new_name)
 
     local params = vlsp.util.make_position_params()
     local bufnr = api.nvim_get_current_buf()
+    local curr_name = vfn.expand('<cword>')
 
     local cursor = api.nvim_win_get_cursor(0)
     local win_width = api.nvim_win_get_width(0)
@@ -35,7 +36,7 @@ local function rename(new_name)
             "--height", 0,
             "--min-height", 0,
             "--prompt", "LSP Rename> ",
-            "--query", vfn.expand("<cword>"),
+            "--query", curr_name,
             "--print-query"
         },
         window = {
@@ -46,7 +47,7 @@ local function rename(new_name)
         },
         sink = function(line)
             new_name = line
-            if not (new_name and #new_name > 0) then return end
+            if not (new_name and #new_name > 0 and new_name ~= curr_name) then return end
             params.newName = new_name
             vlsp.buf_request(bufnr, 'textDocument/rename', params)
         end
