@@ -259,5 +259,9 @@ return {
                 '^loop'
             }
         end
+    },
+
+    {
+        'MunifTanjim/nui.nvim',
     }
 }
