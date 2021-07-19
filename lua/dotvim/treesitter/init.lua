@@ -1,4 +1,7 @@
 local ts_configs = require('nvim-treesitter.configs')
+local ts_install = require('nvim-treesitter.install')
+
+ts_install.compilers = { 'clang' }
 
 ts_configs.setup {
     ensure_installed = {'go', 'python'},      -- one of "all", "language", or a list of languages
