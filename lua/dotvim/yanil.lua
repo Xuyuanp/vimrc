@@ -75,10 +75,7 @@ Enter the dir/file name to be created. Dirs end with a '/'
     end)
 
     local refresh = vim.schedule_wrap(function()
-        tree:refresh(node, {}, function()
-            node:load(true)
-            node:open()
-        end)
+        tree:force_refresh_node(node)
         git.update(tree.cwd)
     end)
 
@@ -136,13 +133,10 @@ STOP! Directory is not empty! To delete, type 'yes'
             vim.schedule(function()
                 clear_buffer(node.abs_path)
 
-                local next_node = tree:find_neighbor(node, 1) or tree:find_neighbor(node, -1)
-                local path = next_node.abs_path
                 local parent = node.parent
-                tree:refresh(parent, {}, function()
-                    parent:load(true)
-                end)
-                tree:go_to_node(tree.root:find_node_by_path(path))
+
+                tree:force_refresh_node(parent)
+
                 git.update(tree.cwd)
             end)
         end,
