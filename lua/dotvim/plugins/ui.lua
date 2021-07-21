@@ -262,6 +262,7 @@ return {
                 '^while',
                 '^for',
                 '^loop',
+                '^call',
             }
         end
     },
