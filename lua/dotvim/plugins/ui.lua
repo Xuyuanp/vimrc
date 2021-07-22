@@ -47,7 +47,8 @@ return {
             vim.g.gruvbox_material_disable_italic_comment = 1
             vim.g.gruvbox_material_enable_bold            = 1
             vim.g.gruvbox_material_better_performance     = 1
-            vim.g.gruvbox_material_palette                = 'mix'
+            vim.g.gruvbox_material_palette                = 'original'
+            vim.g.gruvbox_material_background             = 'hard'
         end,
         config = function()
             local vim = vim
