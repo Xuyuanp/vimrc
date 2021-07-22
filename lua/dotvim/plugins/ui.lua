@@ -16,6 +16,13 @@ return {
     },
 
     {
+        'kyazdani42/nvim-web-devicons',
+        config = function()
+            vim.api.nvim_command[[ autocmd ColorScheme * lua require('nvim-web-devicons').setup() ]]
+        end
+    },
+
+    {
         'liuchengxu/vista.vim',
         command = ':Vista',
         config = function()
@@ -119,54 +126,44 @@ return {
     },
 
     {
-        'romgrk/barbar.nvim',
-        requires = {
-            'romgrk/lib.kom',
-            {
-                'kyazdani42/nvim-web-devicons',
-                config = function()
-                    vim.api.nvim_command[[ autocmd ColorScheme * lua require('nvim-web-devicons').setup() ]]
-                end
-            },
-        },
+        'akinsho/nvim-bufferline.lua',
+        requires = 'kyazdani42/nvim-web-devicons',
         event = 'BufEnter',
         config = function()
-            local vim = vim
+            require('bufferline').setup({
+                options = {
+                    diagnostics = 'nvim_lsp',
+                    show_buffer_icons = true,
+                    separator_style = 'slant',
+                    always_show_bufferline = true,
+                    offsets = {
+                        {filetype = 'Yanil', text = 'File Explorer', text_align = 'left'},
+                        {filetype = 'vista_kind', text = 'Vista', text_align = 'right'},
+                    },
+                }
+            })
+
             local set_keymap = vim.api.nvim_set_keymap
-
-            local bufferline = vim.g.bufferline or {}
-            bufferline.icons = true
-            bufferline.closable = false
-            bufferline.clickable = false
-            vim.g.bufferline = bufferline
-
             local keymaps = {
-                -- Goto buffer in position...
-                ['<A-1>'] = ':BufferGoto 1<CR>',
-                ['<A-2>'] = ':BufferGoto 2<CR>',
-                ['<A-3>'] = ':BufferGoto 3<CR>',
-                ['<A-4>'] = ':BufferGoto 4<CR>',
-                ['<A-5>'] = ':BufferGoto 5<CR>',
-                ['<A-6>'] = ':BufferGoto 6<CR>',
-                ['<A-7>'] = ':BufferGoto 7<CR>',
-                ['<A-8>'] = ':BufferGoto 8<CR>',
-                ['<A-9>'] = ':BufferGoto 9<CR>',
-                ['<A-0>'] = ':BufferLast<CR>',
                 -- Magic buffer-picking mode
-                ['<A-s>'] = ':BufferPick<CR>',
+                ['<A-s>'] = ':BufferLinePick<CR>',
                 -- Move to previous/next
-                ['<A-h>'] = ':BufferPrevious<CR>',
-                ['<A-l>'] = ':BufferNext<CR>',
+                ['<A-h>'] = ':BufferLineCyclePrev<CR>',
+                ['<A-l>'] = ':BufferLineCycleNext<CR>',
                 -- Re-order to previous/next
-                ['<A-,>'] = ':BufferMovePrevious<CR>',
-                ['<A-.>'] = ':BufferMoveNext<CR>',
+                ['<A-,>'] = ':BufferLineMovePrev<CR>',
+                ['<A-.>'] = ':BufferLineMoveNext<CR>',
                 -- Sort automatically by...
-                ['<Leader>bd'] = ':BufferOrderByDirectory<CR>',
-                ['<Leader>bl'] = ':BufferOrderByLanguage<CR>',
+                ['<Leader>bd'] = ':BufferLineSortByDirectory<CR>',
+                ['<Leader>bl'] = ':BufferLineSortByExtension<CR>',
             }
 
             for k, a in pairs(keymaps) do
                 set_keymap('n', k, a, { silent = true, noremap = true })
+            end
+            -- Goto buffer in position...
+            for i = 1, 10, 1 do
+                set_keymap('n', string.format('<A-%d>', i), string.format(':lua require("bufferline").go_to_buffer(%d)<CR>', i), { silent = true, noremap = false })
             end
         end
     },
