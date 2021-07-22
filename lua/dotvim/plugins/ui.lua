@@ -1,6 +1,7 @@
 return {
     {
         'mhinz/vim-startify',
+        event = 'BufEnter',
         requires = {
             'ryanoasis/vim-devicons'
         },
@@ -16,6 +17,7 @@ return {
 
     {
         'liuchengxu/vista.vim',
+        command = ':Vista',
         config = function()
             vim.g.vista_default_executive = 'nvim_lsp'
             vim.api.nvim_set_keymap('n', '<C-t>', ':Vista!!<CR>', { noremap = true })
@@ -64,6 +66,7 @@ return {
 
     {
         'norcalli/nvim-colorizer.lua',
+        event = 'BufEnter',
         config = function()
             vim.opt.termguicolors = true
             require('colorizer').setup()
@@ -88,6 +91,7 @@ return {
 
     {
         'Xuyuanp/scrollbar.nvim',
+        event = 'BufEnter',
         config = function()
             vim.g.scrollbar_excluded_filetypes = {
                 'nerdtree', 'vista_kind', 'Yanil'
@@ -169,6 +173,7 @@ return {
 
     {
         'sunjon/shade.nvim',
+        event = 'BufEnter',
         config = function()
             require'shade'.setup({
                 overlay_opacity = 70,
@@ -211,6 +216,7 @@ return {
 
     {
         'glepnir/galaxyline.nvim',
+        event = 'BufEnter',
         branch = 'main',
         config = function()
             require('dotvim/galaxyline')
@@ -228,6 +234,7 @@ return {
 
     {
         'lukas-reineke/indent-blankline.nvim',
+        event = 'BufEnter',
         config = function()
             vim.wo.colorcolumn = '99999'
 
