@@ -59,7 +59,7 @@ local _HEX_COLORS = setmetatable(
 local _BG = {
     file = _HEX_COLORS.bar.side,
     git = _HEX_COLORS.blue,
-    diagnotic = _HEX_COLORS.bar.middle,
+    diagnostic = _HEX_COLORS.bar.middle,
 }
 
 local _MODES =
@@ -256,31 +256,31 @@ section.left =
             end
             return ''
         end,
-        highlight = {_BG.diagnotic, _BG.diagnotic}
+        highlight = {_BG.diagnostic, _BG.diagnostic}
     }},
 
     {DiagnosticError = {
         provider = 'DiagnosticError',
         icon = '',
-        highlight = {_HEX_COLORS.red, _BG.diagnotic},
+        highlight = {_HEX_COLORS.red, _BG.diagnostic},
     }},
 
     {DiagnosticWarn = {
         provider = 'DiagnosticWarn',
         icon = '',
-        highlight = {_HEX_COLORS.yellow, _BG.diagnotic},
+        highlight = {_HEX_COLORS.yellow, _BG.diagnostic},
     }},
 
     {DiagnosticHint = {
         provider = 'DiagnosticHint',
         icon = '',
-        highlight = {_HEX_COLORS.magenta, _BG.diagnotic},
+        highlight = {_HEX_COLORS.magenta, _BG.diagnostic},
     }},
 
     {DiagnosticInfo = {
         provider = 'DiagnosticInfo',
         icon = '',
-        highlight = {_HEX_COLORS.white, _BG.diagnotic},
+        highlight = {_HEX_COLORS.white, _BG.diagnostic},
     }},
 
 } -- section.left
