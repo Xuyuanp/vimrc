@@ -243,7 +243,7 @@ return {
     {
         'lukas-reineke/indent-blankline.nvim',
         event = 'BufEnter',
-        config = function()
+        setup = function()
             vim.wo.colorcolumn = '99999'
 
             vim.g.indent_blankline_char = '│'
