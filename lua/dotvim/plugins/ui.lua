@@ -1,24 +1,32 @@
 return {
     {
-        'mhinz/vim-startify',
-        event = 'BufEnter',
-        requires = {
-            'ryanoasis/vim-devicons'
-        },
+        'kyazdani42/nvim-web-devicons',
         config = function()
-            local command = vim.api.nvim_command
-            command[[
-            function! StartifyEntryFormat()
-                return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
-            endfunction
-            ]]
+            vim.api.nvim_command[[ autocmd ColorScheme * lua require('nvim-web-devicons').setup() ]]
         end
     },
 
     {
-        'kyazdani42/nvim-web-devicons',
+        'mhinz/vim-startify',
+        event = 'BufEnter',
+        requires = {
+            'kyazdani42/nvim-web-devicons'
+        },
         config = function()
-            vim.api.nvim_command[[ autocmd ColorScheme * lua require('nvim-web-devicons').setup() ]]
+            local vfn = vim.fn
+            local command = vim.api.nvim_command
+
+            _G.devicons_get_icon = function(path)
+                local filename = vfn.fnamemodify(path, ':t')
+                local extension = vfn.fnamemodify(path, ':e')
+                return require('nvim-web-devicons').get_icon(filename, extension, { default = true })
+            end
+
+            command[[
+            function! StartifyEntryFormat()
+                return 'v:lua.devicons_get_icon(absolute_path) ." ". entry_path'
+            endfunction
+            ]]
         end
     },
 
