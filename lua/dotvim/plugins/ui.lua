@@ -1,6 +1,24 @@
 return {
     {
+        'Xuyuanp/yanil',
+        requires = {
+            'nvim-lua/plenary.nvim'
+        },
+        config = function()
+            require('dotvim/yanil').setup()
+
+            local vim = vim
+            local execute = vim.api.nvim_command
+
+            execute [[ nmap <C-e> :YanilToggle<CR> ]]
+            execute [[ autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif ]]
+            execute [[ autocmd FocusGained * lua require('yanil/git').update() ]]
+        end
+    },
+
+    {
         'kyazdani42/nvim-web-devicons',
+        disable = true,
         config = function()
             vim.api.nvim_command[[ autocmd ColorScheme * lua require('nvim-web-devicons').setup() ]]
         end
@@ -10,7 +28,7 @@ return {
         'mhinz/vim-startify',
         event = 'BufEnter',
         requires = {
-            'kyazdani42/nvim-web-devicons'
+            -- 'kyazdani42/nvim-web-devicons'
         },
         config = function()
             local vfn = vim.fn
@@ -90,22 +108,6 @@ return {
     },
 
     {
-        'Xuyuanp/yanil',
-        requires = {
-            'nvim-lua/plenary.nvim'
-        },
-        config = function()
-            require('dotvim/yanil').setup()
-            local vim = vim
-            local execute = vim.api.nvim_command
-
-            execute [[ nmap <C-e> :YanilToggle<CR> ]]
-            execute [[ autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif ]]
-            execute [[ autocmd FocusGained * lua require('yanil/git').update() ]]
-        end
-    },
-
-    {
         'Xuyuanp/scrollbar.nvim',
         event = 'BufEnter',
         config = function()
@@ -136,7 +138,7 @@ return {
 
     {
         'akinsho/nvim-bufferline.lua',
-        requires = 'kyazdani42/nvim-web-devicons',
+        -- requires = 'kyazdani42/nvim-web-devicons',
         event = 'BufEnter',
         config = function()
             require('bufferline').setup({
@@ -228,7 +230,7 @@ return {
             require('dotvim/galaxyline')
         end,
         requires = {
-            'kyazdani42/nvim-web-devicons',
+            -- 'kyazdani42/nvim-web-devicons',
             'Iron-E/nvim-highlite',
         }
     },
