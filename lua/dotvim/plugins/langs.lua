@@ -31,6 +31,11 @@ return {
     },
 
     {
+        'vim-scripts/a.vim',
+        ft = { 'c', 'cpp' }
+    },
+
+    {
         'spacewander/openresty-vim',
         ft = {'nginx'}
     },
