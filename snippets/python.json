@@ -171,5 +171,21 @@
         "prefix": "mark/markdown",
         "body": "# %% [markdown]",
         "description": "Code snippet to add a new markdown cell"
+    },
+    "leetcode": {
+        "prefix": "leetcode",
+        "body": [
+            "if __name__ == '__main__':",
+            "\tsol = Solution()",
+            "\tcases = []",
+            "\tfor ${1:args}, want in cases:",
+            "\t\tgot = sol.${2:method}(${3:args})",
+            "\t\tif want != got:",
+            "\t\t\tprint(f'Failed => args: {${4:args}}; want: {want}, but got: {got}')",
+            "\t\t\tbreak",
+            "\telse:",
+            "\t\tprint('All Passed')"
+        ],
+        "description": "Code snippet to generate tests for leetcode solution"
     }
 }
