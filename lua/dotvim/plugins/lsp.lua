@@ -71,10 +71,11 @@ return {
             }
             vim.g.completion_confirm_key = ''
 
-            set_keymap('i', '<CR>', [[ pumvisible() ? complete_info()['selected'] != '-1' ? "\<Plug>(completion_confirm_completion)" : "\<C-e>\<CR>": "\<CR>" ]], { noremap = false, silent = false, expr = true })
-            set_keymap('i', '<TAB>', [[ pumvisible() ? "\<C-n>" : dotvim#lsp#CheckBackSpace() ? "\<TAB>" : completion#trigger_completion() ]],
-                { noremap = false, silent = false, expr = true })
-            set_keymap('i', '<S-TAB>', [[ pumvisible() ? "\<C-p>" : "\<C-h>" ]], { noremap = false, silent = false, expr = true })
+            local km_opts = { noremap = false, silent = false, expr = true }
+
+            set_keymap('i', '<CR>', [[\<Plug>(completion_confirm_completion)]], km_opts)
+            set_keymap('i', '<Tab>', [[\<Plug>(completion_smart_tab)]], km_opts)
+            set_keymap('i', '<S-Tab>', [[\<Plug>(completion_smart_s_tab)]], km_opts)
             command [[ autocmd BufEnter * lua require'completion'.on_attach() ]]
         end
     },
