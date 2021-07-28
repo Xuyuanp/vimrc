@@ -1,12 +1,34 @@
 return {
     {
-        'kabouzeid/nvim-lspinstall',
+        'neovim/nvim-lspconfig',
         requires = {
-            'neovim/nvim-lspconfig',
+            'kabouzeid/nvim-lspinstall',
+            'ray-x/lsp_signature.nvim',
         },
         config = function()
             require('dotvim/lsp')
         end
+    },
+
+    {
+        'nvim-lua/lsp_extensions.nvim',
+        requires = { 'neovim/nvim-lspconfig' },
+        config = function()
+            local command = vim.api.nvim_command
+            _G.lsp_inlay_hints = function()
+                return require('lsp_extensions').inlay_hints({
+                    prefix = ' » ',
+                    highlight = "NonText",
+                    enabled = {
+                        "TypeHint", "ParameterHint", "ChainingHint"
+                    }
+                })
+            end
+            command [[augroup dotvim_lsp_extensions]]
+            command [[autocmd!]]
+            command [[autocmd InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua lsp_inlay_hints()]]
+            command [[augroup END]]
+        end,
     },
 
     {
@@ -16,7 +38,6 @@ return {
 
     {
         'hrsh7th/vim-vsnip',
-        before = { 'nvim-lua/completion-nvim' },
         config = function()
             local vim = vim
             local vfn = vim.fn
@@ -31,52 +52,74 @@ return {
     },
 
     {
-        'nvim-lua/completion-nvim',
-        requires = {
-            'hrsh7th/vim-vsnip-integ',
-            'steelsojka/completion-buffers',
-            -- 'wellle/tmux-complete.vim',
-            'albertoCaroM/completion-tmux'
-        },
-        before = { 'kabouzeid/nvim-lspinstall' },
+        'hrsh7th/nvim-compe',
+        requires = { 'andersevenrud/compe-tmux' },
         config = function()
+            require('compe').setup({
+                enabled = true,
+                autocomplete = true,
+                debug = false,
+                preselect = 'disable',
+                source = {
+                    path = true,
+                    buffer = true,
+                    calc = true,
+                    nvim_lsp = true,
+                    nvim_lua = true,
+                    vsnip = true,
+                    spell = true,
+                    tmux = {
+                        disabled = false,
+                        all_panes = true,
+                        kind = 'Text',
+                    },
+                },
+            })
+
             local vim = vim
+            local vfn = vim.fn
+            local replace_termcodes = vim.api.nvim_replace_termcodes
             local set_keymap = vim.api.nvim_set_keymap
-            local command = vim.api.nvim_command
 
-            vim.g.completion_enable_auto_popup      = 1
-            vim.g.completion_trigger_on_delete      = 1
-            vim.g.completion_auto_change_source     = 1
-            vim.g.completion_enable_auto_paren      = 1
-            vim.g.completion_matching_ignore_case   = 1
-            vim.g.completion_enable_snippet         = 'vim-vsnip'
-            vim.g.completion_matching_strategy_list = { 'exact', 'fuzzy', 'substring' }
-            vim.g.completion_sorting                = 'none'
-            vim.g.completion_chain_complete_list = {
-                default = {
-                    default = {
-                        { complete_items = { 'lsp', 'snippet' } },
-                        { complete_items = { 'buffer', 'buffers' } },
-                        { mode = '<c-n>' }
-                    },
-                    string = {
-                        { complete_items = { 'path' } },
-                        { complete_items = { 'buffer', 'buffers', 'tmux' } }
-                    },
-                    comment = {
-                        { complete_items = { 'path' } },
-                        { complete_items = { 'buffer', 'buffers', 'tmux' } }
-                    }
-                }
-            }
-            vim.g.completion_confirm_key = ''
+            local function t(str)
+                return replace_termcodes(str, true, true, true)
+            end
 
-            local km_opts = { noremap = false, silent = false, expr = true }
+            local function check_back_space()
+                local col = vfn.col('.') - 1
+                return col == 0 or vfn.getline('.'):sub(col, col):match('%s') ~= nil
+            end
 
-            set_keymap('i', '<CR>', [[\<Plug>(completion_confirm_completion)]], km_opts)
-            set_keymap('i', '<Tab>', [[\<Plug>(completion_smart_tab)]], km_opts)
-            set_keymap('i', '<S-Tab>', [[\<Plug>(completion_smart_s_tab)]], km_opts)
-            command [[ autocmd BufEnter * lua require'completion'.on_attach() ]]
+            -- Use (s-)tab to:
+            --- move to prev/next item in completion menuone
+            --- jump to prev/next snippet's placeholder
+            _G.tab_complete = function()
+                if vfn.pumvisible() == 1 then
+                    return t"<C-n>"
+                elseif vfn['vsnip#available'](1) == 1 then
+                    return t"<Plug>(vsnip-expand-or-jump)"
+                elseif check_back_space() then
+                    return t"<Tab>"
+                else
+                    return vfn['compe#complete']()
+                end
+            end
+            _G.s_tab_complete = function()
+                if vfn.pumvisible() == 1 then
+                    return t"<C-p>"
+                elseif vfn['vsnip#jumpable'](-1) == 1 then
+                    return t"<Plug>(vsnip-jump-prev)"
+                else
+                    -- If <S-Tab> is not working in your terminal, change it to <C-h>
+                    return t"<S-Tab>"
+                end
+            end
+
+            set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+            set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+            set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+            set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+            set_keymap('i', "<C-Space>", "compe#complete()", {expr = true})
         end
     },
 

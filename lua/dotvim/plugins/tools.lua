@@ -1,8 +1,18 @@
 return {
     'godlygeek/tabular',
-    'jiangmiao/auto-pairs',
     'tpope/vim-surround',
     'mg979/vim-visual-multi',
+
+    {
+        'windwp/nvim-autopairs',
+        config = function()
+            require('nvim-autopairs').setup()
+            require('nvim-autopairs.completion.compe').setup({
+                map_cr = true,
+                map_complete = true,
+            })
+        end
+    },
 
     {
         'antoinemadec/FixCursorHold.nvim',

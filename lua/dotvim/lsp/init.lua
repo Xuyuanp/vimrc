@@ -3,7 +3,7 @@ local api = vim.api
 local vfn = vim.fn
 local vlsp = vim.lsp
 
-local completion = require('completion')
+local lsp_sig    = require('lsp_signature')
 local lspconfig  = require('lspconfig')
 local lsp_status = require('lsp-status')
 local lsp_inst   = require('lspinstall')
@@ -58,8 +58,8 @@ end
 local on_attach = function(client, bufnr)
     bufnr = bufnr or vim.api.nvim_get_current_buf()
     lsp_status.on_attach(client)
-    completion.on_attach({
-        syntax_at_point = require("dotvim/treesitter/util").syntax_at_point,
+    lsp_sig.on_attach({
+        bind = false,
     })
 
     local server_capabilities = client.server_capabilities
