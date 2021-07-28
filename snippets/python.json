@@ -271,19 +271,20 @@
             "if __name__ == '__main__':",
             "    sol = Solution()",
             "    methods = [name for name in dir(sol) if not name.startswith('__')]",
-            "    cases = [",
-            "        (dict(${1:<args>}), ${2:<want>}),",
-            "    ]",
             "    for method in methods:",
             "        print(f'Testing {method}:')",
             "        fn = getattr(sol, method)",
+            "        cases = [",
+            "            ((${1:<args>}), ${2:<want>}),",
+            "        ]",
             "        for args, want in cases:",
-            "            got = fn(**args)",
+            "            got = fn(*args)",
             "            if want != got:",
             "                print(f'  Failed => args: {args}; want: {want}, but got: {got}')",
             "                break",
             "        else:",
-            "            print('  All Passed')"
+            "            print('  All Passed')",
+            "        print()"
         ],
         "description": "Code snippet to generate tests for leetcode solution"
     }
