@@ -9,4 +9,8 @@ function M.setup(opts)
     require('yanil.devicons').setup(opts)
 end
 
+function M.has_loaded()
+    return true
+end
+
 return M
