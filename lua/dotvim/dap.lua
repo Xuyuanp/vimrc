@@ -115,7 +115,7 @@ function ui.setup()
                 "repl"
             },
             height = 10,
-            position = "bottom" -- Can be "bottom" or "top"
+            position = "top" -- Can be "bottom" or "top"
         },
         floating = {
             max_height = nil, -- These can be integers or a float between 0 and 1.
