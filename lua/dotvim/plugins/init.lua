@@ -21,10 +21,10 @@ return packer.startup {
     function(use)
         use 'wbthomason/packer.nvim'
 
-        local groups = { 'langs', 'tools', 'ui', 'lsp' }
+        local groups = { 'tools', 'ui', 'lsp', 'langs' }
 
         for _, group in ipairs(groups) do
-            for _, plug in ipairs(require('dotvim/plugins/' .. group)) do
+            for _, plug in ipairs(require('dotvim.plugins.' .. group)) do
                 use(plug)
             end
         end

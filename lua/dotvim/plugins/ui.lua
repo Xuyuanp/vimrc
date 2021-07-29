@@ -1,8 +1,15 @@
 return {
+
+    {
+        'nvim-telescope/telescope.nvim',
+        as = 'telescope',
+        requires = { 'popup', 'plenary' }
+    },
+
     {
         'Xuyuanp/yanil',
         requires = {
-            'nvim-lua/plenary.nvim'
+            'plenary'
         },
         config = function()
             require('dotvim/yanil').setup()
@@ -233,11 +240,6 @@ return {
             -- 'kyazdani42/nvim-web-devicons',
             'Iron-E/nvim-highlite',
         }
-    },
-
-    {
-        'nvim-telescope/telescope.nvim',
-        requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
     },
 
     {

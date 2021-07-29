@@ -171,7 +171,12 @@ galaxyline.short_line_list =
     'vista_kind',
     'Yanil',
     'man',
-    'help'
+    'help',
+    'dapui_scopes',
+    'dapui_breakpoints',
+    'dapui_stacks',
+    'dapui_watches',
+    'dap_repl',
 }
 
 section.left =

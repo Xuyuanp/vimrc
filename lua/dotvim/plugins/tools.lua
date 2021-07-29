@@ -1,4 +1,14 @@
 return {
+    {
+        'nvim-lua/plenary.nvim',
+        as = 'plenary'
+    },
+
+    {
+        'nvim-lua/popup.nvim',
+        as = 'popup'
+    },
+
     'godlygeek/tabular',
     'tpope/vim-surround',
     'mg979/vim-visual-multi',
@@ -44,7 +54,7 @@ return {
     {
         'bronson/vim-trailing-whitespace',
         config = function()
-           vim.api.nvim_set_keymap('n', '<leader><space>', ':FixWhitespace<CR>', { noremap = true, silent = true })
+            vim.api.nvim_set_keymap('n', '<leader><space>', ':FixWhitespace<CR>', { noremap = true, silent = true })
         end
     },
 
@@ -90,9 +100,10 @@ return {
             }
 
             vim.api.nvim_command('command! -nargs=? -complete=dir AF '
-                .. 'call fzf#run(fzf#wrap(fzf#vim#with_preview({'
-                .. [['source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)]]
-                .. '})))')
+            .. 'call fzf#run(fzf#wrap(fzf#vim#with_preview({'
+            .. [['source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)]]
+            .. '})))'
+            )
 
             local set_keymap = vim.api.nvim_set_keymap
             set_keymap('n', '<leader>ag', ':Ag<CR>', { silent = true, noremap = true })
@@ -114,39 +125,39 @@ return {
         }
     },
 
-   'tpope/vim-fugitive',
+    'tpope/vim-fugitive',
 
-   {
-       'lewis6991/gitsigns.nvim',
-       requires = {
-           'nvim-lua/plenary.nvim'
-       },
-       config = function()
-           require('gitsigns').setup({
-               -- signs = {},
-               keymaps = {
-                   noremap = true,
-                   buffer = true,
+    {
+        'lewis6991/gitsigns.nvim',
+        requires = {
+            'plenary'
+        },
+        config = function()
+            require('gitsigns').setup({
+                -- signs = {},
+                keymaps = {
+                    noremap = true,
+                    buffer = true,
 
-                   ['n ]c'] = { expr = true, [[&diff ? ']c' : '<cmd>lua require"gitsigns.actions".next_hunk()<CR>']]},
-                   ['n [c'] = { expr = true, [[&diff ? '[c' : '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>']]},
+                    ['n ]c'] = { expr = true, [[&diff ? ']c' : '<cmd>lua require"gitsigns.actions".next_hunk()<CR>']]},
+                    ['n [c'] = { expr = true, [[&diff ? '[c' : '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>']]},
 
-                   ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-                   ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-                   ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-                   ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-                   ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-                   ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-                   ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-                   ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
+                    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+                    ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+                    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+                    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+                    ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+                    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+                    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+                    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
 
-                   -- Text objects
-                   ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-                   ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
-               },
-               current_line_blame = false,
-               use_internal_diff = true
-           })
-       end
-   }
+                    -- Text objects
+                    ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+                    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+                },
+                current_line_blame = false,
+                use_internal_diff = true
+            })
+        end
+    },
 }

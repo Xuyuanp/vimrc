@@ -110,4 +110,50 @@ return {
 
     'milisims/nvim-luaref',
     'nanotee/luv-vimdocs',
+
+    {
+        'mfussenegger/nvim-dap',
+        as = 'dap',
+        requires = { 'plenary' },
+        config = function()
+            require('dotvim.dap').setup()
+        end,
+    },
+
+    {
+        'rcarriga/nvim-dap-ui',
+        requires = 'dap',
+        config = function()
+            require('dotvim.dap').ui.setup()
+        end,
+    },
+
+    {
+        'theHamsta/nvim-dap-virtual-text',
+        requires = {
+            'dap',
+            'nvim-treesitter/nvim-treesitter',
+        },
+        config = function()
+            require('dotvim.dap').virtual_text.setup()
+        end
+    },
+
+    {
+        'mfussenegger/nvim-dap-python',
+        requires = { 'dap' },
+        config = function()
+            local dap_py = require('dap-python')
+            dap_py.setup('~/.pyenv/versions/debugpy/bin/python')
+            dap_py.test_runner = 'pytest'
+        end
+    },
+
+    {
+        'nvim-telescope/telescope-dap.nvim',
+        requires = { 'dap', 'telescope'},
+        config = function()
+            require('telescope').load_extension('dap')
+        end
+    }
 }
