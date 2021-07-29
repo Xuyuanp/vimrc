@@ -53,7 +53,9 @@ return {
 
     {
         'hrsh7th/nvim-compe',
-        requires = { 'andersevenrud/compe-tmux' },
+        requires = {
+            'wellle/tmux-complete.vim'
+        },
         config = function()
             require('compe').setup({
                 enabled = true,
@@ -68,11 +70,7 @@ return {
                     nvim_lua = true,
                     vsnip = true,
                     spell = true,
-                    tmux = {
-                        disabled = false,
-                        all_panes = true,
-                        kind = 'Text',
-                    },
+                    tmux = true,
                 },
             })
 
