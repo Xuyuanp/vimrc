@@ -57,6 +57,7 @@ function M.setup()
 
     local set_keymap = vim.api.nvim_set_keymap
     local command = vim.api.nvim_command
+    local sign_define = vim.fn.sign_define
     set_keymap('n', '<F5>', "<cmd>lua require('dap').continue()<CR>", { noremap = false, silent = true})
     set_keymap('n', '<F10>', "<cmd>lua require('dap').step_over()<CR>", { noremap = false, silent = true})
     set_keymap('n', '<F11>', "<cmd>lua require('dap').step_into()<CR>", { noremap = false, silent = true})
@@ -68,6 +69,16 @@ function M.setup()
     set_keymap('n', '<leader>dl', "<cmd>lua require('dap').run_last()<CR>", { noremap = false, silent = true})
 
     command [[autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()]]
+
+    command [[autocmd ColorScheme * highlight DapCustomPC ctermbg=245 guibg=#928374]]
+    sign_define('DapStopped', {
+        text = '',
+        texthl = 'Green',
+        linehl = 'DapCustomPC'
+    })
+    sign_define('DapBreakpoint', { text = '', texthl = 'Red' })
+    sign_define('DapLogPoint', { text = 'ﰉ', texthl = 'Yellow' })
+    sign_define('DapBreakpointRejected', { text = '' })
 end
 
 local ui = {}

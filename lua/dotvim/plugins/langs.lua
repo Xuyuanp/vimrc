@@ -60,6 +60,7 @@ return {
                 asm = {},
                 haskell = {}
             }
+            vim.g.ale_sign_priority = 0
             if vim.fn.has('osx') then
                 vim.g.ale_proto_protoc_gen_lint_options = "-I /usr/local/opt/protobuf/include' -I 'api/thirdparty'"
             end
