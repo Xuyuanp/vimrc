@@ -122,6 +122,8 @@ function ui.setup()
             max_width = nil   -- Floats will be treated as percentage of your screen.
         }
     }
+
+    vim.api.nvim_command[[autocmd ColorScheme * silent! lua require('dapui.config.highlights').setup()]]
 end
 
 M.ui = ui
