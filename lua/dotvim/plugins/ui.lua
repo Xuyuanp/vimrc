@@ -175,6 +175,10 @@ return {
     },
 
     {
+        'haringsrob/nvim_context_vt'
+    },
+
+    {
         "numtostr/FTerm.nvim",
         config = function()
             require("FTerm").setup({
