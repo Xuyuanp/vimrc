@@ -1,14 +1,14 @@
 local vfn = vim.fn
 local command = vim.api.nvim_command
 
-local packer = require('packer')
-
 local std_data_path = vfn.stdpath('data')
 
 local install_path = std_data_path .. '/site/pack/packer/start/packer.nvim'
 local compile_path = std_data_path .. '/site/plugin/packer_compiled.vim'
 
-if vfn.empty(vfn.glob(install_path)) > 0 then
+local ok, packer = pcall(require, 'packer')
+
+if not ok then
     print("Installing packer...")
     vfn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
     command 'quitall'
@@ -21,7 +21,7 @@ return packer.startup {
     function(use)
         use 'wbthomason/packer.nvim'
 
-        local groups = { 'tools', 'ui', 'lsp', 'langs' }
+        local groups = { 'color', 'tools', 'ui', 'lsp', 'langs' }
 
         for _, group in ipairs(groups) do
             for _, plug in ipairs(require('dotvim.plugins.' .. group)) do
