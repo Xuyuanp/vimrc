@@ -58,7 +58,20 @@ function M.setup()
     local set_keymap = vim.api.nvim_set_keymap
     local command = vim.api.nvim_command
     local sign_define = vim.fn.sign_define
+
+    _G.dotvim_dap_close = function()
+        local dap = require('dap')
+        dap.disconnect()
+        dap.close()
+        local ok, ui = pcall(require, 'dapui')
+        if ok then ui.close() end
+        local ok1, vt = pcall(require, 'nvim-dap-virtual-text.virtual_text')
+        if ok1 then vt.clear_virtual_text() end
+    end
+
     set_keymap('n', '<F5>', "<cmd>lua require('dap').continue()<CR>", { noremap = false, silent = true})
+    set_keymap('n', '<F6>', "<cmd>lua require('dap').run_to_cursor()<CR>", { noremap = false, silent = true})
+    set_keymap('n', '<F9>', "<cmd>lua dotvim_dap_close()<CR>", { noremap = false, silent = true})
     set_keymap('n', '<F10>', "<cmd>lua require('dap').step_over()<CR>", { noremap = false, silent = true})
     set_keymap('n', '<F11>', "<cmd>lua require('dap').step_into()<CR>", { noremap = false, silent = true})
     set_keymap('n', '<F12>', "<cmd>lua require('dap').step_out()<CR>", { noremap = false, silent = true})
@@ -70,7 +83,8 @@ function M.setup()
 
     command [[autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()]]
 
-    command [[autocmd ColorScheme * highlight DapCustomPC ctermbg=245 guibg=#928374]]
+    command [[highlight! DapCustomPC ctermbg=245 guibg=#928374]]
+    command [[autocmd ColorScheme * highlight! DapCustomPC ctermbg=245 guibg=#928374]]
     sign_define('DapStopped', {
         text = '',
         texthl = 'Green',
