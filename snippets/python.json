@@ -275,7 +275,7 @@
             "        print(f'Testing {method}:')",
             "        fn = getattr(sol, method)",
             "        cases = [",
-            "            ((${1:<args>}), ${2:<want>}),",
+            "            ([${1:<args>}], ${2:<want>}),",
             "        ]",
             "        for args, want in cases:",
             "            got = fn(*args)",
