@@ -266,19 +266,19 @@ section.left =
 
     {DiagnosticError = {
         provider = 'DiagnosticError',
-        icon = '',
+        icon = '',
         highlight = {_HEX_COLORS.red, _BG.diagnostic},
     }},
 
     {DiagnosticWarn = {
         provider = 'DiagnosticWarn',
-        icon = '',
+        icon = '',
         highlight = {_HEX_COLORS.yellow, _BG.diagnostic},
     }},
 
     {DiagnosticHint = {
         provider = 'DiagnosticHint',
-        icon = '',
+        icon = '',
         highlight = {_HEX_COLORS.magenta, _BG.diagnostic},
     }},
 
