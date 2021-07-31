@@ -50,7 +50,7 @@ ts_configs.setup {
 
             -- for rainbow
             ["punctuation.delimiter"] = "Delimiter",
-            ["punctuation.bracket"] = "",
+            -- ["punctuation.bracket"] = "",
 
             -- variable
             -- ["variable"] = "TSVariable",
