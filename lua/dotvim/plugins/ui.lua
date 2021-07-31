@@ -163,6 +163,7 @@ return {
 
     {
         'nvim-treesitter/nvim-treesitter',
+        branch = '0.5-compat',
         requires = {
             'nvim-treesitter/playground',
             'romgrk/nvim-treesitter-context',
