@@ -1,4 +1,15 @@
+if !has('nvim-0.5')
+    echo 'nvim-0.5 or higher is required'
+    finish
+endif
+
 silent! source $VIMRC_BEFORE
+
+lua <<EOF
+_G.pprint = function(obj)
+    print(vim.inspect(obj))
+end
+EOF
 
 " set encoding
 scriptencoding utf-8
