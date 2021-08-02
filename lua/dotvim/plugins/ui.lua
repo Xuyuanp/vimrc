@@ -24,14 +24,6 @@ return {
     },
 
     {
-        'kyazdani42/nvim-web-devicons',
-        disable = true,
-        config = function()
-            vim.api.nvim_command[[ autocmd ColorScheme * lua require('nvim-web-devicons').setup() ]]
-        end
-    },
-
-    {
         'mhinz/vim-startify',
         event = 'BufEnter',
         requires = {
