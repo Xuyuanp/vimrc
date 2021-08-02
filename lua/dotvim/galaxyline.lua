@@ -47,14 +47,26 @@ local _COLORS =
     purple_light = {'#af60af', 63,  'magenta'},
 }
 
-_COLORS.bar = {middle=_COLORS.gray_dark, side=_COLORS.black}
+_COLORS.bar = {
+    middle = _COLORS.gray_dark,
+    side = _COLORS.black
+}
 _COLORS.text = _COLORS.gray_light
 
 -- hex color subtable
-local _HEX_COLORS = setmetatable(
-{['bar'] = setmetatable({}, {['__index'] = function(_, key) return _COLORS.bar[key] and _COLORS.bar[key][1] or nil end})},
-{['__index'] = function(_, key) local color = _COLORS[key] return color and color[1] or nil end}
-)
+local _HEX_COLORS = setmetatable({
+    bar = setmetatable({}, {
+        __index = function(_, key)
+            return _COLORS.bar[key] and _COLORS.bar[key][1] or nil
+        end
+    })
+},
+{
+    __index = function(_, key)
+        local color = _COLORS[key]
+        return color and color[1] or nil
+    end
+})
 
 local _BG = {
     file = _HEX_COLORS.bar.side,
@@ -277,16 +289,16 @@ section.left =
         highlight = {_HEX_COLORS.yellow, _BG.diagnostic},
     }},
 
-    {DiagnosticHint = {
-        provider = 'DiagnosticHint',
-        icon = '',
-        highlight = {_HEX_COLORS.magenta, _BG.diagnostic},
-    }},
-
     {DiagnosticInfo = {
         provider = 'DiagnosticInfo',
         icon = '',
-        highlight = {_HEX_COLORS.white, _BG.diagnostic},
+        highlight = {_HEX_COLORS.magenta, _BG.diagnostic},
+    }},
+
+    {DiagnosticHint = {
+        provider = 'DiagnosticHint',
+        icon = '',
+        highlight = {_HEX_COLORS.gray, _BG.diagnostic},
     }},
 
 } -- section.left
