@@ -35,6 +35,7 @@ local function rename(new_name)
             "--keep-right",
             "--height", 0,
             "--min-height", 0,
+            "--info", "hidden",
             "--prompt", "LSP Rename> ",
             "--query", curr_name,
             "--print-query"
