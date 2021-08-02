@@ -11,7 +11,7 @@ return {
 
     {
         'junegunn/fzf.vim',
-        as = 'fzf',
+        as = 'fzfvim',
         requires = {
             {
                 'junegunn/fzf',
