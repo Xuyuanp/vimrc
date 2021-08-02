@@ -56,7 +56,6 @@ function M.setup()
     setup_go()
 
     local set_keymap = vim.api.nvim_set_keymap
-    local command = vim.api.nvim_command
     local sign_define = vim.fn.sign_define
 
     _G.dotvim_dap_close = function()
@@ -81,10 +80,15 @@ function M.setup()
     set_keymap('n', '<leader>dr', "<cmd>lua require('dap').repl_open()<CR>", { noremap = false, silent = true})
     set_keymap('n', '<leader>dl', "<cmd>lua require('dap').run_last()<CR>", { noremap = false, silent = true})
 
-    command [[autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()]]
+    vim.cmd [[
+        autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
 
-    command [[highlight! DapCustomPC ctermbg=245 guibg=#928374]]
-    command [[autocmd ColorScheme * highlight! DapCustomPC ctermbg=245 guibg=#928374]]
+        highlight! DapCustomPC ctermbg=245 guibg=#928374
+        augroup dotvim_dap
+            autocmd!
+            autocmd ColorScheme * highlight! DapCustomPC ctermbg=245 guibg=#928374
+        augroup END
+    ]]
     sign_define('DapStopped', {
         text = '',
         texthl = 'Green',
@@ -137,7 +141,12 @@ function ui.setup()
         }
     }
 
-    vim.api.nvim_command[[autocmd ColorScheme * silent! lua require('dapui.config.highlights').setup()]]
+    vim.cmd [[
+        augroup dotvim_dap_ui
+            autocmd!
+            autocmd ColorScheme * silent! lua require('dapui.config.highlights').setup()
+        augroup END
+    ]]
 end
 
 M.ui = ui
