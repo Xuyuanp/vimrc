@@ -9,7 +9,8 @@ return {
     {
         'Xuyuanp/yanil',
         requires = {
-            'plenary'
+            'plenary',
+            'fzf',
         },
         config = function()
             require('dotvim/yanil').setup()
