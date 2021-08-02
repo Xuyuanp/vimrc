@@ -73,9 +73,6 @@ return {
 
     {
         'roxma/vim-tmux-clipboard',
-        requires = {
-            'tmux-plugins/vim-tmux-focus-events'
-        }
     },
 
     'tpope/vim-fugitive',
