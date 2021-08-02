@@ -246,6 +246,7 @@ return {
 
     {
         'windwp/nvim-spectre',
+        requires = { 'plenary', 'popup' },
         config = function()
             require('spectre').setup({})
 
