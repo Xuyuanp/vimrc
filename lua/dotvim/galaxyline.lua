@@ -177,6 +177,7 @@ galaxyline.short_line_list =
     'dapui_stacks',
     'dapui_watches',
     'dap_repl',
+    'spectre_panel',
 }
 
 section.left =

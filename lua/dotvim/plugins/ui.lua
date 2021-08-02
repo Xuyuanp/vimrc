@@ -250,5 +250,25 @@ return {
 
     {
         'MunifTanjim/nui.nvim',
+    },
+
+    {
+        'windwp/nvim-spectre',
+        config = function()
+            require('spectre').setup({})
+
+            local set_keymap = vim.api.nvim_set_keymap
+
+            local opts = { noremap = true, silent = true }
+            set_keymap('n', '<leader>S', ':lua require("spectre").open()<CR>', opts)
+            set_keymap('n', '<leader>Sc', 'viw:lua require("spectre").open_file_search()<CR>', opts)
+
+            vim.cmd[[
+            augroup dotvim_spectre
+                autocmd!
+                autocmd FileType spectre_panel setlocal nofoldenable | nnoremap <buffer>q <cmd>q<CR>
+            augroup END
+            ]]
+        end
     }
 }
