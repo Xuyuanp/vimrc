@@ -45,6 +45,7 @@ return {
         'bronson/vim-trailing-whitespace',
         config = function()
             vim.api.nvim_set_keymap('n', '<leader><space>', ':FixWhitespace<CR>', { noremap = true, silent = true })
+            vim.cmd[[autocmd BufWritePre * silent! FixWhitespace]]
         end
     },
 
