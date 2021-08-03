@@ -77,61 +77,59 @@ return {
     },
 
     {
-        'tanvirtin/vgit.nvim',
-        as = 'vgit',
+        'lewis6991/gitsigns.nvim',
+        as = 'gitsigns',
         requires = { 'plenary' },
         config = function()
-            require('vgit').setup({
-                disabled = false,
-                debug = false,
-                hunks_enabled = true,
-                blames_enabled = false,
-                diff_strategy = 'index',
-                diff_preference = 'vertical',
-                predict_hunk_signs = true,
-                action_delay_ms = 300,
-                predict_hunk_throttle_ms = 300,
-                predict_hunk_max_lines = 50000,
-                blame_line_throttle_ms = 150,
-                show_untracked_file_signs = true,
+            require('gitsigns').setup({
+                signs = {
+                    add          = {hl = 'GitSignsAdd'   , text = '┃', numhl='', linehl=''},
+                    change       = {hl = 'GitSignsChange', text = '┃', numhl='', linehl=''},
+                    delete       = {hl = 'GitSignsDelete', text = '┃', numhl='', linehl=''},
+                    topdelete    = {hl = 'GitSignsDelete', text = '┃', numhl='', linehl=''},
+                    changedelete = {hl = 'GitSignsChange', text = '┃', numhl='', linehl=''},
+                },
+                keymaps = {
+                    noremap = true,
+                    buffer = true,
+
+                    ['n ]c'] = { expr = true, [[&diff ? ']c' : '<cmd>lua require"gitsigns.actions".next_hunk()<CR>']]},
+                    ['n [c'] = { expr = true, [[&diff ? '[c' : '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>']]},
+
+                    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+                    ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+                    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+                    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+                    ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+                    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+                    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+                    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
+
+                    -- Text objects
+                    ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+                    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+
+                },
+                current_line_blame = false,
             })
 
-            _G.dotvim_set_vgit_color = function()
-                local hi = require('vgit.highlighter')
-                local sc_color = vim.api.nvim_get_hl_by_name('SignColumn', true)
-                local bg = string.format('#%x', sc_color.background)
-
-                local hls = {
-                    VGitSignAdd = {
-                        fg = '#a0ff70',
-                        bg = bg,
-                    },
-                    VGitSignChange = {
-                        fg = '#f0af00',
-                        bg = bg
-                    },
-                    VGitSignRemove = {
-                        fg = '#ff4090',
-                        bg = bg
-                    },
-                }
-                for group, color in pairs(hls) do
-                    hi.create(group, color)
-                end
-            end
-
-            _G.dotvim_set_vgit_color()
-
-            vim.cmd[[augroup dotvim_vgit]]
-            vim.cmd[[autocmd!]]
-            vim.cmd[[autocmd ColorScheme * lua dotvim_set_vgit_color()]]
-            vim.cmd[[augroup END]]
-
-            local set_keymap = vim.api.nvim_set_keymap
-            local opts = { noremap = true, silent = true }
-
-            set_keymap('n', '[c', '<cmd>VGit hunk_up<CR>', opts)
-            set_keymap('n', ']c', '<cmd>VGit hunk_down<CR>', opts)
+            local dotcolors = require('dotvim.colors')
+            local colors = dotcolors.colors
+            dotcolors.add_highlight('GitSignsAdd', {
+                fg = colors.Git.Add,
+                bg = colors.Sign.bg,
+                style = 'bold',
+            })
+            dotcolors.add_highlight('GitSignsDelete', {
+                fg = colors.Git.Delete,
+                bg = colors.Sign.bg,
+                style = 'bold',
+            })
+            dotcolors.add_highlight('GitSignsChange', {
+                fg = colors.Git.Change,
+                bg = colors.Sign.bg,
+                style = 'bold',
+            })
         end,
     },
 }

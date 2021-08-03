@@ -55,4 +55,22 @@ return {
             vim.api.nvim_command[[ autocmd ColorScheme * lua require('nvim-web-devicons').setup() ]]
         end
     },
+
+    {
+        'tjdevries/colorbuddy.nvim',
+        as = 'colorbuddy',
+        config = function()
+            local Color = require('colorbuddy').Color
+            local dotcolors = require('dotvim.colors').colors
+
+            Color.new('LspDiagnosticsSignError', dotcolors.LspDiagnosticsSign.Error)
+            Color.new('LspDiagnosticsSignWarning', dotcolors.LspDiagnosticsSign.Warning)
+            Color.new('LspDiagnosticsSignInfo', dotcolors.LspDiagnosticsSign.Info)
+            Color.new('LspDiagnosticsSignHint', dotcolors.LspDiagnosticsSign.Hint)
+
+            Color.new('GitSignAdd', dotcolors.Git.Add)
+            Color.new('GitSignDelete', dotcolors.Git.Delete)
+            Color.new('GitSignChange', dotcolors.Git.Change)
+        end
+    },
 }

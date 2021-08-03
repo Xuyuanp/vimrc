@@ -3,68 +3,30 @@ local lsp = vim.lsp
 
 local galaxyline = require('galaxyline')
 local section = galaxyline.section
+local dotcolors = require('dotvim.colors').colors
 
 --[[/* CONSTANTS */]]
 
 -- Defined in https://github.com/Iron-E/nvim-highlite
-local _COLORS =
-{
-    black = {'#202020', 0,   'black'},
-    black2 = {'#282828', 0,   'black'},
-    gray  = {'#808080', 244, 'gray'},
-    gray_dark   = {'#353535', 236, 'darkgrey'},
-    gray_darker = {'#505050', 244, 'gray'},
-    gray_light  = {'#c0c0c0', 251, 'gray'},
-    white       = {'#ffffff', 15,  'white'},
-
-    tan = {'#f4c069', 180, 'darkyellow'},
-
-    red = {'#ee4a59', 196, 'red'},
-    red_dark  = {'#a80000', 124, 'darkred'},
-    red_light = {'#ff4090', 203, 'red'},
-
-    orange = {'#ff8900', 208, 'darkyellow'},
-    orange_light = {'#f0af00', 214, 'yellow'},
-
-    yellow = {'#f0df33', 220, 'yellow'},
-
-    green = {'#77ff00', 72, 'green'},
-    green_dark  = {'#35de60', 83, 'darkgreen'},
-    green_light = {'#a0ff70', 72, 'green'},
-
-    blue = {'#7090ff', 63, 'darkblue'},
-    cyan = {'#33efff', 87, 'cyan'},
-    ice  = {'#49a0f0', 63, 'cyan'},
-    teal = {'#00d0c0', 38, 'cyan'},
-    turqoise = {'#2bff99', 33, 'blue'},
-
-    magenta = {'#cc0099', 126, 'magenta'},
-    pink    = {'#ffa6ff', 162, 'magenta'},
-    purple  = {'#cf55f0', 129, 'magenta'},
-
-    magenta_dark = {'#bb0099', 126, 'darkmagenta'},
-    pink_light   = {'#ffb7b7', 38,  'white'},
-    purple_light = {'#af60af', 63,  'magenta'},
+local _COLORS = {
+    bar = {
+        middle = dotcolors.gray_dark,
+        side = dotcolors.black
+    },
+    text = dotcolors.gray_light
 }
-
-_COLORS.bar = {
-    middle = _COLORS.gray_dark,
-    side = _COLORS.black
-}
-_COLORS.text = _COLORS.gray_light
 
 -- hex color subtable
 local _HEX_COLORS = setmetatable({
     bar = setmetatable({}, {
         __index = function(_, key)
-            return _COLORS.bar[key] and _COLORS.bar[key][1] or nil
+            return _COLORS.bar[key]
         end
     })
 },
 {
     __index = function(_, key)
-        local color = _COLORS[key]
-        return color and color[1] or nil
+        return dotcolors[key]
     end
 })
 
@@ -74,33 +36,38 @@ local _BG = {
     diagnostic = _HEX_COLORS.bar.middle,
 }
 
-local _MODES =
-{
-    ['c']   = {'',        _COLORS.red},
-    ['ce']  = {'',        _COLORS.red_dark},
-    ['cv']  = {'EX',       _COLORS.red_light},
-    ['i']   = {'I',        _COLORS.green},
-    ['ic']  = {'IC',       _COLORS.green_light},
-    ['n']   = {'N',        _COLORS.purple_light},
-    ['no']  = {'OP',       _COLORS.purple},
-    ['r']   = {'CR',       _COLORS.cyan},
-    ['r?']  = {':CONFIRM', _COLORS.cyan},
-    ['rm']  = {'--MORE',   _COLORS.cyan},
-    ['R']   = {'R',        _COLORS.pink},
-    ['Rv']  = {'RV',       _COLORS.pink},
-    ['s']   = {'S',        _COLORS.turqoise},
-    ['S']   = {'S',        _COLORS.turqoise},
-    ['\19'] = {'S-L',      _COLORS.turqoise},
-    ['t']   = {'T',        _COLORS.orange},
-    ['v']   = {'V',        _COLORS.blue},
-    ['V']   = {'V-L',      _COLORS.blue},
-    ['\22'] = {'V-B',      _COLORS.blue},
-    ['!']   = {'SHELL',    _COLORS.yellow},
+local replace_termcodes = vim.api.nvim_replace_termcodes
+
+local function t(key)
+    return replace_termcodes(key, true, true, true)
+end
+
+local _MODES = {
+    ['c']      = {'',        {dotcolors.red}},
+    ['ce']     = {'',        {dotcolors.red_dark}},
+    ['cv']     = {'EX',       {dotcolors.red_light}},
+    ['i']      = {'I',        {dotcolors.green}},
+    ['ic']     = {'IC',       {dotcolors.green_light}},
+    ['n']      = {'N',        {dotcolors.purple_light}},
+    ['no']     = {'OP',       {dotcolors.purple}},
+    ['r']      = {'CR',       {dotcolors.cyan}},
+    ['r?']     = {':CONFIRM', {dotcolors.cyan}},
+    ['rm']     = {'--MORE',   {dotcolors.cyan}},
+    ['R']      = {'R',        {dotcolors.pink}},
+    ['Rv']     = {'RV',       {dotcolors.pink}},
+    ['s']      = {'S',        {dotcolors.turqoise}},
+    ['S']      = {'S',        {dotcolors.turqoise}},
+    [t'<C-s>'] = {'S-L',      {dotcolors.turqoise}},
+    ['t']      = {'T',        {dotcolors.orange}},
+    ['v']      = {'V',        {dotcolors.blue}},
+    ['V']      = {'V-L',      {dotcolors.blue}},
+    [t'<C-v>'] = {'V-B',      {dotcolors.blue}},
+    ['!']      = {'SHELL',    {dotcolors.yellow}},
 
     -- libmodal
-    ['TABS']    = _COLORS.tan,
-    ['BUFFERS'] = _COLORS.teal,
-    ['TABLES']  = _COLORS.orange_light,
+    ['TABS']    = {dotcolors.tan},
+    ['BUFFERS'] = {dotcolors.teal},
+    ['TABLES']  = {dotcolors.orange_light},
 }
 
 local _LSP_ICON = ''
@@ -245,21 +212,21 @@ section.left =
         provider = 'DiffAdd',
         condition = all(checkwidth, find_git_root),
         icon = '',
-        highlight = {_HEX_COLORS.green_light, _BG.git},
+        highlight = {_HEX_COLORS.Git.Add, _BG.git},
     }},
 
     {DiffModified = {
         provider = 'DiffModified',
         condition = all(checkwidth, find_git_root),
         icon = '',
-        highlight = {_HEX_COLORS.orange_light, _BG.git},
+        highlight = {_HEX_COLORS.Git.Change, _BG.git},
     }},
 
     {DiffRemove = {
         provider = 'DiffRemove',
         condition = all(checkwidth, find_git_root),
         icon = '',
-        highlight = {_HEX_COLORS.red_light, _BG.git},
+        highlight = {_HEX_COLORS.Git.Delete, _BG.git},
     }},
 
     {GitRightEnd = {
@@ -280,25 +247,25 @@ section.left =
     {DiagnosticError = {
         provider = 'DiagnosticError',
         icon = '',
-        highlight = {_HEX_COLORS.red, _BG.diagnostic},
+        highlight = {_HEX_COLORS.LspDiagnosticsSign.Error, _BG.diagnostic},
     }},
 
     {DiagnosticWarn = {
         provider = 'DiagnosticWarn',
         icon = '',
-        highlight = {_HEX_COLORS.yellow, _BG.diagnostic},
+        highlight = {_HEX_COLORS.LspDiagnosticsSign.Warning, _BG.diagnostic},
     }},
 
     {DiagnosticInfo = {
         provider = 'DiagnosticInfo',
         icon = '',
-        highlight = {_HEX_COLORS.magenta, _BG.diagnostic},
+        highlight = {_HEX_COLORS.LspDiagnosticsSign.Info, _BG.diagnostic},
     }},
 
     {DiagnosticHint = {
         provider = 'DiagnosticHint',
         icon = '',
-        highlight = {_HEX_COLORS.gray, _BG.diagnostic},
+        highlight = {_HEX_COLORS.LspDiagnosticsSign.Hint, _BG.diagnostic},
     }},
 
 } -- section.left

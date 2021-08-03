@@ -7,8 +7,9 @@ local lsp_sig    = require('lsp_signature')
 local lspconfig  = require('lspconfig')
 local lsp_status = require('lsp-status')
 local lsp_inst   = require('lspinstall')
-local handlers   = require('dotvim/lsp/handlers')
-local util       = require('dotvim/util')
+local handlers   = require('dotvim.lsp.handlers')
+local util       = require('dotvim.util')
+local dotcolors  = require('dotvim.colors')
 
 lsp_status.register_progress()
 
@@ -107,11 +108,27 @@ vfn.sign_define("LspDiagnosticsSignWarning",     {text = "", texthl = "LspDia
 vfn.sign_define("LspDiagnosticsSignInformation", {text = "", texthl = "LspDiagnosticsSignInformation"})
 vfn.sign_define("LspDiagnosticsSignHint",        {text = "", texthl = "LspDiagnosticsSignHint"})
 
-api.nvim_command([[highlight! link LspDiagnosticsSignError       Error]])
-api.nvim_command([[highlight! link LspDiagnosticsSignWarning     WarningMsg]])
-api.nvim_command([[highlight! link LspDiagnosticsSignInformation Normal]])
-api.nvim_command([[highlight! link LspDiagnosticsSignHint        SpecialComment]])
-
+local colors = dotcolors.colors
+dotcolors.add_highlight('LspDiagnosticsSignError', {
+    fg = colors.LspDiagnosticsSign.Error,
+    bg = colors.Sign.bg,
+    style = 'bold',
+})
+dotcolors.add_highlight('LspDiagnosticsSignWarning', {
+    fg = colors.LspDiagnosticsSign.Warning,
+    bg = colors.Sign.bg,
+    style = 'bold',
+})
+dotcolors.add_highlight('LspDiagnosticsSignInformation', {
+    fg = colors.LspDiagnosticsSign.Info,
+    bg = colors.Sign.bg,
+    style = 'bold',
+})
+dotcolors.add_highlight('LspDiagnosticsSignHint', {
+    fg = colors.LspDiagnosticsSign.Hint,
+    bg = colors.Sign.bg,
+    style = 'bold',
+})
 
 local default_capabilities = lsp_status.capabilities
 default_capabilities.textDocument.completion.completionItem.snippetSupport = false

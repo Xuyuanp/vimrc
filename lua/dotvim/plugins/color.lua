@@ -24,6 +24,8 @@ return {
 
             vim.opt.background = 'dark'
             execute [[ colorscheme gruvbox-material ]]
+
+            require('dotvim.colors').enable_auto_update()
         end
     },
 
