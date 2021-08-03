@@ -70,15 +70,29 @@ local _MODES = {
     ['TABLES']  = {dotcolors.orange_light},
 }
 
-local _LSP_ICON = ''
+local _ICONS = {
+    Separators = {
+        left = '',
+        right = '',
 
-local _SEPARATORS =
-{
-    left = '',
-    right = '',
-    rounded = {
-        left = '',
-        right = '',
+        rounded = {
+            left = '',
+            right = '',
+        }
+    },
+    Git = {
+        add = '',
+        delete = '',
+        change = '',
+    },
+    Diagnostics = {
+        ['error'] = '',
+        warning = '',
+        info = '',
+        hint = '',
+    },
+    Lsp = {
+        on = ''
     }
 }
 
@@ -133,7 +147,7 @@ local lsp_icon = function()
     if require('dotvim/lsp/status').get_name() == '' then
         return ''
     else
-        return ' ' .. _LSP_ICON .. ' '
+        return ' ' .. _ICONS.Lsp.on .. ' '
     end
 end
 
@@ -174,14 +188,14 @@ section.left =
         end,
         icon = '▊ ',
         highlight = {_HEX_COLORS.bar.side, _HEX_COLORS.bar.side},
-        separator = _SEPARATORS.right,
+        separator = _ICONS.Separators.right,
         separator_highlight = {_HEX_COLORS.black2, get_file_icon_color} -- bar.side != black here, I don't know why
     }},
 
     {FileIcon = {
         provider  = {space, 'FileIcon'},
         highlight = {_HEX_COLORS.bar.side, get_file_icon_color},
-        separator = _SEPARATORS.left,
+        separator = _ICONS.Separators.left,
         separator_highlight = {_BG.file, get_file_icon_color}
     }},
 
@@ -197,7 +211,7 @@ section.left =
     }},
 
     {GitSeparator = {
-        provider = printer(_SEPARATORS.right),
+        provider = printer(_ICONS.Separators.right),
         condition = find_git_root,
         highlight = {_BG.file, _BG.git},
     }},
@@ -211,26 +225,26 @@ section.left =
     {DiffAdd = {
         provider = 'DiffAdd',
         condition = all(checkwidth, find_git_root),
-        icon = '',
+        icon = _ICONS.Git.add,
         highlight = {_HEX_COLORS.Git.Add, _BG.git},
     }},
 
     {DiffModified = {
         provider = 'DiffModified',
         condition = all(checkwidth, find_git_root),
-        icon = '',
+        icon = _ICONS.Git.change,
         highlight = {_HEX_COLORS.Git.Change, _BG.git},
     }},
 
     {DiffRemove = {
         provider = 'DiffRemove',
         condition = all(checkwidth, find_git_root),
-        icon = '',
+        icon = _ICONS.Git.delete,
         highlight = {_HEX_COLORS.Git.Delete, _BG.git},
     }},
 
     {GitRightEnd = {
-        provider = printer(_SEPARATORS.right),
+        provider = printer(_ICONS.Separators.right),
         highlight = {find_git_root() and _BG.git or _BG.file, _HEX_COLORS.bar.middle}
     }},
 
@@ -246,25 +260,25 @@ section.left =
 
     {DiagnosticError = {
         provider = 'DiagnosticError',
-        icon = '',
+        icon = _ICONS.Diagnostics.error,
         highlight = {_HEX_COLORS.LspDiagnosticsSign.Error, _BG.diagnostic},
     }},
 
     {DiagnosticWarn = {
         provider = 'DiagnosticWarn',
-        icon = '',
+        icon = _ICONS.Diagnostics.warning,
         highlight = {_HEX_COLORS.LspDiagnosticsSign.Warning, _BG.diagnostic},
     }},
 
     {DiagnosticInfo = {
         provider = 'DiagnosticInfo',
-        icon = '',
+        icon = _ICONS.Diagnostics.info,
         highlight = {_HEX_COLORS.LspDiagnosticsSign.Info, _BG.diagnostic},
     }},
 
     {DiagnosticHint = {
         provider = 'DiagnosticHint',
-        icon = '',
+        icon = _ICONS.Diagnostics.hint,
         highlight = {_HEX_COLORS.LspDiagnosticsSign.Hint, _BG.diagnostic},
     }},
 
@@ -280,7 +294,7 @@ section.right =
     {RightBegin = {
         provider = space,
         highlight = {_HEX_COLORS.bar.middle, _HEX_COLORS.bar.side},
-        separator = _SEPARATORS.left,
+        separator = _ICONS.Separators.left,
         separator_highlight = {_HEX_COLORS.bar.side, _HEX_COLORS.bar.middle}
     }},
 
@@ -292,12 +306,12 @@ section.right =
     {FileType = {
         provider = 'FileTypeName',
         highlight = {_HEX_COLORS.black, get_file_icon_color, 'bold'},
-        separator = _SEPARATORS.left,
+        separator = _ICONS.Separators.left,
         separator_highlight = {get_file_icon_color, _HEX_COLORS.bar.side},
     }},
 
     {FileSep = {
-        provider = printer(_SEPARATORS.right),
+        provider = printer(_ICONS.Separators.right),
         highlight = {get_file_icon_color, _HEX_COLORS.bar.side},
     }},
 
@@ -329,7 +343,7 @@ section.right =
     },
 
     {PerCentSeparator = {
-        provider = printer(_SEPARATORS.left),
+        provider = printer(_ICONS.Separators.left),
         highlight = {_HEX_COLORS.magenta_dark, _HEX_COLORS.bar.side},
         separator = ' ',
         separator_highlight = {_HEX_COLORS.bar.side, _HEX_COLORS.bar.side},
@@ -351,7 +365,7 @@ section.short_line_left =
     {BufferType = {
         provider = {space, space, 'FileTypeName', space},
         highlight = {_HEX_COLORS.black, _HEX_COLORS.purple, 'bold'},
-        separator = _SEPARATORS.right,
+        separator = _ICONS.Separators.right,
         separator_highlight = {_HEX_COLORS.purple, _HEX_COLORS.bar.middle}
     }}
 }
@@ -361,7 +375,7 @@ section.short_line_right =
     {BufferIcon = {
         provider = 'BufferIcon',
         highlight = {_HEX_COLORS.black, _HEX_COLORS.purple, 'bold'},
-        separator = _SEPARATORS.left,
+        separator = _ICONS.Separators.left,
         separator_highlight = {_HEX_COLORS.purple, _HEX_COLORS.bar.middle}
     }}
 }
