@@ -22,10 +22,10 @@ return {
             local vim = vim
             local execute = vim.api.nvim_command
 
+            require('dotvim.colors').enable_auto_update()
+
             vim.opt.background = 'dark'
             execute [[ colorscheme gruvbox-material ]]
-
-            require('dotvim.colors').enable_auto_update()
         end
     },
 
