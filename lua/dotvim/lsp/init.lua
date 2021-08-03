@@ -3,20 +3,22 @@ local api = vim.api
 local vfn = vim.fn
 local vlsp = vim.lsp
 
-local lsp_sig    = require('lsp_signature')
-local lspconfig  = require('lspconfig')
+local lsp_sig = require('lsp_signature')
+local lspconfig = require('lspconfig')
 local lsp_status = require('lsp-status')
-local lsp_inst   = require('lspinstall')
-local handlers   = require('dotvim.lsp.handlers')
-local util       = require('dotvim.util')
-local dotcolors  = require('dotvim.colors')
+local lsp_inst = require('lspinstall')
+local handlers = require('dotvim.lsp.handlers')
+local util = require('dotvim.util')
+local dotcolors = require('dotvim.colors')
 
 lsp_status.register_progress()
 
 local enable_auto_format = vfn['dotvim#lsp#EnableAutoFormat']
 
 local function rename(new_name)
-    if new_name then return vlsp.buf.rename(new_name) end
+    if new_name then
+        return vlsp.buf.rename(new_name)
+    end
 
     local params = vlsp.util.make_position_params()
     local bufnr = api.nvim_get_current_buf()
@@ -30,29 +32,37 @@ local function rename(new_name)
     local wrapped = util.fzf_wrap('lsp_rename', {
         source = {},
         options = {
-            "+m", "+x",
-            "--ansi",
-            "--reverse",
-            "--keep-right",
-            "--height", 0,
-            "--min-height", 0,
-            "--info", "hidden",
-            "--prompt", "LSP Rename> ",
-            "--query", curr_name,
-            "--print-query"
+            '+m',
+            '+x',
+            '--ansi',
+            '--reverse',
+            '--keep-right',
+            '--height',
+            0,
+            '--min-height',
+            0,
+            '--info',
+            'hidden',
+            '--prompt',
+            'LSP Rename> ',
+            '--query',
+            curr_name,
+            '--print-query',
         },
         window = {
             height = 2,
             width = max_width + 8,
-            xoffset = (cursor[2] + max_width/2) / win_width,
-            yoffset = (cursor[1] - vfn.line("w0")) / win_height,
+            xoffset = (cursor[2] + max_width / 2) / win_width,
+            yoffset = (cursor[1] - vfn.line('w0')) / win_height,
         },
         sink = function(line)
             new_name = line
-            if not (new_name and #new_name > 0 and new_name ~= curr_name) then return end
+            if not (new_name and #new_name > 0 and new_name ~= curr_name) then
+                return
+            end
             params.newName = new_name
             vlsp.buf_request(bufnr, 'textDocument/rename', params)
-        end
+        end,
     })
     util.fzf_run(wrapped)
 end
@@ -66,7 +76,7 @@ local on_attach = function(client, bufnr)
 
     local server_capabilities = client.server_capabilities
     if server_capabilities.signatureHelpProvider then
-        server_capabilities.signatureHelpProvider.triggerCharacters = {"(", ",", " "}
+        server_capabilities.signatureHelpProvider.triggerCharacters = { '(', ',', ' ' }
     end
 
     if server_capabilities.documentFormattingProvider then
@@ -75,38 +85,38 @@ local on_attach = function(client, bufnr)
 
     if server_capabilities.documentHighlightProvider then
         util.Augroup('dotvim_lsp_init_on_attach', function()
-            api.nvim_command(string.format("autocmd CursorHold <buffer=%d> lua vim.lsp.buf.document_highlight()", bufnr))
-            api.nvim_command(string.format("autocmd CursorMoved <buffer=%d> lua vim.lsp.buf.clear_references()", bufnr))
+            api.nvim_command(string.format('autocmd CursorHold <buffer=%d> lua vim.lsp.buf.document_highlight()', bufnr))
+            api.nvim_command(string.format('autocmd CursorMoved <buffer=%d> lua vim.lsp.buf.clear_references()', bufnr))
         end)
     end
 
     util.Augroup('dotvim_lsp_init_diagnostic', function()
-        api.nvim_command(string.format("autocmd CursorHold <buffer=%d> lua vim.lsp.diagnostic.show_line_diagnostics()", bufnr))
+        api.nvim_command(string.format('autocmd CursorHold <buffer=%d> lua vim.lsp.diagnostic.show_line_diagnostics()', bufnr))
     end)
 
     local buf_set_keymap = api.nvim_buf_set_keymap
     -- Keybindings for LSPs
-    buf_set_keymap(bufnr, "n", "gd",  "<cmd>lua vim.lsp.buf.definition()<CR>",       {noremap = false, silent = true})
-    buf_set_keymap(bufnr, "n", "K",   "<cmd>lua vim.lsp.buf.hover()<CR>",            {noremap = false, silent = true})
-    buf_set_keymap(bufnr, "n", "gi",  "<cmd>lua vim.lsp.buf.implementation()<CR>",   {noremap = true, silent = true})
-    buf_set_keymap(bufnr, "n", "gk",  "<cmd>lua vim.lsp.buf.signature_help()<CR>",   {noremap = true, silent = true})
-    buf_set_keymap(bufnr, "n", "gtd", "<cmd>lua vim.lsp.buf.type_definition()<CR>",  {noremap = true, silent = true})
-    buf_set_keymap(bufnr, "n", "gR",  "<cmd>lua vim.lsp.buf.references()<CR>",       {noremap = true, silent = true})
-    buf_set_keymap(bufnr, "n", "grr", "<cmd>lua require('dotvim/lsp').rename()<CR>", {noremap = true, silent = true})
-    buf_set_keymap(bufnr, "n", "gds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>",  {noremap = true, silent = true})
-    buf_set_keymap(bufnr, "n", "gws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", {noremap = true, silent = true})
-    buf_set_keymap(bufnr, "n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>",      {noremap = true, silent = true})
+    buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = false, silent = true })
+    buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = false, silent = true })
+    buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'gtd', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'gR', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'grr', "<cmd>lua require('dotvim/lsp').rename()<CR>", { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'gds', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'gws', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'gca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
 
     -- Keybindings for diagnostic
-    buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", {noremap = false, silent = true})
-    buf_set_keymap(bufnr, "n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", {noremap = false, silent = true})
-    buf_set_keymap(bufnr, "n", "<leader>sd", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", {noremap = false, silent = true})
+    buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', { noremap = false, silent = true })
+    buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', { noremap = false, silent = true })
+    buf_set_keymap(bufnr, 'n', '<leader>sd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', { noremap = false, silent = true })
 end
 
-vfn.sign_define("LspDiagnosticsSignError",       {text = "", texthl = "LspDiagnosticsSignError"})
-vfn.sign_define("LspDiagnosticsSignWarning",     {text = "", texthl = "LspDiagnosticsSignWarning"})
-vfn.sign_define("LspDiagnosticsSignInformation", {text = "", texthl = "LspDiagnosticsSignInformation"})
-vfn.sign_define("LspDiagnosticsSignHint",        {text = "", texthl = "LspDiagnosticsSignHint"})
+vfn.sign_define('LspDiagnosticsSignError', { text = '', texthl = 'LspDiagnosticsSignError' })
+vfn.sign_define('LspDiagnosticsSignWarning', { text = '', texthl = 'LspDiagnosticsSignWarning' })
+vfn.sign_define('LspDiagnosticsSignInformation', { text = '', texthl = 'LspDiagnosticsSignInformation' })
+vfn.sign_define('LspDiagnosticsSignHint', { text = '', texthl = 'LspDiagnosticsSignHint' })
 
 local colors = dotcolors.colors
 dotcolors.add_highlight('LspDiagnosticsSignError', {
@@ -145,7 +155,7 @@ local function detect_lua_library()
     local cwd = vfn.getcwd()
     local paths = vim.api.nvim_list_runtime_paths()
     for _, path in ipairs(paths) do
-        if not vim.startswith(cwd, path) and vfn.isdirectory(path..'/lua') > 0 then
+        if not vim.startswith(cwd, path) and vfn.isdirectory(path .. '/lua') > 0 then
             library[path] = true
         end
     end
@@ -158,8 +168,8 @@ local langs = {
         settings = {
             gopls = {
                 usePlaceholders = false,
-            }
-        }
+            },
+        },
     },
     lua = {
         root_dir = function(fname)
@@ -172,25 +182,25 @@ local langs = {
                 diagnostics = {
                     enable = true,
                     globals = {
-                        "vim"
+                        'vim',
                     },
                     disable = {
-                        "unused-vararg",
-                        "unused-local",
+                        'unused-vararg',
+                        'unused-local',
                     },
                 },
                 runtime = {
-                    version = "LuaJIT"
+                    version = 'LuaJIT',
                 },
                 workspace = {
                     library = detect_lua_library(),
                     ignoreDir = {
-                        ".cache",
-                    }
+                        '.cache',
+                    },
                 },
             },
         },
-    }
+    },
 }
 
 local function setup_servers()
@@ -213,5 +223,5 @@ lsp_inst.post_install_hook = function()
 end
 
 return {
-    rename = rename
+    rename = rename,
 }

@@ -11,14 +11,14 @@ return {
                 map_cr = true,
                 map_complete = true,
             })
-        end
+        end,
     },
 
     {
         'antoinemadec/FixCursorHold.nvim',
         setup = function()
             vim.g.cursorhold_updatetime = 800
-        end
+        end,
     },
 
     'thinca/vim-themis',
@@ -27,15 +27,15 @@ return {
         'junegunn/vim-easy-align',
         config = function()
             local set_keymap = vim.api.nvim_set_keymap
-            set_keymap('v', '<CR><Space>',   ':EasyAlign\\<CR>',   { noremap = true })
-            set_keymap('v', '<CR>2<Space>',  ':EasyAlign2\\<CR>',  { noremap = true })
-            set_keymap('v', '<CR>-<Space>',  ':EasyAlign-\\<CR>',  { noremap = true })
+            set_keymap('v', '<CR><Space>', ':EasyAlign\\<CR>', { noremap = true })
+            set_keymap('v', '<CR>2<Space>', ':EasyAlign2\\<CR>', { noremap = true })
+            set_keymap('v', '<CR>-<Space>', ':EasyAlign-\\<CR>', { noremap = true })
             set_keymap('v', '<CR>-2<Space>', ':EasyAlign-2\\<CR>', { noremap = true })
-            set_keymap('v', '<CR>:',         ':EasyAlign:<CR>',    { noremap = true })
-            set_keymap('v', '<CR>=',         ':EasyAlign=<CR>',    { noremap = true })
-            set_keymap('v', '<CR><CR>=',     ':EasyAlign!=<CR>',   { noremap = true })
-            set_keymap('v', '<CR>"',         ':EasyAlign"<CR>',    { noremap = true })
-        end
+            set_keymap('v', '<CR>:', ':EasyAlign:<CR>', { noremap = true })
+            set_keymap('v', '<CR>=', ':EasyAlign=<CR>', { noremap = true })
+            set_keymap('v', '<CR><CR>=', ':EasyAlign!=<CR>', { noremap = true })
+            set_keymap('v', '<CR>"', ':EasyAlign"<CR>', { noremap = true })
+        end,
     },
 
     'tomtom/tcomment_vim',
@@ -45,8 +45,8 @@ return {
         'bronson/vim-trailing-whitespace',
         config = function()
             vim.api.nvim_set_keymap('n', '<leader><space>', ':FixWhitespace<CR>', { noremap = true, silent = true })
-            vim.cmd[[autocmd BufWritePre * silent! FixWhitespace]]
-        end
+            vim.cmd([[autocmd BufWritePre * silent! FixWhitespace]])
+        end,
     },
 
     'dstein64/vim-startuptime',
@@ -55,7 +55,7 @@ return {
         'voldikss/vim-translator',
         setup = function()
             vim.g.translator_history_enable = true
-        end
+        end,
     },
 
     'matze/vim-move',
@@ -64,12 +64,12 @@ return {
         'jbyuki/venn.nvim',
         config = function()
             vim.api.nvim_set_keymap('v', '<Leader>vb', ':VBox<CR>', { noremap = true })
-        end
+        end,
     },
 
     {
         'tmux-plugins/vim-tmux',
-        ft = 'tmux'
+        ft = 'tmux',
     },
 
     {
@@ -83,18 +83,18 @@ return {
         config = function()
             require('gitsigns').setup({
                 signs = {
-                    add          = {hl = 'GitSignsAdd'   , text = '┃', numhl='', linehl=''},
-                    change       = {hl = 'GitSignsChange', text = '┃', numhl='', linehl=''},
-                    delete       = {hl = 'GitSignsDelete', text = '┃', numhl='', linehl=''},
-                    topdelete    = {hl = 'GitSignsDelete', text = '┃', numhl='', linehl=''},
-                    changedelete = {hl = 'GitSignsChange', text = '┃', numhl='', linehl=''},
+                    add = { hl = 'GitSignsAdd', text = '┃', numhl = '', linehl = '' },
+                    change = { hl = 'GitSignsChange', text = '┃', numhl = '', linehl = '' },
+                    delete = { hl = 'GitSignsDelete', text = '┃', numhl = '', linehl = '' },
+                    topdelete = { hl = 'GitSignsDelete', text = '┃', numhl = '', linehl = '' },
+                    changedelete = { hl = 'GitSignsChange', text = '┃', numhl = '', linehl = '' },
                 },
                 keymaps = {
                     noremap = true,
                     buffer = true,
 
-                    ['n ]c'] = { expr = true, [[&diff ? ']c' : '<cmd>lua require"gitsigns.actions".next_hunk()<CR>']]},
-                    ['n [c'] = { expr = true, [[&diff ? '[c' : '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>']]},
+                    ['n ]c'] = { expr = true, [[&diff ? ']c' : '<cmd>lua require"gitsigns.actions".next_hunk()<CR>']] },
+                    ['n [c'] = { expr = true, [[&diff ? '[c' : '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>']] },
 
                     ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
                     ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
@@ -107,8 +107,7 @@ return {
 
                     -- Text objects
                     ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-                    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
-
+                    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
                 },
                 current_line_blame = false,
             })
@@ -131,5 +130,10 @@ return {
                 style = 'bold',
             })
         end,
+    },
+
+    {
+        'ckipp01/stylua-nvim',
+        ft = 'lua',
     },
 }

@@ -1,15 +1,17 @@
-local lsp_status = require("lsp-status")
+local lsp_status = require('lsp-status')
 
 local M = {}
 
-local spinner_frames = {'⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'}
+local spinner_frames = { '⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷' }
 
 local alias = {
-    rust_analyzer = "rust",
+    rust_analyzer = 'rust',
 }
 
 function M.parse_messages(messages)
-    if not messages or #messages == 0 then return '' end
+    if not messages or #messages == 0 then
+        return ''
+    end
     local msg = messages[1]
     local name = alias[msg.name] or msg.name
     local client_name = '[' .. name .. ']'
@@ -22,7 +24,7 @@ function M.parse_messages(messages)
         end
 
         if msg.percentage then
-            contents = contents .. ' ' .. string.format("%0.1f%%", msg.percentage)
+            contents = contents .. ' ' .. string.format('%0.1f%%', msg.percentage)
         end
 
         if msg.spinner then
@@ -54,7 +56,9 @@ end
 
 function M.get_name(bufnr)
     local clients = vim.lsp.buf_get_clients(bufnr)
-    if not clients or #clients == 0 then return '' end
+    if not clients or #clients == 0 then
+        return ''
+    end
     local _, client = next(clients)
     return client.name
 end

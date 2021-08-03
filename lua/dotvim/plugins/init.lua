@@ -9,17 +9,17 @@ local compile_path = std_data_path .. '/site/plugin/packer_compiled.vim'
 local ok, packer = pcall(require, 'packer')
 
 if not ok then
-    print("Installing packer...")
-    vfn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
-    command 'quitall'
+    print('Installing packer...')
+    vfn.system({ 'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path })
+    command('quitall')
 end
 
-command 'packadd packer.nvim'
-command [[ autocmd User PackerComplete :PackerCompile<CR> ]]
+command('packadd packer.nvim')
+command([[ autocmd User PackerComplete :PackerCompile<CR> ]])
 
-return packer.startup {
+return packer.startup({
     function(use)
-        use 'wbthomason/packer.nvim'
+        use('wbthomason/packer.nvim')
 
         local groups = { 'base', 'color', 'tools', 'ui', 'lsp', 'langs' }
 
@@ -29,7 +29,9 @@ return packer.startup {
             end
         end
 
-        if vfn.empty(vfn.glob(compile_path)) > 0 then packer.compile() end
+        if vfn.empty(vfn.glob(compile_path)) > 0 then
+            packer.compile()
+        end
     end,
 
     config = {
@@ -38,7 +40,7 @@ return packer.startup {
         display = {
             open_fn = function()
                 return require('packer.util').float({ border = 'rounded' })
-            end
-        }
-    }
-}
+            end,
+        },
+    },
+})

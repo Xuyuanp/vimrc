@@ -1,5 +1,6 @@
 local M = {}
 
+-- stylua: ignore
 local _COLORS = {
     black        = '#202020',
     black2       = '#282828',

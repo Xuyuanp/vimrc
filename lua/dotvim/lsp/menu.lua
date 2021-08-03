@@ -9,6 +9,7 @@ local fzf_run = dotutil.fzf_run
 
 local M = {}
 
+-- stylua: ignore
 local commands = {
     Definition      = vlspb.definition,
     Hover           = vlspb.hover,

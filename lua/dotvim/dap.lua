@@ -5,25 +5,30 @@ local function setup_go()
     local pjob = require('plenary.job')
     dap.adapters.go = function(callback, _config)
         local port = 38697
-        pjob:new({
-            command = 'dlv',
-            args = {
-                'dap', '-l', '127.0.0.1:'..port, '--check-go-version=false'
-            },
-            on_stdout = function(err, chunk)
-                assert(not err, err)
-                if chunk then
-                    vim.schedule(function()
-                        require('dap.repl').append(chunk)
-                    end)
-                end
-            end,
-        }):start()
+        pjob
+            :new({
+                command = 'dlv',
+                args = {
+                    'dap',
+                    '-l',
+                    '127.0.0.1:' .. port,
+                    '--check-go-version=false',
+                },
+                on_stdout = function(err, chunk)
+                    assert(not err, err)
+                    if chunk then
+                        vim.schedule(function()
+                            require('dap.repl').append(chunk)
+                        end)
+                    end
+                end,
+            })
+            :start()
         vim.defer_fn(function()
             callback({
                 type = 'server',
                 host = '127.0.0.1',
-                port = port
+                port = port,
             })
         end, 100)
     end
@@ -63,24 +68,30 @@ function M.setup()
         dap.disconnect()
         dap.close()
         local ok, ui = pcall(require, 'dapui')
-        if ok then ui.close() end
+        if ok then
+            ui.close()
+        end
         local ok1, vt = pcall(require, 'nvim-dap-virtual-text.virtual_text')
-        if ok1 then vt.clear_virtual_text() end
+        if ok1 then
+            vt.clear_virtual_text()
+        end
     end
 
-    set_keymap('n', '<F5>', "<cmd>lua require('dap').continue()<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<F6>', "<cmd>lua require('dap').run_to_cursor()<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<F9>', "<cmd>lua dotvim_dap_close()<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<F10>', "<cmd>lua require('dap').step_over()<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<F11>', "<cmd>lua require('dap').step_into()<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<F12>', "<cmd>lua require('dap').step_out()<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<leader>b', "<cmd>lua require('dap').toggle_breakpoint()<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<leader>B', "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<leader>lp', "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<leader>dr', "<cmd>lua require('dap').repl_open()<CR>", { noremap = false, silent = true})
-    set_keymap('n', '<leader>dl', "<cmd>lua require('dap').run_last()<CR>", { noremap = false, silent = true})
+    local km_opts = { noremap = false, silent = true }
 
-    vim.cmd [[
+    set_keymap('n', '<F5>', "<cmd>lua require('dap').continue()<CR>", km_opts)
+    set_keymap('n', '<F6>', "<cmd>lua require('dap').run_to_cursor()<CR>", km_opts)
+    set_keymap('n', '<F9>', '<cmd>lua dotvim_dap_close()<CR>', km_opts)
+    set_keymap('n', '<F10>', "<cmd>lua require('dap').step_over()<CR>", km_opts)
+    set_keymap('n', '<F11>', "<cmd>lua require('dap').step_into()<CR>", km_opts)
+    set_keymap('n', '<F12>', "<cmd>lua require('dap').step_out()<CR>", km_opts)
+    set_keymap('n', '<leader>b', "<cmd>lua require('dap').toggle_breakpoint()<CR>", km_opts)
+    set_keymap('n', '<leader>B', "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", km_opts)
+    set_keymap('n', '<leader>lp', "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", km_opts)
+    set_keymap('n', '<leader>dr', "<cmd>lua require('dap').repl_open()<CR>", km_opts)
+    set_keymap('n', '<leader>dl', "<cmd>lua require('dap').run_last()<CR>", km_opts)
+
+    vim.cmd([[
         autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
 
         highlight! DapCustomPC ctermbg=245 guibg=#928374
@@ -88,11 +99,11 @@ function M.setup()
             autocmd!
             autocmd ColorScheme * highlight! DapCustomPC ctermbg=245 guibg=#928374
         augroup END
-    ]]
+    ]])
     sign_define('DapStopped', {
         text = '',
         texthl = 'Green',
-        linehl = 'DapCustomPC'
+        linehl = 'DapCustomPC',
     })
     sign_define('DapBreakpoint', { text = '', texthl = 'Red' })
     sign_define('DapLogPoint', { text = 'ﰉ', texthl = 'Yellow' })
@@ -102,51 +113,51 @@ end
 local ui = {}
 
 function ui.setup()
-    require('dapui').setup{
+    require('dapui').setup({
         icons = {
-            expanded = "▾",
-            collapsed = "▸"
+            expanded = '▾',
+            collapsed = '▸',
         },
         mappings = {
             -- Use a table to apply multiple mappings
-            expand = {"<CR>"},
-            open = "o",
-            remove = "d",
-            edit = "e",
-            repl = "r",
+            expand = { '<CR>' },
+            open = 'o',
+            remove = 'd',
+            edit = 'e',
+            repl = 'r',
         },
         sidebar = {
             open_on_start = true,
             elements = {
                 -- You can change the order of elements in the sidebar
-                "scopes",
-                "breakpoints",
-                "stacks",
-                "watches"
+                'scopes',
+                'breakpoints',
+                'stacks',
+                'watches',
             },
             width = 40,
-            position = "left" -- Can be "left" or "right"
+            position = 'left', -- Can be "left" or "right"
         },
         tray = {
             open_on_start = true,
             elements = {
-                "repl"
+                'repl',
             },
             height = 10,
-            position = "top" -- Can be "bottom" or "top"
+            position = 'top', -- Can be "bottom" or "top"
         },
         floating = {
             max_height = nil, -- These can be integers or a float between 0 and 1.
-            max_width = nil   -- Floats will be treated as percentage of your screen.
-        }
-    }
+            max_width = nil, -- Floats will be treated as percentage of your screen.
+        },
+    })
 
-    vim.cmd [[
+    vim.cmd([[
         augroup dotvim_dap_ui
             autocmd!
             autocmd ColorScheme * silent! lua require('dapui.config.highlights').setup()
         augroup END
-    ]]
+    ]])
 end
 
 M.ui = ui

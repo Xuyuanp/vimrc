@@ -2,6 +2,7 @@ return {
     {
         'fatih/vim-go',
         setup = function()
+            -- stylua: ignore start
             vim.g.go_highlight_build_constraints      = 1
             vim.g.go_highlight_types                  = 1
             vim.g.go_highlight_extra_types            = 1
@@ -27,27 +28,28 @@ return {
             vim.g.go_code_completion_enabled          = 0
             vim.g.go_gopls_enabled                    = 0
             vim.g.go_doc_keywordprg_enabled           = 0
+            -- stylua: ignore end
         end,
     },
 
     {
         'vim-scripts/a.vim',
-        ft = { 'c', 'cpp' }
+        ft = { 'c', 'cpp' },
     },
 
     {
         'spacewander/openresty-vim',
-        ft = {'nginx'}
+        ft = { 'nginx' },
     },
 
     {
         'Vimjas/vim-python-pep8-indent',
-        ft = {'python'}
+        ft = { 'python' },
     },
 
     {
         'neoclide/jsonc.vim',
-        ft = {'jsonc'}
+        ft = { 'jsonc' },
     },
 
     {
@@ -58,47 +60,47 @@ return {
                 c = {},
                 cpp = {},
                 asm = {},
-                haskell = {}
+                haskell = {},
             }
             vim.g.ale_sign_priority = 0
             if vim.fn.has('osx') then
                 vim.g.ale_proto_protoc_gen_lint_options = "-I /usr/local/opt/protobuf/include' -I 'api/thirdparty'"
             end
-        end
+        end,
     },
 
     {
         'stephpy/vim-yaml',
-        ft = {'yaml'}
+        ft = { 'yaml' },
     },
 
     {
         'zinit-zsh/zinit-vim-syntax',
-        ft = {'zsh'}
+        ft = { 'zsh' },
     },
 
     {
         'plasticboy/vim-markdown',
-        ft = {'markdown', 'md'},
+        ft = { 'markdown', 'md' },
         setup = function()
             vim.g.vim_markdown_folding_disabled = 1
-        end
+        end,
     },
 
     {
         'rust-lang/rust.vim',
-        ft = {'rust', 'rs'}
+        ft = { 'rust', 'rs' },
     },
 
     {
         'neovimhaskell/haskell-vim',
-        ft = {'haskell', 'hs'}
+        ft = { 'haskell', 'hs' },
     },
 
     {
         'KSP-KOS/EditorTools',
         rtp = 'VIM/vim-kerboscript',
-        branch = 'develop'
+        branch = 'develop',
     },
 
     {
@@ -106,7 +108,7 @@ return {
         ft = { 'lua' },
         setup = function()
             vim.g.BetterLua_enable_emmylua = 1
-        end
+        end,
     },
 
     'milisims/nvim-luaref',
@@ -137,7 +139,7 @@ return {
         },
         config = function()
             require('dotvim.dap').virtual_text.setup()
-        end
+        end,
     },
 
     {
@@ -147,14 +149,14 @@ return {
             local dap_py = require('dap-python')
             dap_py.setup('~/.pyenv/versions/debugpy/bin/python')
             dap_py.test_runner = 'pytest'
-        end
+        end,
     },
 
     {
         'nvim-telescope/telescope-dap.nvim',
-        requires = { 'dap', 'telescope'},
+        requires = { 'dap', 'telescope' },
         config = function()
             require('telescope').load_extension('dap')
-        end
-    }
+        end,
+    },
 }

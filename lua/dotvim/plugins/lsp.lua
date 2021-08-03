@@ -7,7 +7,7 @@ return {
         },
         config = function()
             require('dotvim/lsp')
-        end
+        end,
     },
 
     {
@@ -18,16 +18,18 @@ return {
             _G.lsp_inlay_hints = function()
                 return require('lsp_extensions').inlay_hints({
                     prefix = ' » ',
-                    highlight = "NonText",
+                    highlight = 'NonText',
                     enabled = {
-                        "TypeHint", "ParameterHint", "ChainingHint"
-                    }
+                        'TypeHint',
+                        'ParameterHint',
+                        'ChainingHint',
+                    },
                 })
             end
-            command [[augroup dotvim_lsp_extensions]]
-            command [[autocmd!]]
-            command [[autocmd InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs lua lsp_inlay_hints()]]
-            command [[augroup END]]
+            command([[augroup dotvim_lsp_extensions]])
+            command([[autocmd!]])
+            command([[autocmd InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs lua lsp_inlay_hints()]])
+            command([[augroup END]])
         end,
     },
 
@@ -44,17 +46,17 @@ return {
             local command = vim.api.nvim_command
 
             vim.g.vsnip_snippet_dir = vfn.stdpath('config') .. '/snippets'
-            command [[ imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>' ]]
-            command [[ smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>' ]]
-            command [[ imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>' ]]
-            command [[ smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>' ]]
-        end
+            command([[ imap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>' ]])
+            command([[ smap <expr> <C-j> vsnip#available(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>' ]])
+            command([[ imap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>' ]])
+            command([[ smap <expr> <C-k> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>' ]])
+        end,
     },
 
     {
         'hrsh7th/nvim-compe',
         requires = {
-            'wellle/tmux-complete.vim'
+            'wellle/tmux-complete.vim',
         },
         config = function()
             require('compe').setup({
@@ -92,30 +94,30 @@ return {
             --- move to prev/next item in completion menuone
             _G.tab_complete = function()
                 if vfn.pumvisible() == 1 then
-                    return t"<C-n>"
+                    return t('<C-n>')
                 elseif check_back_space() then
-                    return t"<Tab>"
+                    return t('<Tab>')
                 else
                     return vfn['compe#complete']()
                 end
             end
             _G.s_tab_complete = function()
                 if vfn.pumvisible() == 1 then
-                    return t"<C-p>"
+                    return t('<C-p>')
                 else
                     -- If <S-Tab> is not working in your terminal, change it to <C-h>
-                    return t"<S-Tab>"
+                    return t('<S-Tab>')
                 end
             end
 
             -- confirm key will be set by autopairs
             -- set_keymap('i', "<CR>", "compe#confirm('<CR>')", {expr = true})
-            set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-            set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-            set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-            set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-            set_keymap('i', "<C-Space>", "compe#complete()", {expr = true})
-        end
+            set_keymap('i', '<Tab>', 'v:lua.tab_complete()', { expr = true })
+            set_keymap('s', '<Tab>', 'v:lua.tab_complete()', { expr = true })
+            set_keymap('i', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
+            set_keymap('s', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
+            set_keymap('i', '<C-Space>', 'compe#complete()', { expr = true })
+        end,
     },
 
     {
@@ -186,8 +188,8 @@ return {
                     Event = '鬒',
                     TypeParameter = '',
                     Default = '',
-                }
+                },
             })
-        end
-    }
+        end,
+    },
 }

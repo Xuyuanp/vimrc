@@ -3,7 +3,7 @@ return {
     {
         'nvim-telescope/telescope.nvim',
         as = 'telescope',
-        requires = { 'popup', 'plenary' }
+        requires = { 'popup', 'plenary' },
     },
 
     {
@@ -18,10 +18,10 @@ return {
             local vim = vim
             local execute = vim.api.nvim_command
 
-            execute [[ nmap <C-e> :YanilToggle<CR> ]]
-            execute [[ autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif ]]
-            execute [[ autocmd FocusGained * lua require('yanil/git').update() ]]
-        end
+            execute([[ nmap <C-e> :YanilToggle<CR> ]])
+            execute([[ autocmd BufEnter Yanil if len(nvim_list_wins()) == 1 | q | endif ]])
+            execute([[ autocmd FocusGained * lua require('yanil/git').update() ]])
+        end,
     },
 
     {
@@ -40,12 +40,12 @@ return {
                 return require('nvim-web-devicons').get_icon(filename, extension, { default = true })
             end
 
-            command[[
+            command([[
             function! StartifyEntryFormat()
                 return 'v:lua.devicons_get_icon(absolute_path) ." ". entry_path'
             endfunction
-            ]]
-        end
+            ]])
+        end,
     },
 
     {
@@ -54,7 +54,7 @@ return {
         config = function()
             vim.g.vista_default_executive = 'nvim_lsp'
             vim.api.nvim_set_keymap('n', '<C-t>', ':Vista!!<CR>', { noremap = true })
-        end
+        end,
     },
 
     {
@@ -63,7 +63,7 @@ return {
         config = function()
             vim.opt.termguicolors = true
             require('colorizer').setup()
-        end
+        end,
     },
 
     {
@@ -71,7 +71,9 @@ return {
         event = 'BufEnter',
         config = function()
             vim.g.scrollbar_excluded_filetypes = {
-                'nerdtree', 'vista_kind', 'Yanil'
+                'nerdtree',
+                'vista_kind',
+                'Yanil',
             }
             vim.g.scrollbar_highlight = {
                 head = 'String',
@@ -85,14 +87,14 @@ return {
 
             local execute = vim.api.nvim_command
 
-            execute [[ augroup dotvim_scrollbar ]]
-            execute [[ autocmd! ]]
-            execute [[ autocmd BufEnter * silent! lua require('scrollbar').show() ]]
-            execute [[ autocmd BufLeave * silent! lua require('scrollbar').clear() ]]
-            execute [[ autocmd CursorMoved * silent! lua require('scrollbar').show() ]]
-            execute [[ autocmd VimResized  * silent! lua require('scrollbar').show() ]]
-            execute [[ augroup end ]]
-        end
+            execute([[ augroup dotvim_scrollbar ]])
+            execute([[ autocmd! ]])
+            execute([[ autocmd BufEnter * silent! lua require('scrollbar').show() ]])
+            execute([[ autocmd BufLeave * silent! lua require('scrollbar').clear() ]])
+            execute([[ autocmd CursorMoved * silent! lua require('scrollbar').show() ]])
+            execute([[ autocmd VimResized  * silent! lua require('scrollbar').show() ]])
+            execute([[ augroup end ]])
+        end,
     },
 
     {
@@ -107,10 +109,10 @@ return {
                     separator_style = 'slant',
                     always_show_bufferline = true,
                     offsets = {
-                        {filetype = 'Yanil', text = 'File Explorer', text_align = 'left'},
-                        {filetype = 'vista_kind', text = 'Vista', text_align = 'right'},
+                        { filetype = 'Yanil', text = 'File Explorer', text_align = 'left' },
+                        { filetype = 'vista_kind', text = 'Vista', text_align = 'right' },
                     },
-                }
+                },
             })
 
             local set_keymap = vim.api.nvim_set_keymap
@@ -133,25 +135,30 @@ return {
             end
             -- Goto buffer in position...
             for i = 1, 10, 1 do
-                set_keymap('n', string.format('<A-%d>', i), string.format(':lua require("bufferline").go_to_buffer(%d)<CR>', i), { silent = true, noremap = false })
+                set_keymap(
+                    'n',
+                    string.format('<A-%d>', i),
+                    string.format(':lua require("bufferline").go_to_buffer(%d)<CR>', i),
+                    { silent = true, noremap = false }
+                )
             end
-        end
+        end,
     },
 
     {
         'sunjon/shade.nvim',
         event = 'BufEnter',
         config = function()
-            require'shade'.setup({
+            require('shade').setup({
                 overlay_opacity = 70,
                 opacity_step = 5,
                 keys = {
-                    brightness_up   = '<C-Up>', -- FIXME: conflict with vim-visual-multi
+                    brightness_up = '<C-Up>', -- FIXME: conflict with vim-visual-multi
                     brightness_down = '<C-Down>',
-                    toggle          = '<Leader>s',
-                }
+                    toggle = '<Leader>s',
+                },
             })
-        end
+        end,
     },
 
     {
@@ -160,24 +167,24 @@ return {
         requires = {
             'nvim-treesitter/playground',
             'romgrk/nvim-treesitter-context',
-            'p00f/nvim-ts-rainbow'
+            'p00f/nvim-ts-rainbow',
         },
         run = ':TSUpdate',
         config = function()
             require('dotvim/treesitter')
-        end
+        end,
     },
 
     {
-        'haringsrob/nvim_context_vt'
+        'haringsrob/nvim_context_vt',
     },
 
     {
         -- TODO: switch back to upstream
-        "Xuyuanp/FTerm.nvim",
+        'Xuyuanp/FTerm.nvim',
         branch = 'remember_restor_prev_window',
         config = function()
-            require("FTerm").setup({
+            require('FTerm').setup({
                 border = 'rounded',
             })
 
@@ -185,7 +192,7 @@ return {
             local opts = { noremap = false, silent = true }
             set_keymap('n', '<A-o>', '<cmd>lua require("FTerm").toggle()<CR>', opts)
             set_keymap('t', '<A-o>', '<C-\\><C-n><cmd>lua require("FTerm").toggle()<CR>', opts)
-        end
+        end,
     },
 
     {
@@ -198,7 +205,7 @@ return {
         requires = {
             -- 'kyazdani42/nvim-web-devicons',
             'Iron-E/nvim-highlite',
-        }
+        },
     },
 
     {
@@ -217,7 +224,7 @@ return {
                 'vista',
                 'vista_kind',
                 'vista_markdown',
-                'Yanil'
+                'Yanil',
             }
 
             vim.g.indent_blankline_show_current_context = true
@@ -240,7 +247,7 @@ return {
                 '^loop',
                 '^call',
             }
-        end
+        end,
     },
 
     {
@@ -259,12 +266,12 @@ return {
             set_keymap('n', '<leader>S', ':lua require("spectre").open()<CR>', opts)
             set_keymap('n', '<leader>Sc', 'viw:lua require("spectre").open_file_search()<CR>', opts)
 
-            vim.cmd[[
+            vim.cmd([[
             augroup dotvim_spectre
                 autocmd!
                 autocmd FileType spectre_panel setlocal nofoldenable | nnoremap <buffer>q <cmd>q<CR>
             augroup END
-            ]]
-        end
-    }
+            ]])
+        end,
+    },
 }
