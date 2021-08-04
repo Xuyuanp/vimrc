@@ -5,25 +5,25 @@ local function setup_go()
     local pjob = require('plenary.job')
     dap.adapters.go = function(callback, _config)
         local port = 38697
-        pjob
-            :new({
-                command = 'dlv',
-                args = {
-                    'dap',
-                    '-l',
-                    '127.0.0.1:' .. port,
-                    '--check-go-version=false',
-                },
-                on_stdout = function(err, chunk)
-                    assert(not err, err)
-                    if chunk then
-                        vim.schedule(function()
-                            require('dap.repl').append(chunk)
-                        end)
-                    end
-                end,
-            })
-            :start()
+        local job_desc = {
+            command = 'dlv',
+            args = {
+                'dap',
+                '-l',
+                '127.0.0.1:' .. port,
+                '--check-go-version=false',
+            },
+            on_stdout = function(err, chunk)
+                assert(not err, err)
+                if chunk then
+                    vim.schedule(function()
+                        require('dap.repl').append(chunk)
+                    end)
+                end
+            end,
+        }
+        pjob:new(job_desc):start()
+
         vim.defer_fn(function()
             callback({
                 type = 'server',
