@@ -55,12 +55,12 @@ M.colors = setmetatable({
         Hint = _COLORS.aqua,
     },
     Sign = {
-        bg = _COLORS.black2
-    }
+        bg = _COLORS.black2,
+    },
 }, {
     __index = function(_, key)
         return _COLORS[key]
-    end
+    end,
 })
 
 local hlmap = {}
@@ -69,7 +69,7 @@ local function define_highlight(group, color)
     local style = color.style or 'NONE'
     local fg = color.fg or 'NONE'
     local bg = color.bg or 'NONE'
-    vim.cmd('highlight! ' .. group .. ' gui=' .. style .. ' guifg=' .. fg .. ' guibg='..bg)
+    vim.cmd('highlight! ' .. group .. ' gui=' .. style .. ' guifg=' .. fg .. ' guibg=' .. bg)
 end
 
 function M.add_highlight(group, color)
@@ -84,20 +84,20 @@ function M.update()
 end
 
 function M.enable_auto_update()
-    vim.cmd [[
+    vim.cmd([[
     augroup dotvim_colorscheme
         autocmd!
         autocmd ColorScheme * lua require('dotvim.colors').update()
     augroup END
-    ]]
+    ]])
 end
 
 function M.disable_auto_update()
-    vim.cmd [[
+    vim.cmd([[
     augroup dotvim_colorscheme
         autocmd!
     augroup END
-    ]]
+    ]])
 end
 
 return M

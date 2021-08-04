@@ -31,7 +31,6 @@ local function rename(new_name)
 
     local wrapped = util.fzf_wrap('lsp_rename', {
         source = {},
-        -- stylua: ignore start
         options = {
             '+m',
             '+x',
@@ -41,12 +40,10 @@ local function rename(new_name)
             '--height=0',
             '--min-height=0',
             '--info=hidden',
-            '--prompt',
-            'LSP Rename> ',
-            '--query', curr_name,
+            '--prompt=LSP Rename> ',
+            '--query=' .. curr_name,
             '--print-query',
         },
-        -- stylua: ignore end
         window = {
             height = 2,
             width = max_width + 8,

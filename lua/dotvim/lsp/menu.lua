@@ -35,27 +35,31 @@ function M.show()
     local win_width = api.nvim_win_get_width(0)
     local win_height = api.nvim_win_get_height(0)
 
-    local wrapped = fzf_wrap("code_actions", {
+    local wrapped = fzf_wrap('code_actions', {
         source = source,
         options = {
-            "+m", "+x",
-            "--tiebreak=index",
-            "--ansi",
-            "--reverse",
-            "--color", "dark",
-            "--prompt", "LSP> ",
+            '+m',
+            '+x',
+            '--tiebreak=index',
+            '--ansi',
+            '--reverse',
+            '--prompt=LSP> ',
         },
+        height = #source + 4,
         window = {
-            height = #source + 4,
             width = 25,
-            xoffset = (cursor[2] + max_width/2) / win_width,
-            yoffset = (cursor[1] - vim.fn.line("w0")) / win_height,
+            xoffset = (cursor[2] + max_width / 2) / win_width,
+            yoffset = (cursor[1] - vim.fn.line('w0')) / win_height,
         },
         sink = function(line)
-            if not line or type(line) ~= "string" or line:len() == 0 then return end
+            if not line or type(line) ~= 'string' or line:len() == 0 then
+                return
+            end
 
             local cmd = commands[line]
-            if cmd then vim.schedule(cmd) end
+            if cmd then
+                vim.schedule(cmd)
+            end
         end,
     })
     fzf_run(wrapped)
