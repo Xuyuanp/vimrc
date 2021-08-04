@@ -1,0 +1,40 @@
+name: lint
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  luacheck:
+    name: LuaCheck
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: install luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -qq -y luarocks
+          sudo luarocks install luacheck
+      - name: check
+        run: |
+          luacheck --no-color .
+  stylua:
+    name: Stylua
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: JohnnyMorganz/stylua-action@1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --color always --check lua/
+  vint:
+    name: Vint
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: vint
+      uses: ludvighz/vint-action@v1
+      with:
+        path: vimrc
