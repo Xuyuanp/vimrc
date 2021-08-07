@@ -183,6 +183,7 @@ return {
         -- TODO: switch back to upstream
         'Xuyuanp/FTerm.nvim',
         branch = 'remember_restor_prev_window',
+        keys = { '<A-o>' },
         config = function()
             require('FTerm').setup({
                 border = 'rounded',
