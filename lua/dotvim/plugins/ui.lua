@@ -201,7 +201,7 @@ return {
         event = 'BufEnter',
         branch = 'main',
         config = function()
-            require('dotvim/galaxyline')
+            require('dotvim/statusline')
         end,
         requires = {
             -- 'kyazdani42/nvim-web-devicons',
