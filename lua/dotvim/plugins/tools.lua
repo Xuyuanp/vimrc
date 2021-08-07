@@ -2,6 +2,7 @@ return {
     'godlygeek/tabular',
     'tpope/vim-surround',
     'mg979/vim-visual-multi',
+    'tpope/vim-repeat',
 
     {
         'windwp/nvim-autopairs',
