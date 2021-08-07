@@ -43,31 +43,31 @@ end
 
 -- stylua: ignore
 local _MODES = {
-    ['c']      = {'',        {dotcolors.red}},
-    ['ce']     = {'',        {dotcolors.red_dark}},
-    ['cv']     = {'EX',       {dotcolors.red_light}},
-    ['i']      = {'I',        {dotcolors.green}},
-    ['ic']     = {'IC',       {dotcolors.green_light}},
-    ['n']      = {'N',        {dotcolors.purple_light}},
-    ['no']     = {'OP',       {dotcolors.purple}},
-    ['r']      = {'CR',       {dotcolors.cyan}},
-    ['r?']     = {':CONFIRM', {dotcolors.cyan}},
-    ['rm']     = {'--MORE',   {dotcolors.cyan}},
-    ['R']      = {'R',        {dotcolors.pink}},
-    ['Rv']     = {'RV',       {dotcolors.pink}},
-    ['s']      = {'S',        {dotcolors.turqoise}},
-    ['S']      = {'S',        {dotcolors.turqoise}},
-    [t'<C-s>'] = {'S-L',      {dotcolors.turqoise}},
-    ['t']      = {'T',        {dotcolors.orange}},
-    ['v']      = {'V',        {dotcolors.blue}},
-    ['V']      = {'V-L',      {dotcolors.blue}},
-    [t'<C-v>'] = {'V-B',      {dotcolors.blue}},
-    ['!']      = {'SHELL',    {dotcolors.yellow}},
+    ['c']      = {'',        dotcolors.red},
+    ['ce']     = {'',        dotcolors.red_dark},
+    ['cv']     = {'EX',       dotcolors.red_light},
+    ['i']      = {'I',        dotcolors.green},
+    ['ic']     = {'IC',       dotcolors.green_light},
+    ['n']      = {'N',        dotcolors.purple_light},
+    ['no']     = {'OP',       dotcolors.purple},
+    ['r']      = {'CR',       dotcolors.cyan},
+    ['r?']     = {':CONFIRM', dotcolors.cyan},
+    ['rm']     = {'--MORE',   dotcolors.cyan},
+    ['R']      = {'R',        dotcolors.pink},
+    ['Rv']     = {'RV',       dotcolors.pink},
+    ['s']      = {'S',        dotcolors.turqoise},
+    ['S']      = {'S',        dotcolors.turqoise},
+    [t'<C-s>'] = {'S-L',      dotcolors.turqoise},
+    ['t']      = {'T',        dotcolors.orange},
+    ['v']      = {'V',        dotcolors.blue},
+    ['V']      = {'V-L',      dotcolors.blue},
+    [t'<C-v>'] = {'V-B',      dotcolors.blue},
+    ['!']      = {'SHELL',    dotcolors.yellow},
 
     -- libmodal
-    ['TABS']    = {dotcolors.tan},
-    ['BUFFERS'] = {dotcolors.teal},
-    ['TABLES']  = {dotcolors.orange_light},
+    ['TABS']    = dotcolors.tan,
+    ['BUFFERS'] = dotcolors.teal,
+    ['TABLES']  = dotcolors.orange_light,
 }
 
 local _ICONS = {
@@ -185,7 +185,11 @@ section.left = {
                 local mode_name = current_mode[1]
                 local mode_color = current_mode[2]
 
-                require('highlite').highlight('GalaxyViMode', { fg = mode_color, style = 'bold' })
+                require('dotvim.colors').add_highlight('GalaxyViMode', {
+                    fg = mode_color,
+                    bg = _HEX_COLORS.bar.side,
+                    style = 'bold',
+                })
 
                 return mode_name .. ' '
             end,
@@ -205,10 +209,12 @@ section.left = {
         },
     },
 
-    { LspIcon = {
-        provider = lsp_icon,
-        highlight = { _HEX_COLORS.green_light, _BG.file },
-    } },
+    {
+        LspIcon = {
+            provider = lsp_icon,
+            highlight = { _HEX_COLORS.green_light, _BG.file },
+        },
+    },
 
     {
         FileName = {
@@ -314,10 +320,12 @@ section.left = {
 } -- section.left
 
 section.right = {
-    { LspMessages = {
-        provider = { lsp_messages },
-        highlight = { _HEX_COLORS.text, _HEX_COLORS.bar.middle },
-    } },
+    {
+        LspMessages = {
+            provider = { lsp_messages },
+            highlight = { _HEX_COLORS.text, _HEX_COLORS.bar.middle },
+        },
+    },
 
     {
         RightBegin = {
@@ -328,10 +336,12 @@ section.right = {
         },
     },
 
-    { FileFormat = {
-        provider = { 'FileFormat', space },
-        highlight = { _HEX_COLORS.text, _HEX_COLORS.bar.side },
-    } },
+    {
+        FileFormat = {
+            provider = { 'FileFormat', space },
+            highlight = { _HEX_COLORS.text, _HEX_COLORS.bar.side },
+        },
+    },
 
     {
         FileType = {
@@ -342,10 +352,12 @@ section.right = {
         },
     },
 
-    { FileSep = {
-        provider = printer(_ICONS.Separators.right),
-        highlight = { get_file_icon_color, _HEX_COLORS.bar.side },
-    } },
+    {
+        FileSep = {
+            provider = printer(_ICONS.Separators.right),
+            highlight = { get_file_icon_color, _HEX_COLORS.bar.side },
+        },
+    },
 
     {
         LineNumber = {
@@ -387,15 +399,19 @@ section.right = {
         },
     },
 
-    { PerCent = {
-        provider = 'LinePercent',
-        highlight = { _HEX_COLORS.white, _HEX_COLORS.magenta_dark },
-    } },
+    {
+        PerCent = {
+            provider = 'LinePercent',
+            highlight = { _HEX_COLORS.white, _HEX_COLORS.magenta_dark },
+        },
+    },
 
-    { ScrollBar = {
-        provider = 'ScrollBar',
-        highlight = { _HEX_COLORS.gray, _HEX_COLORS.magenta_dark },
-    } },
+    {
+        ScrollBar = {
+            provider = 'ScrollBar',
+            highlight = { _HEX_COLORS.gray, _HEX_COLORS.magenta_dark },
+        },
+    },
 } -- section.right
 
 section.short_line_left = {

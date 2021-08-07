@@ -204,7 +204,6 @@ return {
         end,
         requires = {
             -- 'kyazdani42/nvim-web-devicons',
-            'Iron-E/nvim-highlite',
         },
     },
 
