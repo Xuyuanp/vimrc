@@ -137,4 +137,23 @@ return {
         'ckipp01/stylua-nvim',
         ft = 'lua',
     },
+
+    {
+        'rcarriga/nvim-notify',
+        config = function()
+            vim.notify = require('notify')
+
+            _G.dotvim_reset_notify_colors = function()
+                package.loaded['notify.config.highlights'] = nil
+                require('notify.config.highlights')
+            end
+
+            vim.cmd([[
+            augroup dotvim_notify
+                autocmd!
+                autocmd ColorScheme * lua dotvim_reset_notify_colors()
+            augroup END
+            ]])
+        end,
+    },
 }
