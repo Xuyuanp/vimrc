@@ -268,7 +268,7 @@
     "leetcode": {
         "prefix": "leetcode",
         "body": [
-            "def main():",
+            "def test():",
             "    sol = Solution()",
             "    methods = [name for name in dir(sol) if not name.startswith('__')]",
             "    for method in methods:",
@@ -288,7 +288,7 @@
             "",
             "",
             "if __name__ == '__main__':",
-            "    main()"
+            "    test()"
         ],
         "description": "Code snippet to generate tests for leetcode solution"
     }
