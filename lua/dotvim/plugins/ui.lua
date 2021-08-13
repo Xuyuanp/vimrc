@@ -80,7 +80,7 @@ return {
                 body = 'String',
                 tail = 'String',
             }
-            vim.g.shape = {
+            vim.g.scrollbar_shape = {
                 head = '⍋',
                 tail = '⍒',
             }
