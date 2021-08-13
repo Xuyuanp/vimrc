@@ -22,10 +22,18 @@ return {
             local vim = vim
             local execute = vim.api.nvim_command
 
-            require('dotvim.colors').enable_auto_update()
+            local dotcolors = require('dotvim.colors')
+            dotcolors.enable_auto_update()
 
             vim.opt.background = 'dark'
             execute([[ colorscheme gruvbox-material ]])
+
+            dotcolors.add_highlight('EndOfBuffer', {
+                fg = dotcolors.colors.Sign.bg,
+            })
+            dotcolors.add_highlight('VertSplit', {
+                fg = dotcolors.colors.black_pure,
+            })
         end,
     },
 

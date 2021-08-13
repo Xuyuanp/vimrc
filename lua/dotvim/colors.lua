@@ -4,6 +4,7 @@ local M = {}
 local _COLORS = {
     black        = '#202020',
     black2       = '#282828',
+    black_pure   = '#000000',
     gray         = '#808080',
     gray_dark    = '#353535',
     gray_darker  = '#505050',
