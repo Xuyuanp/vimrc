@@ -92,21 +92,16 @@ function M.setup()
     set_keymap('n', '<leader>dl', "<cmd>lua require('dap').run_last()<CR>", km_opts)
 
     vim.cmd([[
-        autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
-
-        highlight! DapCustomPC ctermbg=245 guibg=#928374
-        augroup dotvim_dap
-            autocmd!
-            autocmd ColorScheme * highlight! DapCustomPC ctermbg=245 guibg=#928374
-        augroup END
+        autocmd! FileType dap-repl lua require('dap.ext.autocompl').attach()
     ]])
+    require('dotvim.colors').add_highlight('DapCustomPC', { bg = '#928374' })
     sign_define('DapStopped', {
         text = '',
-        texthl = 'Green',
+        texthl = 'GreenSign',
         linehl = 'DapCustomPC',
     })
-    sign_define('DapBreakpoint', { text = '', texthl = 'Red' })
-    sign_define('DapLogPoint', { text = 'ﰉ', texthl = 'Yellow' })
+    sign_define('DapBreakpoint', { text = '', texthl = 'RedSign' })
+    sign_define('DapLogPoint', { text = 'ﰉ', texthl = 'YellowSign' })
     sign_define('DapBreakpointRejected', { text = '' })
 end
 
