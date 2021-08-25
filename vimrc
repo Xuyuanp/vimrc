@@ -214,4 +214,9 @@ inoremap <C-e> <End>
 inoremap <C-f> <Right>
 " }}}
 
+" yank to system clipboard
+if has('clipboard')
+    vnoremap <leader>y "+y
+endif
+
 silent! source $VIMRC_AFTER
