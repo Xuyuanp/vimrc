@@ -54,69 +54,22 @@ return {
     },
 
     {
-        'hrsh7th/nvim-compe',
+        'hrsh7th/nvim-cmp',
         requires = {
-            'wellle/tmux-complete.vim',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-nvim-lua',
+            'hrsh7th/cmp-nvim-lsp',
+            {
+                'andersevenrud/compe-tmux',
+                branch = 'cmp',
+            },
+            'hrsh7th/cmp-path',
+            'hrsh7th/cmp-calc',
+            'hrsh7th/cmp-vsnip',
+            'Saecki/crates.nvim',
         },
         config = function()
-            require('compe').setup({
-                enabled = true,
-                autocomplete = true,
-                debug = false,
-                preselect = 'disable',
-                source = {
-                    path = true,
-                    buffer = true,
-                    calc = true,
-                    nvim_lsp = true,
-                    nvim_lua = { 'lua' },
-                    vsnip = true,
-                    spell = true,
-                    tmux = true,
-                },
-            })
-
-            local vim = vim
-            local vfn = vim.fn
-            local replace_termcodes = vim.api.nvim_replace_termcodes
-            local set_keymap = vim.api.nvim_set_keymap
-
-            local function t(str)
-                return replace_termcodes(str, true, true, true)
-            end
-
-            local function check_back_space()
-                local col = vfn.col('.') - 1
-                return col == 0 or vfn.getline('.'):sub(col, col):match('%s') ~= nil
-            end
-
-            -- Use (s-)tab to:
-            --- move to prev/next item in completion menuone
-            _G.tab_complete = function()
-                if vfn.pumvisible() == 1 then
-                    return t('<C-n>')
-                elseif check_back_space() then
-                    return t('<Tab>')
-                else
-                    return vfn['compe#complete']()
-                end
-            end
-            _G.s_tab_complete = function()
-                if vfn.pumvisible() == 1 then
-                    return t('<C-p>')
-                else
-                    -- If <S-Tab> is not working in your terminal, change it to <C-h>
-                    return t('<S-Tab>')
-                end
-            end
-
-            -- confirm key will be set by autopairs
-            -- set_keymap('i', "<CR>", "compe#confirm('<CR>')", {expr = true})
-            set_keymap('i', '<Tab>', 'v:lua.tab_complete()', { expr = true })
-            set_keymap('s', '<Tab>', 'v:lua.tab_complete()', { expr = true })
-            set_keymap('i', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
-            set_keymap('s', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
-            set_keymap('i', '<C-Space>', 'compe#complete()', { expr = true })
+            require('dotvim.complete').setup()
         end,
     },
 
