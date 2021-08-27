@@ -22,7 +22,7 @@ function M.setup()
             ['<C-Space>'] = cmp.mapping.complete(),
             ['<CR>'] = cmp.mapping.confirm({
                 behavior = cmp.ConfirmBehavior.Insert,
-                select = false,
+                select = nil,
             }),
             ['<Tab>'] = function(fallback)
                 if vim.fn.pumvisible() == 1 then
