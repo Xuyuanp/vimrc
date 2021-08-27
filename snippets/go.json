@@ -253,5 +253,35 @@
         "prefix": "sort",
         "body": "type ${1:SortBy} []${2:Type}\n\nfunc (a $1) Len() int           { return len(a) }\nfunc (a $1) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }\nfunc (a $1) Less(i, j int) bool { ${3:return a[i] < a[j]} }",
         "description": "Snippet for a custom sort.Sort interface implementation, for a given slice type."
+    },
+    "max function": {
+        "prefix": "max",
+        "body": [
+            "func max(x int, others ...int) int {",
+            "   res := x",
+            "   for _, y := range others {",
+            "       if y > res {",
+            "           res = y",
+            "       }",
+            "   }",
+            "   return res",
+            "}"
+        ],
+        "description": "Snippet for a max function"
+    },
+    "min function": {
+        "prefix": "min",
+        "body": [
+            "func min(x int, others ...int) int {",
+            "   res := x",
+            "   for _, y := range others {",
+            "       if y < res {",
+            "           res = y",
+            "       }",
+            "   }",
+            "   return res",
+            "}"
+        ],
+        "description": "Snippet for a min function"
     }
 }
