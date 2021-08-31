@@ -1,6 +1,10 @@
 local vfn = vim.fn
 local command = vim.api.nvim_command
 
+if vfn.has('osx') then
+    vfn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.8')
+end
+
 local std_data_path = vfn.stdpath('data')
 
 local install_path = std_data_path .. '/site/pack/packer/start/packer.nvim'
@@ -19,12 +23,27 @@ command([[ autocmd User PackerComplete :PackerCompile<CR> ]])
 
 return packer.startup({
     function(use)
+        use({
+            'lewis6991/impatient.nvim',
+            rocks = 'mpack',
+            config = function()
+                require('impatient')
+            end,
+        })
+
         use('wbthomason/packer.nvim')
 
-        local groups = { 'base', 'color', 'tools', 'ui', 'lsp', 'langs' }
+        local groups = {
+            'dotvim.plugins.base',
+            'dotvim.plugins.color',
+            'dotvim.plugins.tools',
+            'dotvim.plugins.ui',
+            'dotvim.plugins.lsp',
+            'dotvim.plugins.langs',
+        }
 
         for _, group in ipairs(groups) do
-            for _, plug in ipairs(require('dotvim.plugins.' .. group)) do
+            for _, plug in ipairs(require(group)) do
                 use(plug)
             end
         end
