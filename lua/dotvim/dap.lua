@@ -130,7 +130,7 @@ function ui.setup()
                 'stacks',
                 'watches',
             },
-            width = 40,
+            size = 40,
             position = 'left', -- Can be "left" or "right"
         },
         tray = {
@@ -138,7 +138,7 @@ function ui.setup()
             elements = {
                 'repl',
             },
-            height = 10,
+            size = 10,
             position = 'top', -- Can be "bottom" or "top"
         },
         floating = {
