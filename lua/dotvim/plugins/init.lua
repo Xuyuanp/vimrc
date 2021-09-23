@@ -56,6 +56,7 @@ return packer.startup({
     config = {
         compile_path = compile_path,
         auto_clean = true,
+        max_jobs = 8,
         display = {
             open_fn = function()
                 return require('packer.util').float({ border = 'rounded' })
