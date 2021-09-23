@@ -3,7 +3,10 @@ return {
         'neovim/nvim-lspconfig',
         requires = {
             'kabouzeid/nvim-lspinstall',
-            'ray-x/lsp_signature.nvim',
+            {
+                'ray-x/lsp_signature.nvim',
+                commit = '75705af1dfb8de0d22c348535764e880a8d813c7',
+            },
         },
         config = function()
             require('dotvim/lsp')
