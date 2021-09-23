@@ -223,6 +223,7 @@ return {
                 'vista_kind',
                 'vista_markdown',
                 'Yanil',
+                'FTerm',
             }
 
             vim.g.indent_blankline_show_current_context = true
