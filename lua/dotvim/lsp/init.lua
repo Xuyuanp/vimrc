@@ -67,6 +67,8 @@ local on_attach = function(client, bufnr)
     lsp_status.on_attach(client)
     lsp_sig.on_attach({
         bind = false,
+        hint_enable = false,
+        always_trigger = false,
     })
 
     local server_capabilities = client.server_capabilities
