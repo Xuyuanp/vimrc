@@ -247,7 +247,7 @@ end
 M['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
 local function gen_location_handler(name)
-    return function(_, _method, result)
+    return function(_, result, _ctx)
         if result == nil or vim.tbl_isempty(result) then
             -- local _ = log.info() and log.info(method, 'No location found')
             return nil
