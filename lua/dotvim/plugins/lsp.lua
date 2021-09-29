@@ -3,13 +3,26 @@ return {
         'neovim/nvim-lspconfig',
         requires = {
             'kabouzeid/nvim-lspinstall',
-            {
-                'ray-x/lsp_signature.nvim',
-                commit = '75705af1dfb8de0d22c348535764e880a8d813c7',
-            },
         },
         config = function()
             require('dotvim/lsp')
+        end,
+    },
+
+    {
+        'ray-x/lsp_signature.nvim',
+        config = function()
+            require('lsp_signature').setup({
+                bind = true,
+                floating_window = true,
+                floating_window_above_cur_line = true,
+                hi_parameter = 'Underlined',
+                hint_enable = false,
+                use_lspsaga = false,
+                handler_opts = {
+                    border = 'single',
+                },
+            })
         end,
     },
 
