@@ -108,7 +108,8 @@ end
 local ui = {}
 
 function ui.setup()
-    require('dapui').setup({
+    local dapui = require('dapui')
+    dapui.setup({
         icons = {
             expanded = '▾',
             collapsed = '▸',
@@ -122,7 +123,6 @@ function ui.setup()
             repl = 'r',
         },
         sidebar = {
-            open_on_start = true,
             elements = {
                 -- You can change the order of elements in the sidebar
                 'scopes',
@@ -134,7 +134,6 @@ function ui.setup()
             position = 'left', -- Can be "left" or "right"
         },
         tray = {
-            open_on_start = true,
             elements = {
                 'repl',
             },
@@ -146,6 +145,17 @@ function ui.setup()
             max_width = nil, -- Floats will be treated as percentage of your screen.
         },
     })
+
+    local dap = require('dap')
+    dap.listeners.after.event_initialized['dapui_config'] = function()
+        dapui.open()
+    end
+    dap.listeners.before.event_terminated['dapui_config'] = function()
+        dapui.close()
+    end
+    dap.listeners.before.event_exited['dapui_config'] = function()
+        dapui.close()
+    end
 
     vim.cmd([[
         augroup dotvim_dap_ui
