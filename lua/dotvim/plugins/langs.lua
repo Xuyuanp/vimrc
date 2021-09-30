@@ -38,11 +38,6 @@ return {
     },
 
     {
-        'spacewander/openresty-vim',
-        ft = { 'nginx' },
-    },
-
-    {
         'Vimjas/vim-python-pep8-indent',
         ft = { 'python' },
     },
