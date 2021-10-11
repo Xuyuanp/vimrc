@@ -10,6 +10,8 @@ function M.setup()
     local cmp = require('cmp')
     local compare = require('cmp.config.compare')
 
+    local WIDE_HEIGHT = 40
+
     cmp.setup({
         snippet = {
             expand = function(args)
@@ -25,8 +27,8 @@ function M.setup()
                 select = false,
             }),
             ['<Tab>'] = function(fallback)
-                if vim.fn.pumvisible() == 1 then
-                    vim.fn.feedkeys(t('<C-n>'), 'n')
+                if cmp.visible() then
+                    cmp.select_next_item()
                 elseif vim.fn['vsnip#available']() == 1 then
                     vim.fn.feedkeys(t('<Plug>(vsnip-expand-or-jump)'), '')
                 else
@@ -34,14 +36,23 @@ function M.setup()
                 end
             end,
             ['<S-Tab>'] = function(fallback)
-                if vim.fn.pumvisible() == 1 then
-                    vim.fn.feedkeys(t('<C-p>'), 'n')
+                if cmp.visible() then
+                    cmp.select_next_item()
                 elseif vim.fn['vsnip#available']() == 1 then
                     vim.fn.feedkeys(t('<Plug>(vsnip-jump-prev)'), '')
                 else
                     fallback()
                 end
             end,
+        },
+        documentation = {
+            border = { '', '', '', ' ', '', '', '', ' ' },
+            winhighlight = 'NormalFloat:NormalFloat,FloatBorder:NormalFloat',
+            maxwidth = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
+            maxheight = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
+        },
+        formatting = {
+            format = require('lspkind').cmp_format(),
         },
         preselect = cmp.PreselectMode.None,
         sources = {
