@@ -46,10 +46,11 @@ function M.setup()
             end,
         },
         documentation = {
-            border = { '', '', '', ' ', '', '', '', ' ' },
+            border = 'none',
             winhighlight = 'NormalFloat:NormalFloat,FloatBorder:NormalFloat',
             maxwidth = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
             maxheight = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
+            zindex = 50,
         },
         formatting = {
             format = require('lspkind').cmp_format(),
