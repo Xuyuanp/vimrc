@@ -10,7 +10,7 @@ function M.setup()
     local cmp = require('cmp')
     local compare = require('cmp.config.compare')
 
-    local WIDE_HEIGHT = 40
+    local WIDE_HEIGHT = 80
 
     cmp.setup({
         snippet = {
@@ -46,14 +46,19 @@ function M.setup()
             end,
         },
         documentation = {
-            border = 'none',
+            border = 'single',
             winhighlight = 'NormalFloat:NormalFloat,FloatBorder:NormalFloat',
             maxwidth = math.floor((WIDE_HEIGHT * 2) * (vim.o.columns / (WIDE_HEIGHT * 2 * 16 / 9))),
             maxheight = math.floor(WIDE_HEIGHT * (WIDE_HEIGHT / vim.o.lines)),
             zindex = 50,
         },
         formatting = {
-            format = require('lspkind').cmp_format(),
+            format = (function()
+                local ok, lspkind = pcall(require, 'lspkind')
+                if ok then
+                    return lspkind.cmp_format()
+                end
+            end)(),
         },
         preselect = cmp.PreselectMode.None,
         sources = {
