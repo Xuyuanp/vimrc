@@ -8,7 +8,6 @@ end
 
 function M.setup()
     local cmp = require('cmp')
-    local compare = require('cmp.config.compare')
 
     local WIDE_HEIGHT = 80
 
@@ -70,17 +69,6 @@ function M.setup()
             { name = 'tmux' },
             { name = 'calc' },
             { name = 'crates' },
-        },
-        sorting = {
-            comparators = {
-                compare.kind,
-                compare.offset,
-                compare.exact,
-                compare.score,
-                compare.sort_text,
-                compare.length,
-                compare.order,
-            },
         },
     })
 end
