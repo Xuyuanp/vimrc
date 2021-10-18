@@ -1,9 +1,14 @@
 return {
     {
+        'williamboman/nvim-lsp-installer',
+        as = 'lsp-installer',
+    },
+    {
         'neovim/nvim-lspconfig',
         requires = {
-            'kabouzeid/nvim-lspinstall',
+            'lsp-installer',
         },
+        as = 'lspconfig',
         config = function()
             require('dotvim/lsp')
         end,
@@ -28,7 +33,7 @@ return {
 
     {
         'nvim-lua/lsp_extensions.nvim',
-        requires = { 'neovim/nvim-lspconfig' },
+        requires = { 'lspconfig' },
         config = function()
             local command = vim.api.nvim_command
             _G.lsp_inlay_hints = function()
@@ -51,7 +56,9 @@ return {
 
     {
         'nvim-lua/lsp-status.nvim',
-        before = { 'kabouzeid/nvim-lspinstall' },
+        before = {
+            'lsp-installer',
+        },
     },
 
     {

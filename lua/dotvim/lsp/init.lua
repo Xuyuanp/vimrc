@@ -3,12 +3,12 @@ local api = vim.api
 local vfn = vim.fn
 local vlsp = vim.lsp
 
-local lspconfig = require('lspconfig')
-local lsp_status = require('lsp-status')
-local lsp_inst = require('lspinstall')
 local handlers = require('dotvim.lsp.handlers')
 local util = require('dotvim.util')
 local dotcolors = require('dotvim.colors')
+
+local lsp_status = require('lsp-status')
+local lsp_inst = require('nvim-lsp-installer')
 
 lsp_status.register_progress()
 
@@ -160,14 +160,14 @@ local function detect_lua_library()
 end
 
 local langs = {
-    go = {
+    gopls = {
         settings = {
             gopls = {
                 usePlaceholders = false,
             },
         },
     },
-    lua = {
+    sumneko_lua = {
         root_dir = function(fname)
             -- default is git find_git_ancestor or home dir
             return require('lspconfig/util').find_git_ancestor(fname) or vfn.fnamemodify(fname, ':p:h')
@@ -179,6 +179,7 @@ local langs = {
                     enable = true,
                     globals = {
                         'vim',
+                        'pprint',
                     },
                     disable = {
                         'unused-vararg',
@@ -199,24 +200,14 @@ local langs = {
     },
 }
 
-local function setup_servers()
-    lsp_inst.setup()
-    local servers = lsp_inst.installed_servers()
-    for _, server in pairs(servers) do
-        local cfg = default_config
-        if langs[server] then
-            cfg = vim.tbl_deep_extend('force', cfg, langs[server])
-        end
-        lspconfig[server].setup(cfg)
+lsp_inst.on_server_ready(function(server)
+    local cfg = default_config
+    if langs[server.name] then
+        cfg = vim.tbl_deep_extend('force', cfg, langs[server.name])
     end
-end
-
-setup_servers()
-
-lsp_inst.post_install_hook = function()
-    setup_servers()
-    vim.cmd('bufdo e')
-end
+    server:setup(cfg)
+    vim.cmd[[do User LspAttachBuffers]]
+end)
 
 return {
     rename = rename,
