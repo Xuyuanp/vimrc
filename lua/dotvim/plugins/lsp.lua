@@ -40,6 +40,7 @@ return {
                 return require('lsp_extensions').inlay_hints({
                     prefix = ' » ',
                     highlight = 'NonText',
+                    aligned = true,
                     enabled = {
                         'TypeHint',
                         'ParameterHint',
