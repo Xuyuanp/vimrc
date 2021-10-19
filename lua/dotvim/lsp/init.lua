@@ -93,7 +93,7 @@ local on_attach = function(client, bufnr)
     buf_set_keymap(bufnr, 'n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true, silent = true })
     buf_set_keymap(bufnr, 'n', 'gtd', '<cmd>lua vim.lsp.buf.type_definition()<CR>', { noremap = true, silent = true })
     buf_set_keymap(bufnr, 'n', 'gR', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
-    buf_set_keymap(bufnr, 'n', 'grr', "<cmd>lua require('dotvim/lsp').rename()<CR>", { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'grr', "<cmd>lua require('dotvim.lsp.handlers').rename()<CR>", { noremap = true, silent = true })
     buf_set_keymap(bufnr, 'n', 'gds', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', { noremap = true, silent = true })
     buf_set_keymap(bufnr, 'n', 'gws', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', { noremap = true, silent = true })
     buf_set_keymap(bufnr, 'n', 'gca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
@@ -142,7 +142,16 @@ default_capabilities.textDocument.completion.completionItem.snippetSupport = fal
 local default_config = {
     on_attach = on_attach,
     capabilities = default_capabilities,
-    handlers = handlers,
+    handlers = {
+        ['textDocument/hover'] = handlers.hover,
+        ['workspace/symbol'] = handlers.symbol_handler,
+        ['textDocument/references'] = handlers.references,
+        ['textDocument/documentSymbol'] = handlers.symbol_handler,
+        ['textDocument/codeAction'] = handlers.code_action,
+        ['textDocument/definition'] = handlers.gen_location_handler('Definition'),
+        ['textDocument/typeDefinition'] = handlers.gen_location_handler('TypeDefinition'),
+        ['textDocument/implementation'] = handlers.gen_location_handler('Implementation'),
+    },
 }
 
 local function detect_lua_library()
@@ -170,7 +179,7 @@ local langs = {
     sumneko_lua = {
         root_dir = function(fname)
             -- default is git find_git_ancestor or home dir
-            return require('lspconfig/util').find_git_ancestor(fname) or vfn.fnamemodify(fname, ':p:h')
+            return require('lspconfig.util').find_git_ancestor(fname) or vfn.fnamemodify(fname, ':p:h')
         end,
         settings = {
             -- https://github.com/sumneko/vscode-lua/blob/master/setting/schema.json
@@ -206,7 +215,7 @@ lsp_inst.on_server_ready(function(server)
         cfg = vim.tbl_deep_extend('force', cfg, langs[server.name])
     end
     server:setup(cfg)
-    vim.cmd[[do User LspAttachBuffers]]
+    vim.cmd([[do User LspAttachBuffers]])
 end)
 
 return {

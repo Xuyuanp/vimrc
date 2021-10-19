@@ -1,9 +1,10 @@
 local vim = vim
 local api = vim.api
+local vfn = vim.fn
 
-local dotutil = require('dotvim/util')
+local dotutil = require('dotvim.util')
 
-local highlights = require('dotvim/lsp/highlights')
+local highlights = require('dotvim.lsp.highlights')
 highlights.setup()
 
 local fzf_run = dotutil.fzf_run
@@ -11,24 +12,70 @@ local fzf_wrap = dotutil.fzf_wrap
 
 local M = {}
 
-local symbol_highlights = {
-    _mt = {
-        __index = function(_table, kind)
-            local ft = vim.api.nvim_buf_get_option(0, 'filetype')
-            if ft ~= '' then
-                local group = ft .. kind
-                local syn_id = vim.fn.hlID(ft .. kind)
-                if syn_id and syn_id > 0 then
-                    return group
-                end
-            end
-            return 'LspKind' .. kind
-        end,
-    },
-}
-setmetatable(symbol_highlights, symbol_highlights._mt)
+local symbol_highlights = {}
 
-local function symbol_handler(_err, result, ctx)
+setmetatable(symbol_highlights, {
+    __index = function(_table, kind)
+        local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+        if ft ~= '' then
+            local group = ft .. kind
+            local syn_id = vim.fn.hlID(ft .. kind)
+            if syn_id and syn_id > 0 then
+                return group
+            end
+        end
+        return 'LspKind' .. kind
+    end,
+})
+
+function M.rename(new_name)
+    if new_name then
+        return vim.lsp.buf.rename(new_name)
+    end
+
+    local params = vim.lsp.util.make_position_params()
+    local bufnr = api.nvim_get_current_buf()
+    local curr_name = vfn.expand('<cword>')
+
+    local cursor = api.nvim_win_get_cursor(0)
+    local win_width = api.nvim_win_get_width(0)
+    local win_height = api.nvim_win_get_height(0)
+    local max_width = 40
+
+    local wrapped = dotutil.fzf_wrap('lsp_rename', {
+        source = {},
+        options = {
+            '+m',
+            '+x',
+            '--ansi',
+            '--reverse',
+            '--keep-right',
+            '--height=0',
+            '--min-height=0',
+            '--info=hidden',
+            '--prompt=LSP Rename> ',
+            '--query=' .. curr_name,
+            '--print-query',
+        },
+        window = {
+            height = 2,
+            width = max_width + 8,
+            xoffset = (cursor[2] + max_width / 2) / win_width,
+            yoffset = (cursor[1] - vfn.line('w0')) / win_height,
+        },
+        sink = function(line)
+            new_name = line
+            if not (new_name and #new_name > 0 and new_name ~= curr_name) then
+                return
+            end
+            params.newName = new_name
+            vim.lsp.buf_request(bufnr, 'textDocument/rename', params)
+        end,
+    })
+    dotutil.fzf_run(wrapped)
+end
+
+function M.symbol_handler(_err, result, ctx)
     if not result or vim.tbl_isempty(result) then
         print('no symbols')
         return
@@ -115,10 +162,7 @@ local function symbol_handler(_err, result, ctx)
     fzf_run(wrapped)
 end
 
-M['textDocument/documentSymbol'] = symbol_handler
-M['workspace/symbol'] = symbol_handler
-
-M['textDocument/codeAction'] = function(_err, actions, _ctx)
+function M.code_action(_err, actions, _ctx)
     if not actions or vim.tbl_isempty(actions) then
         print('No code actions available')
         return
@@ -186,7 +230,7 @@ M['textDocument/codeAction'] = function(_err, actions, _ctx)
     fzf_run(wrapped)
 end
 
-M['textDocument/references'] = function(_err, references, _ctx)
+function M.references(_err, references, _ctx)
     if not references or vim.tbl_isempty(references) then
         print('No references available')
         return
@@ -244,9 +288,9 @@ M['textDocument/references'] = function(_err, references, _ctx)
     fzf_run(wrapped)
 end
 
-M['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+M.hover = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
-local function gen_location_handler(name)
+function M.gen_location_handler(name)
     return function(_, result, _ctx)
         if result == nil or vim.tbl_isempty(result) then
             -- local _ = log.info() and log.info(method, 'No location found')
@@ -319,19 +363,6 @@ local function gen_location_handler(name)
 
         fzf_run(wrapped)
     end
-end
-
-M['textDocument/declaration'] = gen_location_handler('Declaration')
-M['textDocument/definition'] = gen_location_handler('Definition')
-M['textDocument/typeDefinition'] = gen_location_handler('TypeDefinition')
-M['textDocument/implementation'] = gen_location_handler('Implementation')
-
-do
-    local originals = {}
-    for name, _ in pairs(M) do
-        originals[name] = vim.lsp.handlers[name]
-    end
-    M.originals = originals
 end
 
 return M
