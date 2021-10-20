@@ -7,11 +7,11 @@ local dotutil = require('dotvim.util')
 local pjob = require('plenary.job')
 
 local yanil = require('yanil')
-local git = require('yanil.git')
-local decorators = require('yanil.decorators')
-local devicons = require('yanil.devicons')
-local canvas = require('yanil.canvas')
-local utils = require('yanil.utils')
+local git = require('yanil/git')
+local decorators = require('yanil/decorators')
+local devicons = require('yanil/devicons')
+local canvas = require('yanil/canvas')
+local utils = require('yanil/utils')
 
 local M = {}
 
@@ -35,7 +35,7 @@ local function git_diff(_tree, node)
     api.nvim_win_set_option(winnr, 'winhl', 'NormalFloat:')
     api.nvim_win_set_option(winnr, 'number', true)
 
-    api.nvim_command(string.format([[command! -buffer Apply lua require("yanil.git").apply_buf(%d)]], bufnr))
+    api.nvim_command(string.format([[command! -buffer Apply lua require("yanil/git").apply_buf(%d)]], bufnr))
 end
 
 local fzf_files = vim.fn['fzf#vim#files']
@@ -165,8 +165,8 @@ end
 function M.setup()
     yanil.setup()
 
-    local header = require('yanil.sections.header'):new()
-    local tree = require('yanil.sections.tree'):new()
+    local header = require('yanil/sections/header'):new()
+    local tree = require('yanil/sections/tree'):new()
 
     tree:setup({
         draw_opts = {
