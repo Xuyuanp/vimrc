@@ -1,7 +1,6 @@
 local vim = vim
 local api = vim.api
 local vfn = vim.fn
-local vlsp = vim.lsp
 
 local handlers = require('dotvim.lsp.handlers')
 local util = require('dotvim.util')
@@ -13,53 +12,6 @@ local lsp_inst = require('nvim-lsp-installer')
 lsp_status.register_progress()
 
 local enable_auto_format = vfn['dotvim#lsp#EnableAutoFormat']
-
-local function rename(new_name)
-    if new_name then
-        return vlsp.buf.rename(new_name)
-    end
-
-    local params = vlsp.util.make_position_params()
-    local bufnr = api.nvim_get_current_buf()
-    local curr_name = vfn.expand('<cword>')
-
-    local cursor = api.nvim_win_get_cursor(0)
-    local win_width = api.nvim_win_get_width(0)
-    local win_height = api.nvim_win_get_height(0)
-    local max_width = 40
-
-    local wrapped = util.fzf_wrap('lsp_rename', {
-        source = {},
-        options = {
-            '+m',
-            '+x',
-            '--ansi',
-            '--reverse',
-            '--keep-right',
-            '--height=0',
-            '--min-height=0',
-            '--info=hidden',
-            '--prompt=LSP Rename> ',
-            '--query=' .. curr_name,
-            '--print-query',
-        },
-        window = {
-            height = 2,
-            width = max_width + 8,
-            xoffset = (cursor[2] + max_width / 2) / win_width,
-            yoffset = (cursor[1] - vfn.line('w0')) / win_height,
-        },
-        sink = function(line)
-            new_name = line
-            if not (new_name and #new_name > 0 and new_name ~= curr_name) then
-                return
-            end
-            params.newName = new_name
-            vlsp.buf_request(bufnr, 'textDocument/rename', params)
-        end,
-    })
-    util.fzf_run(wrapped)
-end
 
 local on_attach = function(client, bufnr)
     bufnr = bufnr or vim.api.nvim_get_current_buf()
@@ -217,7 +169,3 @@ lsp_inst.on_server_ready(function(server)
     server:setup(cfg)
     vim.cmd([[do User LspAttachBuffers]])
 end)
-
-return {
-    rename = rename,
-}
