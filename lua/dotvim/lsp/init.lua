@@ -33,10 +33,6 @@ local on_attach = function(client, bufnr)
         end)
     end
 
-    util.Augroup('dotvim_lsp_init_diagnostic', function()
-        api.nvim_command(string.format('autocmd CursorHold <buffer=%d> lua vim.lsp.diagnostic.show_line_diagnostics()', bufnr))
-    end)
-
     local buf_set_keymap = api.nvim_buf_set_keymap
     -- Keybindings for LSPs
     buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = false, silent = true })
@@ -51,33 +47,33 @@ local on_attach = function(client, bufnr)
     buf_set_keymap(bufnr, 'n', 'gca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
 
     -- Keybindings for diagnostic
-    buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', { noremap = false, silent = true })
-    buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', { noremap = false, silent = true })
-    buf_set_keymap(bufnr, 'n', '<leader>sd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', { noremap = false, silent = true })
+    buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = false, silent = true })
+    buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = false, silent = true })
+    buf_set_keymap(bufnr, 'n', '<leader>sd', '<cmd>lua vim.diagnostic.open_float(0)<CR>', { noremap = false, silent = true })
 end
 
-vfn.sign_define('LspDiagnosticsSignError', { text = '', texthl = 'LspDiagnosticsSignError' })
-vfn.sign_define('LspDiagnosticsSignWarning', { text = '', texthl = 'LspDiagnosticsSignWarning' })
-vfn.sign_define('LspDiagnosticsSignInformation', { text = '', texthl = 'LspDiagnosticsSignInformation' })
-vfn.sign_define('LspDiagnosticsSignHint', { text = '', texthl = 'LspDiagnosticsSignHint' })
+vfn.sign_define('DiagnosticsSignError', { text = '', texthl = 'DiagnosticsSignError' })
+vfn.sign_define('DiagnosticsSignWarning', { text = '', texthl = 'DiagnosticsSignWarning' })
+vfn.sign_define('DiagnosticsSignInformation', { text = '', texthl = 'DiagnosticsSignInformation' })
+vfn.sign_define('DiagnosticsSignHint', { text = '', texthl = 'DiagnosticsSignHint' })
 
 local colors = dotcolors.colors
-dotcolors.add_highlight('LspDiagnosticsSignError', {
+dotcolors.add_highlight('DiagnosticsSignError', {
     fg = colors.LspDiagnosticsSign.Error,
     bg = colors.Sign.bg,
     style = 'bold',
 })
-dotcolors.add_highlight('LspDiagnosticsSignWarning', {
+dotcolors.add_highlight('DiagnosticsSignWarning', {
     fg = colors.LspDiagnosticsSign.Warning,
     bg = colors.Sign.bg,
     style = 'bold',
 })
-dotcolors.add_highlight('LspDiagnosticsSignInformation', {
+dotcolors.add_highlight('DiagnosticsSignInformation', {
     fg = colors.LspDiagnosticsSign.Info,
     bg = colors.Sign.bg,
     style = 'bold',
 })
-dotcolors.add_highlight('LspDiagnosticsSignHint', {
+dotcolors.add_highlight('DiagnosticsSignHint', {
     fg = colors.LspDiagnosticsSign.Hint,
     bg = colors.Sign.bg,
     style = 'bold',
