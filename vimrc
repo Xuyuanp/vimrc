@@ -16,7 +16,7 @@ scriptencoding utf-8
 
 set shell=/bin/sh
 
-lua require('dotvim/plugins')
+lua require('dotvim.plugins')
 
 " redefine leader key
 let g:mapleader = ','
@@ -29,10 +29,12 @@ if has('osx') && executable('cliclick')
 endif
 
 " GitLens
-augroup dotvim_git_lens
+augroup dotvim_git
     autocmd!
-    autocmd CursorHold * lua require('dotvim/git/lens').show()
-    autocmd CursorMoved,CursorMovedI * lua require('dotvim/git/lens').clear()
+    autocmd CursorHold * lua require('dotvim.git.lens').show()
+    autocmd CursorMoved,CursorMovedI * lua require('dotvim.git.lens').clear()
+
+    autocmd DirChanged * lua require('dotvim.git.head').lazy_load()
 augroup end
 highlight! default link GitLens SpecialComment
 

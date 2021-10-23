@@ -5,6 +5,8 @@ local galaxyline = require('galaxyline')
 local section = galaxyline.section
 local dotcolors = require('dotvim.colors').colors
 
+require('dotvim.git.head').lazy_load()
+
 --[[/* CONSTANTS */]]
 
 -- Defined in https://github.com/Iron-E/nvim-highlite
@@ -119,11 +121,11 @@ local function checkwidth()
 end
 
 local function find_git_root()
-    return require('galaxyline/provider_vcs').get_git_dir(vim.fn.expand('%:p:h'))
+    return require('galaxyline.provider_vcs').get_git_dir(vim.fn.expand('%:p:h'))
 end
 
 local function get_file_icon_color()
-    return require('galaxyline/provider_fileinfo').get_file_icon_color()
+    return require('galaxyline.provider_fileinfo').get_file_icon_color()
 end
 
 local function printer(str)
@@ -144,15 +146,19 @@ end
 local space = printer(' ')
 
 local lsp_messages = function()
-    return require('dotvim/lsp/status').get_messages()
+    return require('dotvim.lsp.status').get_messages()
 end
 
 local lsp_icon = function()
-    if require('dotvim/lsp/status').get_name() == '' then
+    if require('dotvim.lsp.status').get_name() == '' then
         return ''
     else
         return ' ' .. _ICONS.Lsp.on .. ' '
     end
+end
+
+local function git_branch()
+    return _G.dotvim_git_head
 end
 
 --[[/* GALAXYLINE CONFIG */]]
@@ -234,7 +240,7 @@ section.left = {
 
     {
         GitBranch = {
-            provider = { space, printer('  '), 'GitBranch', space },
+            provider = { space, space, git_branch, space },
             condition = find_git_root,
             highlight = { _HEX_COLORS.bar.side, _BG.git, 'bold' },
         },
