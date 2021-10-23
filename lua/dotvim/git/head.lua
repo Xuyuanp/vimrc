@@ -7,7 +7,7 @@ local icons = {
 }
 
 local redraw_statusline = vim.schedule_wrap(function()
-    vim.cmd("redrawstatus")
+    vim.cmd('redrawstatus')
 end)
 
 local function get_commit()
@@ -27,7 +27,7 @@ local function get_commit()
                 _G.dotvim_git_head = icons.COMMIT .. ' ' .. output
             end
             redraw_statusline()
-        end
+        end,
     }
     pjob:new(job_desc):start()
 end
@@ -49,7 +49,7 @@ local function get_tag()
             end
             _G.dotvim_git_head = icons.TAG .. ' ' .. output
             redraw_statusline()
-        end
+        end,
     }
     pjob:new(job_desc):start()
 end
@@ -71,13 +71,12 @@ local function get_branch()
             end
             _G.dotvim_git_head = icons.BRANCH .. ' ' .. branch
             redraw_statusline()
-        end
+        end,
     }
     pjob:new(job_desc):start()
 end
 
 function M.lazy_load()
-    print('git lazy load')
     vim.schedule(get_branch)
 end
 
