@@ -2,7 +2,7 @@ local vim = vim
 local api = vim.api
 local vlspb = vim.lsp.buf
 
-local dotutil = require('dotvim/util')
+local dotutil = require('dotvim.util')
 
 local fzf_wrap = dotutil.fzf_wrap
 local fzf_run = dotutil.fzf_run
@@ -17,7 +17,7 @@ local commands = {
     SignatureHelp   = vlspb.signature_help,
     TypeDefinition  = vlspb.type_definition,
     References      = vlspb.references,
-    Rename          = require('dotvim/lsp').rename,
+    Rename          = require('dotvim.lsp.handlers').rename,
     DocumentSymbol  = vlspb.document_symbol,
     WorkspaceSymbol = vlspb.workspace_symbol,
     CodeAction      = vlspb.code_action
@@ -35,7 +35,7 @@ function M.show()
     local win_width = api.nvim_win_get_width(0)
     local win_height = api.nvim_win_get_height(0)
 
-    local wrapped = fzf_wrap('code_actions', {
+    local wrapped = fzf_wrap('lsp_actions', {
         source = source,
         options = {
             '+m',
@@ -45,9 +45,9 @@ function M.show()
             '--reverse',
             '--prompt=LSP> ',
         },
-        height = #source + 4,
         window = {
             width = 25,
+            height = #source + 4,
             xoffset = (cursor[2] + max_width / 2) / win_width,
             yoffset = (cursor[1] - vim.fn.line('w0')) / win_height,
         },

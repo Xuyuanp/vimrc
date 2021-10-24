@@ -171,7 +171,7 @@ return {
         },
         run = ':TSUpdate',
         config = function()
-            require('dotvim/treesitter')
+            require('dotvim.treesitter')
         end,
     },
 
@@ -199,7 +199,7 @@ return {
         event = 'BufEnter',
         branch = 'main',
         config = function()
-            require('dotvim/statusline')
+            require('dotvim.statusline')
         end,
         requires = {
             -- 'kyazdani42/nvim-web-devicons',

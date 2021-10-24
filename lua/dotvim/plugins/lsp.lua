@@ -10,7 +10,7 @@ return {
         },
         as = 'lspconfig',
         config = function()
-            require('dotvim/lsp')
+            require('dotvim.lsp')
         end,
     },
 
