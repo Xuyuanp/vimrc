@@ -296,7 +296,7 @@ section.left = {
         DiagnosticError = {
             provider = 'DiagnosticError',
             icon = _ICONS.Diagnostics.error,
-            highlight = { _HEX_COLORS.LspDiagnosticsSign.Error, _BG.diagnostic },
+            highlight = { _HEX_COLORS.Diagnostic.Error, _BG.diagnostic },
         },
     },
 
@@ -304,7 +304,7 @@ section.left = {
         DiagnosticWarn = {
             provider = 'DiagnosticWarn',
             icon = _ICONS.Diagnostics.warning,
-            highlight = { _HEX_COLORS.LspDiagnosticsSign.Warning, _BG.diagnostic },
+            highlight = { _HEX_COLORS.Diagnostic.Warn, _BG.diagnostic },
         },
     },
 
@@ -312,7 +312,7 @@ section.left = {
         DiagnosticInfo = {
             provider = 'DiagnosticInfo',
             icon = _ICONS.Diagnostics.info,
-            highlight = { _HEX_COLORS.LspDiagnosticsSign.Info, _BG.diagnostic },
+            highlight = { _HEX_COLORS.Diagnostic.Info, _BG.diagnostic },
         },
     },
 
@@ -320,7 +320,7 @@ section.left = {
         DiagnosticHint = {
             provider = 'DiagnosticHint',
             icon = _ICONS.Diagnostics.hint,
-            highlight = { _HEX_COLORS.LspDiagnosticsSign.Hint, _BG.diagnostic },
+            highlight = { _HEX_COLORS.Diagnostic.Hint, _BG.diagnostic },
         },
     },
 } -- section.left

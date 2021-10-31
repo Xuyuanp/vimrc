@@ -52,29 +52,50 @@ local on_attach = function(client, bufnr)
     buf_set_keymap(bufnr, 'n', '<leader>sd', '<cmd>lua vim.diagnostic.open_float(0)<CR>', { noremap = false, silent = true })
 end
 
-vfn.sign_define('DiagnosticsSignError', { text = '', texthl = 'DiagnosticsSignError' })
-vfn.sign_define('DiagnosticsSignWarning', { text = '', texthl = 'DiagnosticsSignWarning' })
-vfn.sign_define('DiagnosticsSignInformation', { text = '', texthl = 'DiagnosticsSignInformation' })
-vfn.sign_define('DiagnosticsSignHint', { text = '', texthl = 'DiagnosticsSignHint' })
+vfn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
+vfn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
+vfn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
+vfn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
 
 local colors = dotcolors.colors
-dotcolors.add_highlight('DiagnosticsSignError', {
-    fg = colors.LspDiagnosticsSign.Error,
+dotcolors.add_highlight('DiagnosticSignError', {
+    fg = colors.Diagnostic.Error,
     bg = colors.Sign.bg,
     style = 'bold',
 })
-dotcolors.add_highlight('DiagnosticsSignWarning', {
-    fg = colors.LspDiagnosticsSign.Warning,
+dotcolors.add_highlight('DiagnosticSignWarn', {
+    fg = colors.Diagnostic.Warn,
     bg = colors.Sign.bg,
     style = 'bold',
 })
-dotcolors.add_highlight('DiagnosticsSignInformation', {
-    fg = colors.LspDiagnosticsSign.Info,
+dotcolors.add_highlight('DiagnosticSignInfo', {
+    fg = colors.Diagnostic.Info,
     bg = colors.Sign.bg,
     style = 'bold',
 })
-dotcolors.add_highlight('DiagnosticsSignHint', {
-    fg = colors.LspDiagnosticsSign.Hint,
+dotcolors.add_highlight('DiagnosticSignHint', {
+    fg = colors.Diagnostic.Hint,
+    bg = colors.Sign.bg,
+    style = 'bold',
+})
+
+dotcolors.add_highlight('DiagnosticVirtualTextError', {
+    fg = colors.Diagnostic.Error,
+    bg = colors.Sign.bg,
+    style = 'bold',
+})
+dotcolors.add_highlight('DiagnosticVirtualTextWarn', {
+    fg = colors.Diagnostic.Warn,
+    bg = colors.Sign.bg,
+    style = 'bold',
+})
+dotcolors.add_highlight('DiagnosticVirtaulTextInfo', {
+    fg = colors.Diagnostic.Info,
+    bg = colors.Sign.bg,
+    style = 'bold',
+})
+dotcolors.add_highlight('DiagnosticVirtualTextHint', {
+    fg = colors.Diagnostic.Hint,
     bg = colors.Sign.bg,
     style = 'bold',
 })

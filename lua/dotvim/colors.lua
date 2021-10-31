@@ -49,9 +49,9 @@ M.colors = setmetatable({
         Delete = _COLORS.red_light,
         Change = _COLORS.orange_light,
     },
-    LspDiagnosticsSign = {
+    Diagnostic = {
         Error = _COLORS.red,
-        Warning = _COLORS.yellow,
+        Warn = _COLORS.yellow,
         Info = _COLORS.blue,
         Hint = _COLORS.aqua,
     },
