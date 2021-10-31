@@ -71,6 +71,11 @@ function M.setup()
             { name = 'crates' },
         },
     })
+
+    local autopair_cmp = vim.F.npcall(require, 'nvim-autopairs.completion.cmp')
+    if autopair_cmp then
+        cmp.event:on('confirm_done', autopair_cmp.on_confirm_done({}))
+    end
 end
 
 return M
