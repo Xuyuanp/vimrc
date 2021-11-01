@@ -170,10 +170,14 @@ M.ui = ui
 local virtual_text = {}
 
 function virtual_text.setup()
-    -- show virtual text for current frame (recommended)
-    vim.g.dap_virtual_text = true
-    -- request variable values for all frames (experimental)
-    vim.g.dap_virtual_text = 'all frames'
+    require('nvim-dap-virtual-text').setup({
+        enabled = true,
+        enabled_commands = true,
+        highlight_changed_variables = true,
+        highlight_new_as_changed = false,
+        show_stop_reason = true,
+        all_frames = false,
+    })
 end
 
 M.virtual_text = virtual_text
