@@ -152,4 +152,15 @@ return {
             ]])
         end,
     },
+
+    {
+        'phaazon/hop.nvim',
+        branch = 'v1', -- optional but strongly recommended
+        config = function()
+            -- you can configure Hop the way you like here; see :h hop-config
+            require('hop').setup({ keys = 'etovxqpdygfblzhckisuran' })
+            vim.api.nvim_set_keymap('n', '<leader>w', '<cmd>HopWord<CR>', {})
+            vim.api.nvim_set_keymap('n', '<leader>l', '<cmd>HopLine<CR>', {})
+        end,
+    },
 }
