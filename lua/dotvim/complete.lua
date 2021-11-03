@@ -25,6 +25,7 @@ function M.setup()
                 behavior = cmp.ConfirmBehavior.Insert,
                 select = false,
             }),
+            ['<C-e>'] = nil,
             ['<Tab>'] = function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
