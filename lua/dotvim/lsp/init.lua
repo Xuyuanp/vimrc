@@ -58,47 +58,19 @@ vfn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignIn
 vfn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
 
 local colors = dotcolors.colors
-dotcolors.add_highlight('DiagnosticSignError', {
-    fg = colors.Diagnostic.Error,
-    bg = colors.Sign.bg,
-    style = 'bold',
-})
-dotcolors.add_highlight('DiagnosticSignWarn', {
-    fg = colors.Diagnostic.Warn,
-    bg = colors.Sign.bg,
-    style = 'bold',
-})
-dotcolors.add_highlight('DiagnosticSignInfo', {
-    fg = colors.Diagnostic.Info,
-    bg = colors.Sign.bg,
-    style = 'bold',
-})
-dotcolors.add_highlight('DiagnosticSignHint', {
-    fg = colors.Diagnostic.Hint,
-    bg = colors.Sign.bg,
-    style = 'bold',
-})
 
-dotcolors.add_highlight('DiagnosticVirtualTextError', {
-    fg = colors.Diagnostic.Error,
-    bg = colors.Sign.bg,
-    style = 'bold',
-})
-dotcolors.add_highlight('DiagnosticVirtualTextWarn', {
-    fg = colors.Diagnostic.Warn,
-    bg = colors.Sign.bg,
-    style = 'bold',
-})
-dotcolors.add_highlight('DiagnosticVirtaulTextInfo', {
-    fg = colors.Diagnostic.Info,
-    bg = colors.Sign.bg,
-    style = 'bold',
-})
-dotcolors.add_highlight('DiagnosticVirtualTextHint', {
-    fg = colors.Diagnostic.Hint,
-    bg = colors.Sign.bg,
-    style = 'bold',
-})
+for _, severity in ipairs({ 'Error', 'Warn', 'Info', 'Hint' }) do
+    dotcolors.add_highlight('DiagnosticSign' .. severity, {
+        fg = colors.Diagnostic[severity],
+        bg = colors.Sign.bg,
+        style = 'bold',
+    })
+    for _, dtype in ipairs({ 'VirtualText', 'Floating' }) do
+        dotcolors.add_highlight('Diagnostic' .. dtype .. severity, {
+            fg = colors.Diagnostic[severity],
+        })
+    end
+end
 
 local default_capabilities = lsp_status.capabilities
 
