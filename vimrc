@@ -38,15 +38,6 @@ augroup dotvim_git
 augroup end
 highlight! default link GitLens SpecialComment
 
-" Rename tmux window name automatically
-if exists('$TMUX')
-    augroup dotvim_auto_set_tmux_name
-        autocmd!
-        autocmd BufEnter,FocusGained * call system("tmux rename-window " . (has('nvim') ? 'nvim' : 'vim') . ':' . expand("%:t"))
-        autocmd VimLeave * call system("tmux rename-window " .. fnamemodify($SHELL, ':t'))
-    augroup end
-endif
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
