@@ -70,10 +70,6 @@ return {
     },
 
     {
-        'roxma/vim-tmux-clipboard',
-    },
-
-    {
         'lewis6991/gitsigns.nvim',
         as = 'gitsigns',
         requires = { 'plenary' },
@@ -162,5 +158,9 @@ return {
             vim.api.nvim_set_keymap('n', '<leader>w', '<cmd>HopWord<CR>', {})
             vim.api.nvim_set_keymap('n', '<leader>l', '<cmd>HopLine<CR>', {})
         end,
+    },
+
+    {
+        'nathom/filetype.nvim',
     },
 }
