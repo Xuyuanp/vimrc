@@ -1,3 +1,6 @@
+" set encoding
+scriptencoding utf-8
+
 if !has('nvim-0.5')
     echo 'nvim-0.5 or higher is required'
     finish
@@ -10,9 +13,6 @@ _G.pprint = function(obj)
     print(vim.inspect(obj))
 end
 EOF
-
-" set encoding
-scriptencoding utf-8
 
 set shell=/bin/sh
 
@@ -156,59 +156,6 @@ set completeopt=menuone,noinsert,noselect
 " force quit
 command! Q execute('qa!')
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Navigation between split windows {{{
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-
-nnoremap <Up> <C-w>+
-nnoremap <Down> <C-w>-
-nnoremap <Left> <C-w><
-nnoremap <Right> <C-w>>
-" }}}
-
-" Mapping for tab management {{{
-nnoremap <leader>tc :tabc<CR>
-nnoremap <leader>tn :tabn<CR>
-nnoremap <leader>tp :tabp<CR>
-nnoremap <leader>te :tabe<CR>
-" }}}
-
-" Reselect visual block after indent/outdent {{{
-vnoremap < <gv
-vnoremap > >gv
-" }}}
-
-" Improve up/down movement on wrapped lines {{{
-nnoremap j gj
-nnoremap k gk
-" }}}
-
-" Clear search highlight
-nnoremap <silent><leader>/ :nohls<CR>
-
-" Keep search pattern at the center of the screen {{{
-nnoremap <silent>n nzz
-nnoremap <silent>N Nzz
-nnoremap <silent>* *zz
-nnoremap <silent># #zz
-nnoremap <silent>g* g*zz
-" }}}
-
-" Mimic emacs line editing in insert mode only {{{
-inoremap <C-a> <Home>
-inoremap <C-b> <Left>
-inoremap <C-e> <End>
-inoremap <C-f> <Right>
-" }}}
-
-" yank to system clipboard
-vnoremap <leader>y "+y
-nnoremap <leader>yy "+yy
+lua require('dotvim.mappings').setup()
 
 silent! source $VIMRC_AFTER
