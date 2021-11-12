@@ -169,4 +169,22 @@ return {
             })
         end,
     },
+
+    {
+        'mfussenegger/nvim-lint',
+        config = function()
+            local lint = require('lint')
+            lint.linters_by_ft.lua = { 'luacheck' }
+            lint.linters_by_ft.vim = { 'vint' }
+            -- lint.linters_by_ft.python = { 'pylint', 'flake8' }
+
+            vim.cmd([[
+            augroup dotvim_lint
+                autocmd!
+                autocmd BufWritePost * lua require('lint').try_lint()
+                autocmd InsertLeave * lua require('lint').try_lint()
+            augroup END
+            ]])
+        end,
+    },
 }
