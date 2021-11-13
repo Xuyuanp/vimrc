@@ -34,25 +34,6 @@ return {
     {
         'nvim-lua/lsp_extensions.nvim',
         requires = { 'lspconfig' },
-        config = function()
-            local command = vim.api.nvim_command
-            _G.lsp_inlay_hints = function()
-                return require('lsp_extensions').inlay_hints({
-                    prefix = ' » ',
-                    highlight = 'NonText',
-                    aligned = true,
-                    enabled = {
-                        'TypeHint',
-                        'ParameterHint',
-                        'ChainingHint',
-                    },
-                })
-            end
-            command([[augroup dotvim_lsp_extensions]])
-            command([[autocmd!]])
-            command([[autocmd InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs lua lsp_inlay_hints()]])
-            command([[augroup END]])
-        end,
     },
 
     {

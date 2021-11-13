@@ -155,6 +155,10 @@ lsp_inst.on_server_ready(function(server)
     if langs[server.name] then
         cfg = vim.tbl_deep_extend('force', cfg, langs[server.name])
     end
-    server:setup(cfg)
+    if server.name == 'rust_analyzer' then
+        require('dotvim.lsp.rust').setup(server)
+    else
+        server:setup(cfg)
+    end
     vim.cmd([[do User LspAttachBuffers]])
 end)

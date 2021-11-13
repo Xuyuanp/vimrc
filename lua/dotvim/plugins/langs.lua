@@ -71,6 +71,10 @@ return {
     },
 
     {
+        'simrat39/rust-tools.nvim',
+    },
+
+    {
         'neovimhaskell/haskell-vim',
         ft = { 'haskell', 'hs' },
     },
