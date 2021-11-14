@@ -100,7 +100,7 @@ function M.setup(server)
             },
         },
 
-        server = server:get_default_options(),
+        server = server,
 
         -- debugging stuff
         -- dap = {

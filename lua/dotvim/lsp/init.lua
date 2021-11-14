@@ -26,7 +26,7 @@ local on_attach = function(client, bufnr)
         enable_auto_format()
     end
 
-    if server_capabilities.documentHighlightProvider then
+    if server_capabilities.documentHighlightProvider and client.name ~= 'rust_analyzer' then
         util.Augroup('dotvim_lsp_init_on_attach', function()
             api.nvim_command(string.format('autocmd CursorHold <buffer=%d> lua vim.lsp.buf.document_highlight()', bufnr))
             api.nvim_command(string.format('autocmd CursorMoved <buffer=%d> lua vim.lsp.buf.clear_references()', bufnr))
@@ -156,7 +156,8 @@ lsp_inst.on_server_ready(function(server)
         cfg = vim.tbl_deep_extend('force', cfg, langs[server.name])
     end
     if server.name == 'rust_analyzer' then
-        require('dotvim.lsp.rust').setup(server)
+        local opts = server:get_default_options()
+        require('dotvim.lsp.rust').setup(vim.tbl_deep_extend('force', opts, cfg))
     else
         server:setup(cfg)
     end
