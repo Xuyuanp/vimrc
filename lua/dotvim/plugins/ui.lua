@@ -87,13 +87,12 @@ return {
 
             local execute = vim.api.nvim_command
 
-            execute([[ augroup dotvim_scrollbar ]])
-            execute([[ autocmd! ]])
-            execute([[ autocmd BufEnter * silent! lua require('scrollbar').show() ]])
-            execute([[ autocmd BufLeave * silent! lua require('scrollbar').clear() ]])
-            execute([[ autocmd CursorMoved * silent! lua require('scrollbar').show() ]])
-            execute([[ autocmd VimResized  * silent! lua require('scrollbar').show() ]])
-            execute([[ augroup end ]])
+            require('dotvim.util').Augroup('dotvim_scrollbar', function()
+                execute([[ autocmd BufEnter * silent! lua require('scrollbar').show() ]])
+                execute([[ autocmd BufLeave * silent! lua require('scrollbar').clear() ]])
+                execute([[ autocmd WinScrolled * silent! lua require('scrollbar').show() ]])
+                execute([[ autocmd VimResized  * silent! lua require('scrollbar').show() ]])
+            end)
         end,
     },
 
