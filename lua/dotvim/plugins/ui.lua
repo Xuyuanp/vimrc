@@ -3,7 +3,14 @@ return {
     {
         'nvim-telescope/telescope.nvim',
         as = 'telescope',
-        requires = { 'popup', 'plenary' },
+        requires = {
+            'popup',
+            'plenary',
+            'nvim-telescope/telescope-ui-select.nvim',
+        },
+        config = function()
+            require('dotvim.telescope').setup()
+        end,
     },
 
     {
