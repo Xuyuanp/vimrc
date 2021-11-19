@@ -45,6 +45,7 @@ local on_attach = function(client, bufnr)
     buf_set_keymap(bufnr, 'n', 'gds', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', { noremap = true, silent = true })
     buf_set_keymap(bufnr, 'n', 'gws', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', { noremap = true, silent = true })
     buf_set_keymap(bufnr, 'n', 'gca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
+    buf_set_keymap(bufnr, 'n', 'go', '<cmd>lua vim.lsp.buf.outgoing_calls()<CR>', { noremap = true, silent = true })
 
     -- Keybindings for diagnostic
     buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = false, silent = true })
@@ -92,6 +93,7 @@ local default_config = {
         ['textDocument/definition'] = handlers.gen_location_handler('Definition'),
         ['textDocument/typeDefinition'] = handlers.gen_location_handler('TypeDefinition'),
         ['textDocument/implementation'] = handlers.gen_location_handler('Implementation'),
+        ['callHierarchy/outgoingCalls'] = handlers.outgoing_calls,
     },
 }
 
