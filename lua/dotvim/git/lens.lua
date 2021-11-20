@@ -49,7 +49,10 @@ function M.show()
 
     text = string.rep(' ', spaces) .. ': ' .. text
 
-    api.nvim_buf_set_virtual_text(0, ns_id, cursor[1] - 1, { { text, 'GitLens' } }, {})
+    api.nvim_buf_set_extmark(0, ns_id, cursor[1] - 1, 0, {
+        virt_text = { { text, 'GitLens' } },
+        hl_mode = 'combine',
+    })
 end
 
 function M.clear()
