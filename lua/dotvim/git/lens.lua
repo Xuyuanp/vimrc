@@ -16,8 +16,9 @@ local ignored_filetypes = {
 local ns_id = api.nvim_create_namespace('GitLens')
 
 local spaces = 10
+local displayed = false
 
-function M.show()
+local function show()
     local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
     if not filetype or filetype == '' or ignored_filetypes[filetype:lower()] then
         return
@@ -27,9 +28,6 @@ function M.show()
     if not vim.fn.filereadable(fname) then
         return
     end
-
-    M.clear()
-
     local cursor = api.nvim_win_get_cursor(0)
     local blame = vim.fn.system(string.format('git blame -c -L %d,%d %s', cursor[1], cursor[1], fname))
     if vim.v.shell_error > 0 then
@@ -53,10 +51,22 @@ function M.show()
         virt_text = { { text, 'GitLens' } },
         hl_mode = 'combine',
     })
+    displayed = true
+end
+
+local timer = require('dotvim.util.timer').new(3000, vim.schedule_wrap(show))
+
+function M.show()
+    M.clear()
+
+    timer:restart()
 end
 
 function M.clear()
-    api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+    if displayed then
+        api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+    end
+    timer:stop()
 end
 
 return M
