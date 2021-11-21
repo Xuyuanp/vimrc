@@ -5,7 +5,7 @@ end
 EOF
 
 lua require('dotvim.settings').setup()
-lua require('dotvim.plugins')
+lua require('dotvim.plugins').setup()
 lua require('dotvim.mappings').setup()
 
 " force quit
@@ -20,6 +20,8 @@ augroup dotvim_init
 
     " Highlight yanks
     autocmd TextYankPost * silent! lua vim.highlight.on_yank {timeout=500}
+
+    autocmd User PackerComplete :PackerCompile<CR>
 augroup end
 
 highlight! default link GitLens SpecialComment

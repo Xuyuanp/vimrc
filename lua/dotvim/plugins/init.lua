@@ -23,48 +23,54 @@ if not ok then
     packer = require('packer')
 end
 
-command([[ autocmd User PackerComplete :PackerCompile<CR> ]])
+local M = {}
 
-return packer.startup({
-    function(use)
-        use({
-            'lewis6991/impatient.nvim',
-            rocks = 'mpack',
-            config = function()
-                require('impatient')
-            end,
-        })
+local function startup_fn(use)
+    use({
+        'lewis6991/impatient.nvim',
+        rocks = 'mpack',
+        config = function()
+            require('impatient')
+        end,
+    })
 
-        use('wbthomason/packer.nvim')
+    use('wbthomason/packer.nvim')
 
-        local groups = {
-            'dotvim.plugins.base',
-            'dotvim.plugins.color',
-            'dotvim.plugins.tools',
-            'dotvim.plugins.ui',
-            'dotvim.plugins.lsp',
-            'dotvim.plugins.langs',
-        }
+    local groups = {
+        'dotvim.plugins.base',
+        'dotvim.plugins.color',
+        'dotvim.plugins.tools',
+        'dotvim.plugins.ui',
+        'dotvim.plugins.lsp',
+        'dotvim.plugins.langs',
+    }
 
-        for _, group in ipairs(groups) do
-            for _, plug in ipairs(require(group)) do
-                use(plug)
-            end
+    for _, group in ipairs(groups) do
+        for _, plug in ipairs(require(group)) do
+            use(plug)
         end
+    end
 
-        if vfn.empty(vfn.glob(compile_path)) > 0 then
-            packer.compile()
-        end
-    end,
+    if vfn.empty(vfn.glob(compile_path)) > 0 then
+        packer.compile()
+    end
+end
 
-    config = {
-        compile_path = compile_path,
-        auto_clean = true,
-        max_jobs = 8,
-        display = {
-            open_fn = function()
-                return require('packer.util').float({ border = 'rounded' })
-            end,
+function M.setup()
+    packer.startup({
+        startup_fn,
+
+        config = {
+            compile_path = compile_path,
+            auto_clean = true,
+            max_jobs = 8,
+            display = {
+                open_fn = function()
+                    return require('packer.util').float({ border = 'rounded' })
+                end,
+            },
         },
-    },
-})
+    })
+end
+
+return M
