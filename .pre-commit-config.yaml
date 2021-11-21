@@ -8,16 +8,6 @@ repos:
   - id: end-of-file-fixer
   - id: check-added-large-files
   - id: mixed-line-ending
-- repo: https://github.com/Vimjas/vint
-  rev: v0.4a3
-  hooks:
-  - id: vint
-    types: [text]
-    files: vimrc
-- repo: https://github.com/Vimjas/vint
-  rev: v0.4a3
-  hooks:
-  - id: vint
 - repo: https://github.com/Calinou/pre-commit-luacheck
   rev: v1.0.0
   hooks:

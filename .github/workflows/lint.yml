@@ -29,12 +29,3 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --color always --check lua/
-  vint:
-    name: Vint
-    runs-on: ubuntu-20.04
-    steps:
-    - uses: actions/checkout@v2
-    - name: vint
-      uses: ludvighz/vint-action@v1
-      with:
-        path: vimrc
