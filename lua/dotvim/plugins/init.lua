@@ -14,11 +14,15 @@ local ok, packer = pcall(require, 'packer')
 
 if not ok then
     print('Installing packer...')
-    vfn.system({ 'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path })
-    command('quitall')
+    local output = vfn.system({ 'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path })
+    if vim.v.shell_error ~= 0 then
+        vim.notify(output, 'Error')
+        command('quitall')
+    end
+
+    packer = require('packer')
 end
 
-command('packadd packer.nvim')
 command([[ autocmd User PackerComplete :PackerCompile<CR> ]])
 
 return packer.startup({
