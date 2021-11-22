@@ -1,20 +1,20 @@
 local M = {}
 
 function M.setup()
-    vim.g.loaded_matchparen        = 1
-    vim.g.loaded_matchit           = 1
-    vim.g.loaded_logiPat           = 1
-    vim.g.loaded_rrhelper          = 1
-    vim.g.loaded_tarPlugin         = 1
-    vim.g.loaded_gzip              = 1
-    vim.g.loaded_zipPlugin         = 1
-    vim.g.loaded_2html_plugin      = 1
-    vim.g.loaded_shada_plugin      = 1
-    vim.g.loaded_spellfile_plugin  = 1
-    vim.g.loaded_netrw             = 1
-    vim.g.loaded_netrwPlugin       = 1
+    vim.g.loaded_matchparen = 1
+    vim.g.loaded_matchit = 1
+    vim.g.loaded_logiPat = 1
+    vim.g.loaded_rrhelper = 1
+    vim.g.loaded_tarPlugin = 1
+    vim.g.loaded_gzip = 1
+    vim.g.loaded_zipPlugin = 1
+    vim.g.loaded_2html_plugin = 1
+    vim.g.loaded_shada_plugin = 1
+    vim.g.loaded_spellfile_plugin = 1
+    vim.g.loaded_netrw = 1
+    vim.g.loaded_netrwPlugin = 1
     vim.g.loaded_tutor_mode_plugin = 1
-    vim.g.loaded_remote_plugins    = 1
+    vim.g.loaded_remote_plugins = 1
     -- vim.g:loaded_man               = 1
 
     vim.o.shell = '/bin/sh'
@@ -97,7 +97,7 @@ function M.setup()
     vim.o.list = true
     vim.opt.listchars:append({
         tab = '  ',
-        trail = '·'
+        trail = '·',
     })
 
     -- Don't redraw while executing macros (good performance config)
@@ -126,7 +126,7 @@ function M.setup()
     -- vim.o.fillchars = 'eob: ,vert:┃'
     vim.opt.fillchars:append({
         eob = ' ',
-        vert = '┃'
+        vert = '┃',
     })
 
     -- don't syntax-highlight long lines
