@@ -114,7 +114,7 @@ end
 function M.dont_too_slow(func, ms, callback)
     return function(...)
         local start = uv.now()
-        local ret = { func(...)}
+        local ret = { func(...) }
         local duration = uv.now() - start
         if duration >= ms then
             callback(duration)
