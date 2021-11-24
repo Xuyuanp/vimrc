@@ -1,6 +1,7 @@
 local vim = vim
 local api = vim.api
 local vfn = vim.fn
+local uv = vim.loop
 
 local M = {}
 
@@ -108,6 +109,19 @@ function M.floating_window(bufnr)
     api.nvim_buf_set_keymap(bufnr, 'n', '<ESC><ESC>', ':q<CR>', { nowait = true, noremap = false, silent = false })
 
     return winnr
+end
+
+function M.dont_too_slow(func, ms, callback)
+    return function(...)
+        local start = uv.now()
+        local ret = { func(...)}
+        local duration = uv.now() - start
+        if duration >= ms then
+            callback(duration)
+        end
+
+        return unpack(ret)
+    end
 end
 
 return M

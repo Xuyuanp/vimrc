@@ -1,7 +1,17 @@
 local vim = vim
 local api = vim.api
 
+local dotutil = require('dotvim.util')
+
 local M = {}
+
+if vim.fn.executable('git') == 0 then
+    M.show = function() end
+    M.clear = function() end
+    return M
+end
+
+local a = require('dotvim.util.async')
 
 local ignored_filetypes = {
     help = true,
@@ -17,8 +27,31 @@ local ns_id = api.nvim_create_namespace('GitLens')
 
 local spaces = 10
 local displayed = false
+local delay = 3000
+local shutdown_threshold = 1000
+local disabled = false
 
-local function show()
+local function get_blame(fname, linenr)
+    local code, _, blame, _ = a.simple_job({
+        command = 'git',
+        args = { 'blame', '-s', '-L', string.format('%d,%d', linenr, linenr), fname },
+    }).await()
+    if code == 0 then
+        return blame
+    end
+end
+
+local function get_commit_info(hash, format)
+    local code, _, info, _ = a.simple_job({
+        command = 'git',
+        args = { 'show', hash, '--quiet', '--format=' .. format },
+    }).await()
+    if code == 0 then
+        return info
+    end
+end
+
+local function show_lens()
     local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
     if not filetype or filetype == '' or ignored_filetypes[filetype:lower()] then
         return
@@ -28,33 +61,44 @@ local function show()
     if not vim.fn.filereadable(fname) then
         return
     end
+
+    local bufnr = api.nvim_get_current_buf()
     local cursor = api.nvim_win_get_cursor(0)
-    local blame = vim.fn.system(string.format('git blame -c -L %d,%d %s', cursor[1], cursor[1], fname))
-    if vim.v.shell_error > 0 then
+
+    local blame = get_blame(fname, cursor[1])
+    if not blame then
         return
     end
+
     local hash = vim.split(blame, '%s')[1]
-    local text
-    if hash == '00000000' then
-        text = 'Not Commit Yet'
-    else
-        local cmd = string.format('git show %s', hash) .. " --quiet --format='@%an | %s | %ar'"
-        text = vim.fn.systemlist(cmd)[1]
-        if text:find('fatal') then
-            return
-        end
+
+    local info = hash == '00000000' and 'Not Committed Yet' or get_commit_info(hash, '@%an | %s | %ar')
+    if not info then
+        return
     end
 
-    text = string.rep(' ', spaces) .. ': ' .. text
+    local text = string.rep(' ', spaces) .. ': ' .. info
 
-    api.nvim_buf_set_extmark(0, ns_id, cursor[1] - 1, 0, {
-        virt_text = { { text, 'GitLens' } },
-        hl_mode = 'combine',
-    })
-    displayed = true
+    vim.schedule(function()
+        if disabled then
+            return
+        end
+        api.nvim_buf_set_extmark(bufnr, ns_id, cursor[1] - 1, 0, {
+            virt_text = { { text, 'GitLens' } },
+            hl_mode = 'combine',
+        })
+        displayed = true
+    end)
 end
 
-local timer = require('dotvim.util.timer').new(3000, vim.schedule_wrap(show))
+local show = a.wrap(dotutil.dont_too_slow(show_lens, shutdown_threshold, function(_duration)
+    vim.notify('git command too slow, disabled git lens', 'WARN')
+    M.show = function() end
+    M.clear = function() end
+    disabled = true
+end))
+
+local timer = require('dotvim.util.timer').new(delay, vim.schedule_wrap(show))
 
 function M.show()
     M.clear()
