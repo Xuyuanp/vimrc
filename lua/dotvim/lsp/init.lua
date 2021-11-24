@@ -136,6 +136,7 @@ local langs = {
                     disable = {
                         'unused-vararg',
                         'unused-local',
+                        'redefined-local',
                     },
                 },
                 runtime = {
