@@ -45,6 +45,9 @@ return {
 
     {
         'hrsh7th/vim-vsnip',
+        requires = {
+            'rafamadriz/friendly-snippets',
+        },
         config = function()
             local vim = vim
             local vfn = vim.fn
