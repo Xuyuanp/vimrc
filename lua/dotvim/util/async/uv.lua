@@ -49,9 +49,13 @@ add('fs_fchown', 4)
 -- 'fs_lchown',
 add('fs_copyfile', 4)
 -- add('fs_opendir', 3) -- TODO: fix this one
+M.fs_opendir = a.async(function(path, entries, callback)
+    return uv.fs_opendir(path, callback, entries)
+end)
+
 add('fs_readdir', 2)
 add('fs_closedir', 2)
--- 'fs_statfs',
+add('fs_statfs')
 
 -- stream
 add('shutdown', 2)
