@@ -12,6 +12,7 @@ if vim.fn.executable('git') == 0 then
 end
 
 local a = require('dotvim.util.async')
+local uv = a.uv()
 
 local ignored_filetypes = {
     help = true,
@@ -32,22 +33,22 @@ local shutdown_threshold = 1000
 local disabled = false
 
 local function get_blame(fname, linenr)
-    local code, _, blame, _ = a.simple_job({
+    local res = uv.simple_job({
         command = 'git',
         args = { 'blame', '-s', '-L', string.format('%d,%d', linenr, linenr), fname },
     }).await()
-    if code == 0 then
-        return blame
+    if res.code == 0 then
+        return res.stdout
     end
 end
 
 local function get_commit_info(hash, format)
-    local code, _, info, _ = a.simple_job({
+    local res = uv.simple_job({
         command = 'git',
         args = { 'show', hash, '--quiet', '--format=' .. format },
     }).await()
-    if code == 0 then
-        return info
+    if res.code == 0 then
+        return res.stdout
     end
 end
 

@@ -18,23 +18,24 @@ function M.execute(async_func, callback, ...)
     cont(...)
 end
 
+local Awaitable = function(obj, key)
+    assert(key == 'await', key)
+    return function()
+        return M.await(obj)
+    end
+end
+
 -- make function(p1, ..., pN, callback) awaitable
 -- return a callable and awaitable object
 function M.async(async_func)
     return function(...)
         local params = { ... }
-        return setmetatable({}, {
-            __index = function(t, key)
-                assert(key == 'await', key)
-                return function()
-                    return M.await(t)
-                end
-            end,
-            __call = function(_, cont)
-                table.insert(params, cont)
-                async_func(unpack(params))
-            end,
-        })
+        local co = function(cont)
+            table.insert(params, cont)
+            async_func(unpack(params))
+        end
+        debug.setmetatable(co, { __index = Awaitable })
+        return co
     end
 end
 
@@ -88,24 +89,5 @@ end
 function M.uv()
     return require('dotvim.util.async.uv')
 end
-
-M.simple_job = M.async(function(o, callback)
-    local stdout = ''
-    local stderr = ''
-    local job_desc = vim.tbl_deep_extend('force', o, {
-        on_stdout = function(err, chunk)
-            assert(not err, err)
-            stdout = stdout .. chunk
-        end,
-        on_stderr = function(err, chunk)
-            assert(not err, err)
-            stderr = stderr .. chunk
-        end,
-        on_exit = function(_job, code, signal)
-            callback(code, signal, stdout, stderr)
-        end,
-    })
-    require('plenary.job'):new(job_desc):start()
-end)
 
 return M

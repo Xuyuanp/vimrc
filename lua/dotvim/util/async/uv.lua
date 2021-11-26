@@ -81,6 +81,79 @@ add('getnameinfo', 2)
 
 ---]] copy from plenary end
 
+local simple_job_native = a.async(function(opts, callback)
+    local pipe_stdout = uv.new_pipe()
+    local pipe_stderr = uv.new_pipe()
+    local stdout = ''
+    local stderr = ''
+
+    local nop = function() end
+    local handle
+    handle = uv.spawn(opts.command, {
+        args = opts.args,
+        stdio = { nil, pipe_stdout, pipe_stderr },
+        cwd = opts.cwd,
+        env = opts.env,
+    }, function(code, signal)
+        callback({
+            code = code,
+            signal = signal,
+            stdout = vim.trim(stdout),
+            stderr = vim.trim(stderr),
+        })
+
+        uv.close(handle, nop)
+        uv.close(pipe_stdout, nop)
+        uv.close(pipe_stderr, nop)
+    end)
+
+    uv.read_start(pipe_stdout, function(err, data)
+        assert(not err, err)
+        if data then
+            print(string.format('stdout[%s]', data))
+            stdout = stdout .. data
+        end
+    end)
+
+    uv.read_start(pipe_stderr, function(err, data)
+        assert(not err, err)
+        if data then
+            stderr = stderr .. data
+        end
+    end)
+end)
+
+local simple_job_plenary = a.async(function(opts, callback)
+    local stdout = ''
+    local stderr = ''
+    local job_desc = vim.tbl_deep_extend('force', opts, {
+        on_stdout = function(err, chunk)
+            assert(not err, err)
+            stdout = stdout .. chunk
+        end,
+        on_stderr = function(err, chunk)
+            assert(not err, err)
+            stderr = stderr .. chunk
+        end,
+        on_exit = function(_job, code, signal)
+            callback({
+                code = code,
+                signal = signal,
+                stdout = stdout,
+                stderr = stderr,
+            })
+        end,
+    })
+    require('plenary.job'):new(job_desc):start()
+end)
+
+if pcall(require, 'plenary.job') then
+    M.simple_job = simple_job_plenary
+else
+    vim.notify('[dotvim.util.async.uv] plenary not found, using native job', 'DEBUG')
+    M.simple_job = simple_job_native
+end
+
 -- require('dotvim.util.async.uv').example_read_file('/path/to/file')
 M.example_read_file = a.wrap(function(path)
     local auv = require('dotvim.util.async.uv')
