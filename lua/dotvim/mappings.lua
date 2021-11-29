@@ -25,11 +25,6 @@ local function setup()
     set_keymap('v', '>', '>gv', { noremap = true, silent = true })
     ---]]
 
-    ---[[ Improve up/down movement on wrapped lines
-    set_keymap('n', 'j', 'gj', { noremap = true, silent = true })
-    set_keymap('n', 'k', 'gk', { noremap = true, silent = true })
-    ---]]
-
     ---[[ Clear search highlight
     set_keymap('n', '<leader>/', '<cmd>nohls<CR>', { noremap = true, silent = true })
     ---]]
