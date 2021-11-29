@@ -75,6 +75,8 @@ function M.await(defer)
     return coroutine.yield(defer)
 end
 
+M.schedule = M.async(vim.schedule)
+
 function M.wrap(async_func)
     return function(...)
         M.execute(async_func, nil, ...)

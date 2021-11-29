@@ -32,6 +32,9 @@ local delay = 3000
 local shutdown_threshold = 1000
 local disabled = false
 
+local inflight = false
+local next_fired = 0
+
 local function get_blame(fname, linenr)
     local res = uv.simple_job({
         command = 'git',
@@ -80,16 +83,18 @@ local function show_lens()
 
     local text = string.rep(' ', spaces) .. ': ' .. info
 
-    vim.schedule(function()
-        if disabled then
-            return
-        end
-        api.nvim_buf_set_extmark(bufnr, ns_id, cursor[1] - 1, 0, {
-            virt_text = { { text, 'GitLens' } },
-            hl_mode = 'combine',
-        })
-        displayed = true
-    end)
+    a.schedule().await()
+
+    if disabled then
+        return
+    end
+
+    api.nvim_buf_set_extmark(bufnr, ns_id, cursor[1] - 1, 0, {
+        virt_text = { { text, 'GitLens' } },
+        hl_mode = 'combine',
+    })
+    displayed = true
+    -- end)
 end
 
 local show = a.wrap(dotutil.dont_too_slow(show_lens, shutdown_threshold, function(_duration)
@@ -99,19 +104,40 @@ local show = a.wrap(dotutil.dont_too_slow(show_lens, shutdown_threshold, functio
     disabled = true
 end))
 
-local timer = require('dotvim.util.timer').new(delay, vim.schedule_wrap(show))
+M.show_delay = a.wrap(function()
+    inflight = true
+    a.sleep(next_fired - uv.now()).await()
+    inflight = false
+
+    if next_fired == 0 then
+        return
+    end
+
+    local now = uv.now()
+    if now < next_fired then
+        a.schedule().await()
+        M.show_delay()
+        return
+    end
+
+    show()
+end)
 
 function M.show()
-    M.clear()
+    next_fired = uv.now() + delay
 
-    timer:restart()
+    if not inflight then
+        M.show_delay()
+    end
 end
 
 function M.clear()
+    next_fired = 0
+
     if displayed then
         api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+        displayed = false
     end
-    timer:stop()
 end
 
 return M
