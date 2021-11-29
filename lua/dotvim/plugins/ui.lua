@@ -126,11 +126,11 @@ return {
                 -- Magic buffer-picking mode
                 ['<A-s>'] = ':BufferLinePick<CR>',
                 -- Move to previous/next
-                ['<A-h>'] = ':BufferLineCyclePrev<CR>',
-                ['<A-l>'] = ':BufferLineCycleNext<CR>',
+                ['<Tab>'] = ':BufferLineCyclePrev<CR>',
+                ['<S-Tab>'] = ':BufferLineCycleNext<CR>',
                 -- Re-order to previous/next
-                ['<A-,>'] = ':BufferLineMovePrev<CR>',
-                ['<A-.>'] = ':BufferLineMoveNext<CR>',
+                ['<A-h>'] = ':BufferLineMovePrev<CR>',
+                ['<A-l>'] = ':BufferLineMoveNext<CR>',
                 -- Sort automatically by...
                 ['<Leader>bd'] = ':BufferLineSortByDirectory<CR>',
                 ['<Leader>bl'] = ':BufferLineSortByExtension<CR>',
