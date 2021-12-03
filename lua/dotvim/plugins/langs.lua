@@ -53,7 +53,7 @@ return {
     },
 
     {
-        'zinit-zsh/zinit-vim-syntax',
+        'zdharma-continuum/zinit-vim-syntax',
         ft = { 'zsh' },
     },
 
