@@ -1,10 +1,7 @@
 local vim = vim
 local api = vim.api
-local loop = vim.loop
 
 local dotutil = require('dotvim.util')
-
-local pjob = require('plenary.job')
 
 local yanil = require('yanil')
 local git = require('yanil/git')
@@ -12,6 +9,9 @@ local decorators = require('yanil/decorators')
 local devicons = require('yanil/devicons')
 local canvas = require('yanil/canvas')
 local utils = require('yanil/utils')
+
+local a = dotutil.async()
+local uv = a.uv()
 
 local M = {}
 
@@ -64,6 +64,47 @@ local function fzf_find(tree)
     api.nvim_command(string.format([[autocmd WinClosed <buffer> execute "%dwincmd w" | execute "%dwincmd w"]], altwinnr_bak, winnr_bak))
 end
 
+local async_create_node = a.wrap(function(tree, node, name)
+    if not name or name == '' then
+        return
+    end
+    local path = node.abs_path .. name
+    if tree.root:find_node_by_path(path) then
+        print('path', path, 'is already exists')
+        return
+    end
+
+    if vim.endswith(path, '/') then
+        local res = uv.simple_job({ command = 'mkdir', args = { '-p', path } }).await()
+
+        if res.code ~= 0 then
+            a.api.nvim_err_writeln('mkdir failed: ' .. (res.stderr or res.stdout or ''))
+            return
+        end
+    else
+        local dir = vim.fn.fnamemodify(path, ':h')
+
+        local res = uv.simple_job({ command = 'mkdir', args = { '-p', dir } }).await()
+
+        if res.code ~= 0 then
+            a.api.nvim_err_writeln('mkdir failed: ' .. (res.stderr or res.stdout or ''))
+            return
+        end
+
+        local res = uv.simple_job({ command = 'touch', args = { path } }).await()
+
+        if res.code ~= 0 then
+            a.api.nvim_err_writeln('touch file failed: ' .. (res.stderr or res.stdout or ''))
+            return
+        end
+    end
+
+    a.schedule().await()
+
+    tree:force_refresh_node(node)
+    git.update(tree.cwd)
+end)
+
 local function create_node(tree, node)
     node = node:is_dir() and node or node.parent
     local name = vim.fn.input(string.format(
@@ -73,42 +114,8 @@ Enter the dir/file name to be created. Dirs end with a '/'
 %s]],
         node.abs_path
     ))
-    if not name or name == '' then
-        return
-    end
-    local path = node.abs_path .. name
 
-    -- checking file exists in schedule function to make input prompt close
-    vim.schedule(function()
-        if tree.root:find_node_by_path(path) then
-            print('path', path, 'is already exists')
-            return
-        end
-    end)
-
-    local refresh = vim.schedule_wrap(function()
-        tree:force_refresh_node(node)
-        git.update(tree.cwd)
-    end)
-
-    if vim.endswith(path, '/') then
-        -- 0755
-        loop.fs_mkdir(path, 16877, function(err, ok)
-            assert(not err, err)
-            assert(ok, 'mkdir failed')
-            refresh()
-        end)
-        return
-    end
-
-    -- 0644
-    loop.fs_open(path, 'w+', 33188, function(err, fd)
-        assert(not err, err)
-        loop.fs_close(fd, function(c_err, ok)
-            assert(not c_err and ok, 'create file failed')
-        end)
-        refresh()
-    end)
+    async_create_node(tree, node, name)
 end
 
 local function clear_buffer(path)
@@ -142,24 +149,23 @@ STOP! Directory is not empty! To delete, type 'yes'
         end
     end
 
-    local job_desc = {
-        command = 'rm',
-        args = { '-rf', node.abs_path },
-        on_exit = function(_job, code, _signal)
-            if code ~= 0 then
-                print('delete node failed')
-                return
-            end
+    a.run(function()
+        local res = uv.simple_job({
+            command = 'rm',
+            args = { '-rf', node.abs_path },
+        }).await()
+        if res.code ~= 0 then
+            a.api.nvim_err_writeln('delete node failed:', (res.stderr or res.stdout or ''))
+            return
+        end
 
-            vim.schedule(function()
-                clear_buffer(node.abs_path)
-                local parent = node.parent
-                tree:force_refresh_node(parent)
-                git.update(tree.cwd)
-            end)
-        end,
-    }
-    pjob:new(job_desc):start()
+        a.schedule().await()
+
+        clear_buffer(node.abs_path)
+        local parent = node.parent
+        tree:force_refresh_node(parent)
+        git.update(tree.cwd)
+    end)
 end
 
 function M.setup()

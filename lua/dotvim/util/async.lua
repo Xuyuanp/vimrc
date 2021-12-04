@@ -92,4 +92,15 @@ function M.uv()
     return require('dotvim.util.async.uv')
 end
 
+M.api = setmetatable({}, {
+    __index = function(_, key)
+        return function(...)
+            if vim.in_fast_event() then
+                M.schedule().await()
+            end
+            return vim.api[key](...)
+        end
+    end,
+})
+
 return M

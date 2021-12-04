@@ -124,4 +124,8 @@ function M.dont_too_slow(func, ms, callback)
     end
 end
 
+function M.async()
+    return require('dotvim.util.async')
+end
+
 return M
