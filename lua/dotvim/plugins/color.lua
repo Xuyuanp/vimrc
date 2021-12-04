@@ -1,3 +1,12 @@
+local dotcolors = require('dotvim.colors')
+dotcolors.enable_auto_update()
+dotcolors.add_highlight('EndOfBuffer', {
+    fg = dotcolors.colors.Sign.bg,
+})
+dotcolors.add_highlight('VertSplit', {
+    fg = dotcolors.colors.black_pure,
+})
+
 return {
     {
         'sainnhe/gruvbox-material',
@@ -19,33 +28,8 @@ return {
             vim.g.gruvbox_material_background = 'hard'
         end,
         config = function()
-            local vim = vim
-            local execute = vim.api.nvim_command
-
-            local dotcolors = require('dotvim.colors')
-            dotcolors.enable_auto_update()
-
             vim.opt.background = 'dark'
-            execute([[ colorscheme gruvbox-material ]])
-
-            dotcolors.add_highlight('EndOfBuffer', {
-                fg = dotcolors.colors.Sign.bg,
-            })
-            dotcolors.add_highlight('VertSplit', {
-                fg = dotcolors.colors.black_pure,
-            })
-        end,
-    },
-
-    {
-        'glepnir/zephyr-nvim',
-        disable = true,
-        config = function()
-            local vim = vim
-            local execute = vim.api.nvim_command
-
-            vim.opt.background = 'dark'
-            execute([[ colorscheme zephyr ]])
+            vim.cmd([[ colorscheme gruvbox-material ]])
         end,
     },
 }
