@@ -6,7 +6,6 @@ return {
         requires = {
             'popup',
             'plenary',
-            'nvim-telescope/telescope-ui-select.nvim',
         },
         config = function()
             require('dotvim.telescope').setup()
@@ -277,6 +276,22 @@ return {
                 autocmd FileType spectre_panel setlocal nofoldenable | nnoremap <buffer>q <cmd>q<CR>
             augroup END
             ]])
+        end,
+    },
+
+    {
+        'stevearc/dressing.nvim',
+        config = function()
+            require('dressing').setup({
+                select = {
+                    backend = { 'telescope', 'fzf', 'nui', 'builtin' },
+
+                    telescope = {
+                        -- can be 'dropdown', 'cursor', or 'ivy'
+                        theme = 'dropdown',
+                    },
+                },
+            })
         end,
     },
 }

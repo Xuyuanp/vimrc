@@ -15,15 +15,7 @@ function M.setup()
             },
             prompt_prefix = '  ',
         },
-
-        extensions = {
-            ['ui-select'] = {
-                require('telescope.themes').get_dropdown({}),
-            },
-        },
     })
-
-    ts.load_extension('ui-select')
 end
 
 return M
