@@ -103,4 +103,10 @@ M.api = setmetatable({}, {
     end,
 })
 
+M.ui = setmetatable({}, {
+    __index = function(_, key)
+        return M.async(vim.ui[key])
+    end,
+})
+
 return M
