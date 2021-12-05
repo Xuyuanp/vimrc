@@ -265,9 +265,11 @@ function M.gen_location_handler(name)
 
         local source = {}
         for i, ref in ipairs(result) do
-            local fname = vim.uri_to_fname(ref.uri)
-            local start_line = ref.range.start.line + 1
-            local end_line = ref.range['end'].line + 1
+            -- ref is Location or LocationLink
+            local fname = vim.uri_to_fname(ref.uri or ref.targetUri)
+            local range = ref.range or ref.targetRange
+            local start_line = range.start.line + 1
+            local end_line = range['end'].line + 1
             local line = string.format(
                 '%s\t%d\t%d\t%d\t%s |%d ~ %d|',
                 fname,
