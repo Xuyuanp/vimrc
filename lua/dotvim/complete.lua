@@ -71,6 +71,9 @@ function M.setup()
             { name = 'calc' },
             { name = 'crates' },
         },
+        experimental = {
+            ghost_text = true,
+        },
     })
 
     local autopair_cmp = vim.F.npcall(require, 'nvim-autopairs.completion.cmp')
