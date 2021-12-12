@@ -79,7 +79,6 @@ local ok, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
 if ok then
     default_capabilities = cmp_lsp.update_capabilities(default_capabilities)
 end
-default_capabilities.textDocument.completion.completionItem.snippetSupport = false
 
 local default_config = {
     on_attach = on_attach,
