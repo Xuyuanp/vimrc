@@ -29,7 +29,7 @@ local function setup()
     set_keymap('n', '<leader>/', '<cmd>nohls<CR>', { noremap = true, silent = true })
     ---]]
 
-    ---[[ " Keep search pattern at the center of the screen
+    ---[[ Keep search pattern at the center of the screen
     set_keymap('n', 'n', 'nzz', { noremap = true, silent = true })
     set_keymap('n', 'N', 'Nzz', { noremap = true, silent = true })
     set_keymap('n', '*', '*zz', { noremap = true, silent = true })
@@ -47,6 +47,8 @@ local function setup()
     ---[[ Yank to system clipboard
     set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
     set_keymap('n', '<leader>yy', '"+yy', { noremap = true, silent = true })
+
+    set_keymap('n', '<leader>p', '"+p', { noremap = true, silent = true })
     ---]]
 end
 

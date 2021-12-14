@@ -154,6 +154,9 @@ return {
         'sunjon/shade.nvim',
         event = 'BufEnter',
         config = function()
+            if vim.fn.has('gui') then
+                return
+            end
             require('shade').setup({
                 overlay_opacity = 70,
                 opacity_step = 5,

@@ -135,10 +135,17 @@ function M.setup()
     -- Set completeopt to have a better completion experience
     vim.o.completeopt = 'menuone,noinsert,noselect'
 
-    vim.o.guifont = 'FiraCode Nerd Font Mono:h13'
-
     vim.g.python3_host_prog = vim.env.HOME .. '/.pyenv/versions/neovim3/bin/python'
     vim.g.loaded_python_provider = false
+
+    if vim.fn.has('gui') then
+        vim.o.guifont = 'FiraCode Nerd Font Mono:h13'
+
+        vim.g.neovide_fullscreen = true
+        vim.g.neovide_transparency = 0.9
+        vim.g.neovide_no_idle = true
+        vim.g.neovide_cursor_antialiasing = true
+    end
 end
 
 return M
