@@ -38,30 +38,34 @@ local function git_diff(_tree, node)
     api.nvim_command(string.format([[command! -buffer Apply lua require("yanil/git").apply_buf(%d)]], bufnr))
 end
 
-local fzf_files = vim.fn['fzf#vim#files']
-local fzf_with_preview = vim.fn['fzf#vim#with_preview']
-
-local function fzf_find(tree)
+local function find_file(tree, node)
     local winnr_bak = vim.fn.winnr()
     local altwinnr_bak = vim.fn.winnr('#')
 
-    fzf_files(tree.cwd, {
-        ['sink*'] = function(lines)
-            if #lines == 1 then
-                return
-            end
-            local path = lines[2]
-            local node = tree.root:find_node_by_path(tree.cwd .. path)
-            if not node then
-                print('file', path, 'is not found or ignored')
-                return
-            end
+    local cwd = node:is_dir() and node.abs_path or node.parent.abs_path
 
-            tree:go_to_node(node)
+    local actions = require('telescope.actions')
+    local actions_state = require('telescope.actions.state')
+    require('telescope.builtin').find_files({
+        cwd = cwd,
+        attach_mappings = function(prompt_bufnr, _map)
+            actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = actions_state.get_selected_entry()
+                local path = selection.cwd .. selection[1]
+                local target = tree.root:find_node_by_path(path)
+                if not node then
+                    print('file', path, 'is not found or ignored')
+                    return
+                end
+                tree:go_to_node(target)
+
+                vim.cmd(string.format([[execute "%dwincmd w"]], altwinnr_bak))
+                vim.cmd(string.format([[execute "%dwincmd w"]], winnr_bak))
+            end)
+            return true
         end,
-        options = fzf_with_preview().options,
     })
-    api.nvim_command(string.format([[autocmd WinClosed <buffer> execute "%dwincmd w" | execute "%dwincmd w"]], altwinnr_bak, winnr_bak))
 end
 
 local async_create_node = a.wrap(function(tree, node, name)
@@ -200,7 +204,7 @@ function M.setup()
             [']c'] = git.jump_next,
             ['[c'] = git.jump_prev,
             gd = git_diff,
-            ['<A-/>'] = fzf_find,
+            ['<A-/>'] = find_file,
             ['<A-a>'] = create_node,
             ['<A-x>'] = delete_node,
         },
