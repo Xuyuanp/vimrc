@@ -202,7 +202,7 @@ section.left = {
             icon = '▊ ',
             highlight = { _HEX_COLORS.bar.side, _HEX_COLORS.bar.side },
             separator = _ICONS.Separators.right,
-            separator_highlight = { _HEX_COLORS.black2, get_file_icon_color }, -- bar.side != black here, I don't know why
+            separator_highlight = { _HEX_COLORS.bar.side, get_file_icon_color }, -- bar.side != black here, I don't know why
         },
     },
 
