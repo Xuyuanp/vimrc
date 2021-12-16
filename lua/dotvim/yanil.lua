@@ -55,7 +55,7 @@ local function find_file(tree, node)
                 local path = selection.cwd .. selection[1]
                 local target = tree.root:find_node_by_path(path)
                 if not node then
-                    print('file', path, 'is not found or ignored')
+                    vim.notify('file "' .. path .. '" is not found or ignored', 'WARN')
                     return
                 end
                 tree:go_to_node(target)
@@ -68,13 +68,18 @@ local function find_file(tree, node)
     })
 end
 
-local async_create_node = a.wrap(function(tree, node, name)
+local create_node = a.wrap(function(tree, node)
+    node = node:is_dir() and node or node.parent
+    local name = a.ui.input({
+        prompt = node.abs_path,
+    }).await()
     if not name or name == '' then
         return
     end
+
     local path = node.abs_path .. name
     if tree.root:find_node_by_path(path) then
-        print('path', path, 'is already exists')
+        vim.notify('path "' .. path .. '" is already exists', 'WARN')
         return
     end
 
@@ -109,19 +114,6 @@ local async_create_node = a.wrap(function(tree, node, name)
     git.update(tree.cwd)
 end)
 
-local function create_node(tree, node)
-    node = node:is_dir() and node or node.parent
-    local name = vim.fn.input(string.format(
-        [[Add a childnode
-==========================================================
-Enter the dir/file name to be created. Dirs end with a '/'
-%s]],
-        node.abs_path
-    ))
-
-    async_create_node(tree, node, name)
-end
-
 local function clear_buffer(path)
     for _, bufnr in ipairs(api.nvim_list_bufs()) do
         if path == api.nvim_buf_get_name(bufnr) then
@@ -131,46 +123,40 @@ local function clear_buffer(path)
     end
 end
 
-local function delete_node(tree, node)
+local delete_node = a.wrap(function(tree, node)
     if node == tree.root then
-        print('You can NOT delete the root')
+        vim.notify('You can NOT delete the root', 'WARN')
         return
     end
     if node:is_dir() then
         node:load()
     end
     if node:is_dir() and #node.entries > 0 then
-        local answer = vim.fn.input(string.format(
-            [[Delete the current node
-==========================================================
-STOP! Directory is not empty! To delete, type 'yes'
-
-%s: ]],
-            node.abs_path
-        ))
+        local answer = a.ui.input({
+            prompt = 'Directory is not empty. Are you sure? ',
+            default = 'No',
+        }).await()
         if answer:lower() ~= 'yes' then
             return
         end
     end
 
-    a.run(function()
-        local res = uv.simple_job({
-            command = 'rm',
-            args = { '-rf', node.abs_path },
-        }).await()
-        if res.code ~= 0 then
-            a.api.nvim_err_writeln('delete node failed:', (res.stderr or res.stdout or ''))
-            return
-        end
+    local res = uv.simple_job({
+        command = 'rm',
+        args = { '-rf', node.abs_path },
+    }).await()
+    if res.code ~= 0 then
+        a.api.nvim_err_writeln('delete node failed:', (res.stderr or res.stdout or ''))
+        return
+    end
 
-        a.schedule().await()
+    a.schedule().await()
 
-        clear_buffer(node.abs_path)
-        local parent = node.parent
-        tree:force_refresh_node(parent)
-        git.update(tree.cwd)
-    end)
-end
+    clear_buffer(node.abs_path)
+    local parent = node.parent
+    tree:force_refresh_node(parent)
+    git.update(tree.cwd)
+end)
 
 function M.setup()
     yanil.setup()
@@ -207,6 +193,15 @@ function M.setup()
             ['<A-/>'] = find_file,
             ['<A-a>'] = create_node,
             ['<A-x>'] = delete_node,
+            ['o'] = function(self, node)
+                node = node:is_dir() and node or node.parent
+
+                self:refresh(node, {}, function()
+                    node:toggle()
+                end)
+
+                self:go_to_node(node)
+            end,
         },
     })
 
