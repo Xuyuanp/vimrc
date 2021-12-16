@@ -48,13 +48,14 @@ local function find_file(tree, node)
     local actions_state = require('telescope.actions.state')
     require('telescope.builtin').find_files({
         cwd = cwd,
+        find_command = {'fd', '--type', 'f', '--strip-cwd-prefix'},
         attach_mappings = function(prompt_bufnr, _map)
             actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
                 local selection = actions_state.get_selected_entry()
                 local path = selection.cwd .. selection[1]
                 local target = tree.root:find_node_by_path(path)
-                if not node then
+                if not target then
                     vim.notify('file "' .. path .. '" is not found or ignored', 'WARN')
                     return
                 end
@@ -131,12 +132,13 @@ local delete_node = a.wrap(function(tree, node)
     if node:is_dir() then
         node:load()
     end
+
     if node:is_dir() and #node.entries > 0 then
         local answer = a.ui.input({
             prompt = 'Directory is not empty. Are you sure? ',
             default = 'No',
         }).await()
-        if answer:lower() ~= 'yes' then
+        if not answer or answer:lower() ~= 'yes' then
             return
         end
     end
