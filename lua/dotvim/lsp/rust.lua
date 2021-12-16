@@ -1,6 +1,8 @@
 local M = {}
 
--- TODO: setup debugger
+local extension_path = vim.env.HOME .. '/.vscode/extensions/vadimcn.vscode-lldb-1.6.10/'
+local codelldb_path = extension_path .. 'adapter/codelldb'
+local liblldb_path = extension_path .. 'lldb/lib/liblldb.so'
 
 function M.setup(server)
     local opts = {
@@ -11,6 +13,8 @@ function M.setup(server)
             -- Whether to show hover actions inside the hover window
             -- This overrides the default hover handler
             hover_with_actions = true,
+
+            executor = require('rust-tools.executors').termopen,
 
             runnables = {
                 -- whether to use telescope for selection menu or not
@@ -103,13 +107,9 @@ function M.setup(server)
         server = server,
 
         -- debugging stuff
-        -- dap = {
-        --     adapter = {
-        --         type = 'executable',
-        --         command = 'lldb-vscode',
-        --         name = 'rt_lldb',
-        --     },
-        -- },
+        dap = {
+            adapter = require('rust-tools.dap').get_codelldb_adapter(codelldb_path, liblldb_path),
+        },
     }
     require('rust-tools').setup(opts)
 end
