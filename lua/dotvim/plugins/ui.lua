@@ -282,6 +282,9 @@ return {
         'stevearc/dressing.nvim',
         config = function()
             require('dressing').setup({
+                input = {
+                    insert_only = true,
+                },
                 select = {
                     backend = { 'telescope', 'fzf', 'nui', 'builtin' },
 
