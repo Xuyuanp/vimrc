@@ -146,6 +146,8 @@ function M.setup()
         vim.g.neovide_no_idle = true
         vim.g.neovide_cursor_antialiasing = true
     end
+
+    vim.cmd([[ command! Nerdfonts lua require('dotvim.telescope').nerdfonts() ]])
 end
 
 return M
