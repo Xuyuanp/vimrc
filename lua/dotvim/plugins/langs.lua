@@ -141,4 +141,9 @@ return {
             require('telescope').load_extension('dap')
         end,
     },
+
+    {
+        'baskerville/vim-sxhkdrc',
+        ft = 'sxhkdrc',
+    },
 }
