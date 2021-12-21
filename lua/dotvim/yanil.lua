@@ -38,12 +38,7 @@ local function git_diff(_tree, node)
     api.nvim_command(string.format([[command! -buffer Apply lua require("yanil/git").apply_buf(%d)]], bufnr))
 end
 
-local function find_file(tree, node)
-    local winnr_bak = vim.fn.winnr()
-    local altwinnr_bak = vim.fn.winnr('#')
-
-    local cwd = node:is_dir() and node.abs_path or node.parent.abs_path
-
+local telescope_find_file = a.async(function(cwd, callback)
     local actions = require('telescope.actions')
     local actions_state = require('telescope.actions.state')
     require('telescope.builtin').find_files({
@@ -56,21 +51,35 @@ local function find_file(tree, node)
                 if vim.startswith(path, './') then
                     path = string.sub(path, 3)
                 end
-                local path = selection.cwd .. path
-                local target = tree.root:find_node_by_path(path)
-                if not target then
-                    vim.notify('file "' .. path .. '" is not found or ignored', 'WARN')
-                    return
-                end
-                tree:go_to_node(target)
-
-                vim.cmd(string.format([[execute "%dwincmd w"]], altwinnr_bak))
-                vim.cmd(string.format([[execute "%dwincmd w"]], winnr_bak))
+                callback(path)
             end)
             return true
         end,
     })
-end
+end)
+
+local find_file = a.wrap(function(tree, node)
+    local winnr_bak = vim.fn.winnr()
+    local altwinnr_bak = vim.fn.winnr('#')
+
+    local cwd = node:is_dir() and node.abs_path or node.parent.abs_path
+
+    local path = telescope_find_file(cwd).await()
+    if not path or path == '' then
+        return
+    end
+    path = cwd .. path
+
+    local target = tree.root:find_node_by_path(path)
+    if not target then
+        vim.notify('file "' .. path .. '" is not found or ignored', 'WARN')
+        return
+    end
+    tree:go_to_node(target)
+
+    vim.cmd(string.format([[execute "%dwincmd w"]], altwinnr_bak))
+    vim.cmd(string.format([[execute "%dwincmd w"]], winnr_bak))
+end)
 
 local create_node = a.wrap(function(tree, node)
     node = node:is_dir() and node or node.parent
