@@ -7,81 +7,81 @@ local a = require('dotvim.util.async')
 
 local M = {}
 
-local function add(func, _)
+local function add(func)
     M[func] = a.async(uv[func])
 end
 
 ---[[ stolen from plenary start
 
-add('close', 4) -- close a handle
+add('close') -- close a handle
 
 -- filesystem operations
-add('fs_open', 4)
-add('fs_read', 4)
-add('fs_close', 2)
-add('fs_unlink', 2)
-add('fs_write', 4)
-add('fs_mkdir', 3)
-add('fs_mkdtemp', 2)
+add('fs_open')
+add('fs_read')
+add('fs_close')
+add('fs_unlink')
+add('fs_write')
+add('fs_mkdir')
+add('fs_mkdtemp')
 -- 'fs_mkstemp',
-add('fs_rmdir', 2)
-add('fs_scandir', 2)
-add('fs_stat', 2)
-add('fs_fstat', 2)
-add('fs_lstat', 2)
-add('fs_rename', 3)
-add('fs_fsync', 2)
-add('fs_fdatasync', 2)
-add('fs_ftruncate', 3)
-add('fs_sendfile', 5)
-add('fs_access', 3)
-add('fs_chmod', 3)
-add('fs_fchmod', 3)
-add('fs_utime', 4)
-add('fs_futime', 4)
+add('fs_rmdir')
+add('fs_scandir')
+add('fs_stat')
+add('fs_fstat')
+add('fs_lstat')
+add('fs_rename')
+add('fs_fsync')
+add('fs_fdatasync')
+add('fs_ftruncate')
+add('fs_sendfile')
+add('fs_access')
+add('fs_chmod')
+add('fs_fchmod')
+add('fs_utime')
+add('fs_futime')
 -- 'fs_lutime',
-add('fs_link', 3)
-add('fs_symlink', 4)
-add('fs_readlink', 2)
-add('fs_realpath', 2)
-add('fs_chown', 4)
-add('fs_fchown', 4)
+add('fs_link')
+add('fs_symlink')
+add('fs_readlink')
+add('fs_realpath')
+add('fs_chown')
+add('fs_fchown')
 -- 'fs_lchown',
-add('fs_copyfile', 4)
--- add('fs_opendir', 3) -- TODO: fix this one
+add('fs_copyfile')
+
 M.fs_opendir = a.async(function(path, entries, callback)
     return uv.fs_opendir(path, callback, entries)
 end)
 
-add('fs_readdir', 2)
-add('fs_closedir', 2)
+add('fs_readdir')
+add('fs_closedir')
 add('fs_statfs')
 
 -- stream
-add('shutdown', 2)
-add('listen', 3)
+add('shutdown')
+add('listen')
 -- add('read_start', 2) -- do not do this one, the callback is made multiple times
-add('write', 3)
-add('write2', 4)
-add('shutdown', 2)
+add('write')
+add('write2')
+add('shutdown')
 
 -- tcp
-add('tcp_connect', 4)
+add('tcp_connect')
 -- 'tcp_close_reset',
 
 -- pipe
-add('pipe_connect', 3)
+add('pipe_connect')
 
 -- udp
-add('udp_send', 5)
-add('udp_recv_start', 2)
+add('udp_send')
+add('udp_recv_start')
 
 -- fs event (wip make into async await event)
 -- fs poll event (wip make into async await event)
 
 -- dns
-add('getaddrinfo', 4)
-add('getnameinfo', 2)
+add('getaddrinfo')
+add('getnameinfo')
 
 ---]] copy from plenary end
 

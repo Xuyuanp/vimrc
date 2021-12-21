@@ -116,6 +116,13 @@ local create_node = a.wrap(function(tree, node)
 
     tree:force_refresh_node(node)
     git.update(tree.cwd)
+
+    local new_node = tree.root:find_node_by_path(path)
+    if not new_node then
+        vim.notify('create node failed', 'WARN')
+        return
+    end
+    tree:go_to_node(new_node)
 end)
 
 local function clear_buffer(path)

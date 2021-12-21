@@ -93,19 +93,35 @@ function M.uv()
 end
 
 M.api = setmetatable({}, {
-    __index = function(_, key)
-        return function(...)
+    __index = function(t, key)
+        t[key] = function(...)
             if vim.in_fast_event() then
                 M.schedule().await()
             end
             return vim.api[key](...)
         end
+        return t[key]
     end,
 })
 
 M.ui = setmetatable({}, {
-    __index = function(_, key)
-        return M.async(vim.ui[key])
+    __index = function(t, key)
+        local fn = vim.ui[key]
+        t[key] = M.async(function(...)
+            local winnr_bak = vim.fn.winnr()
+            local altwinnr_bak = vim.fn.winnr('#')
+
+            local params = { ... }
+            local callback = params[#params]
+            params[#params] = function(...)
+                vim.cmd(string.format([[execute "%dwincmd w"]], altwinnr_bak))
+                vim.cmd(string.format([[execute "%dwincmd w"]], winnr_bak))
+
+                callback(...)
+            end
+            fn(unpack(params))
+        end)
+        return t[key]
     end,
 })
 
