@@ -104,24 +104,6 @@ return {
                 },
                 current_line_blame = false,
             })
-
-            local dotcolors = require('dotvim.colors')
-            local colors = dotcolors.colors
-            dotcolors.add_highlight('GitSignsAdd', {
-                fg = colors.Git.Add,
-                bg = colors.Sign.bg,
-                style = 'bold',
-            })
-            dotcolors.add_highlight('GitSignsDelete', {
-                fg = colors.Git.Delete,
-                bg = colors.Sign.bg,
-                style = 'bold',
-            })
-            dotcolors.add_highlight('GitSignsChange', {
-                fg = colors.Git.Change,
-                bg = colors.Sign.bg,
-                style = 'bold',
-            })
         end,
     },
 

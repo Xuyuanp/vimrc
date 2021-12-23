@@ -1,11 +1,5 @@
 local dotcolors = require('dotvim.colors')
 dotcolors.enable_auto_update()
-dotcolors.add_highlight('EndOfBuffer', {
-    fg = dotcolors.colors.Sign.bg,
-})
-dotcolors.add_highlight('VertSplit', {
-    fg = dotcolors.colors.black_pure,
-})
 
 return {
     {
@@ -28,8 +22,40 @@ return {
             vim.g.gruvbox_material_background = 'hard'
         end,
         config = function()
-            vim.opt.background = 'dark'
-            vim.cmd([[ colorscheme gruvbox-material ]])
+            -- vim.opt.background = 'dark'
+            -- vim.cmd([[ colorscheme gruvbox-material ]])
+        end,
+    },
+
+    {
+        'rebelot/kanagawa.nvim',
+        config = function()
+            -- Default options:
+            local kanagawa = require('kanagawa')
+            kanagawa.setup({
+                undercurl = true, -- enable undercurls
+                commentStyle = 'NONE',
+                functionStyle = 'NONE',
+                keywordStyle = 'italic,bold',
+                statementStyle = 'bold',
+                typeStyle = 'NONE',
+                variablebuiltinStyle = 'italic',
+                specialReturn = true, -- special highlight for the return keyword
+                specialException = true, -- special highlight for exception handling keywords
+                transparent = false,
+                colors = {},
+            })
+
+            local colors = require('kanagawa.colors')
+
+            kanagawa.setup({
+                overrides = {
+                    YanilTreeDirectory = { fg = colors.springGreen, style = 'bold' },
+                    YanilTreeFile = { fg = colors.fujiWhite },
+                },
+            })
+
+            vim.cmd('colorscheme kanagawa')
         end,
     },
 }
