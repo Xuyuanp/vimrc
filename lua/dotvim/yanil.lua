@@ -96,27 +96,18 @@ local create_node = a.wrap(function(tree, node)
         return
     end
 
-    if vim.endswith(path, '/') then
-        local res = uv.simple_job({ command = 'mkdir', args = { '-p', path } }).await()
+    local dir = vim.fn.fnamemodify(path, ':h')
+    local res = uv.simple_job({ command = 'mkdir', args = { '-p', dir } }).await()
+
+    if res.code ~= 0 then
+        vim.notify('mkdir failed: ' .. (res.stderr or res.stdout or ''), 'ERROR')
+        return
+    end
+    if not vim.endswith(path, '/') then
+        res = uv.simple_job({ command = 'touch', args = { path } }).await()
 
         if res.code ~= 0 then
-            a.api.nvim_err_writeln('mkdir failed: ' .. (res.stderr or res.stdout or ''))
-            return
-        end
-    else
-        local dir = vim.fn.fnamemodify(path, ':h')
-
-        local res = uv.simple_job({ command = 'mkdir', args = { '-p', dir } }).await()
-
-        if res.code ~= 0 then
-            a.api.nvim_err_writeln('mkdir failed: ' .. (res.stderr or res.stdout or ''))
-            return
-        end
-
-        local res = uv.simple_job({ command = 'touch', args = { path } }).await()
-
-        if res.code ~= 0 then
-            a.api.nvim_err_writeln('touch file failed: ' .. (res.stderr or res.stdout or ''))
+            vim.notify('touch file failed: ' .. (res.stderr or res.stdout or ''), 'ERROR')
             return
         end
     end

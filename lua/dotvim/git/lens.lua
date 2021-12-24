@@ -94,7 +94,6 @@ local function show_lens()
         hl_mode = 'combine',
     })
     displayed = true
-    -- end)
 end
 
 local show = a.wrap(dotutil.dont_too_slow(show_lens, shutdown_threshold, function(_duration)
