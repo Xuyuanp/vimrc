@@ -33,7 +33,7 @@ M.nerdfonts = a.wrap(function()
     if not item then
         return
     end
-    vim.fn.setreg('*', item.icon)
+    vim.fn.setreg(vim.v.register, item.icon)
 end)
 
 return M
