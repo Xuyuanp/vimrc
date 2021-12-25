@@ -30,7 +30,13 @@ return {
     {
         'rebelot/kanagawa.nvim',
         config = function()
-            -- Default options:
+            local colors = require('kanagawa.colors')
+
+            local overrides = {
+                YanilTreeDirectory = { fg = colors.springGreen, style = 'bold' },
+                YanilTreeFile = { fg = colors.fujiWhite },
+            }
+
             local kanagawa = require('kanagawa')
             kanagawa.setup({
                 undercurl = true, -- enable undercurls
@@ -43,16 +49,8 @@ return {
                 specialReturn = true, -- special highlight for the return keyword
                 specialException = true, -- special highlight for exception handling keywords
                 transparent = false,
-                colors = {},
-            })
-
-            local colors = require('kanagawa.colors')
-
-            kanagawa.setup({
-                overrides = {
-                    YanilTreeDirectory = { fg = colors.springGreen, style = 'bold' },
-                    YanilTreeFile = { fg = colors.fujiWhite },
-                },
+                colors = colors,
+                overrides = overrides,
             })
 
             vim.cmd('colorscheme kanagawa')
