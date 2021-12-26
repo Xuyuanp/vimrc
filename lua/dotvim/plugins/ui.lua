@@ -228,6 +228,9 @@ return {
                 'vista_markdown',
                 'Yanil',
                 'FTerm',
+                'packer',
+                'startify',
+                'TelescopePrompt',
             }
 
             vim.g.indent_blankline_show_current_context = true
