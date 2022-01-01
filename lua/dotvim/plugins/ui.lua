@@ -199,7 +199,7 @@ return {
     },
 
     {
-        'glepnir/galaxyline.nvim',
+        'NTBBloodbath/galaxyline.nvim',
         event = 'BufEnter',
         branch = 'main',
         config = function()

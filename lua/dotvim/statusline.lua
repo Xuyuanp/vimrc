@@ -3,6 +3,7 @@ local mode = vim.fn.mode
 local galaxyline = require('galaxyline')
 local section = galaxyline.section
 local dotcolors = require('dotvim.colors').colors
+local colors = require('kanagawa').config.colors
 
 require('dotvim.git.head').lazy_load()
 
@@ -32,7 +33,8 @@ local _HEX_COLORS = setmetatable({
 
 local _BG = {
     file = _HEX_COLORS.bar.side,
-    git = _HEX_COLORS.blue,
+    -- git = _HEX_COLORS.blue,
+    git = colors.katanaGray,
     diagnostic = _HEX_COLORS.bar.middle,
 }
 
@@ -120,11 +122,11 @@ local function checkwidth()
 end
 
 local function find_git_root()
-    return require('galaxyline.provider_vcs').get_git_dir(vim.fn.expand('%:p:h'))
+    return require('galaxyline.providers.vcs').get_git_dir(vim.fn.expand('%:p:h'))
 end
 
 local function get_file_icon_color()
-    return require('galaxyline.provider_fileinfo').get_file_icon_color()
+    return require('galaxyline.providers.fileinfo').get_file_icon_color()
 end
 
 local function printer(str)
@@ -389,7 +391,7 @@ section.right = {
         WhiteSpace = {
             provider = { space, space, 'WhiteSpace' }, -- why one more space is required?
             condition = function()
-                return require('galaxyline.provider_whitespace').get_item() ~= ''
+                return require('galaxyline.providers.whitespace').get_item() ~= ''
             end,
             highlight = { _HEX_COLORS.yellow, _HEX_COLORS.bar.side },
         },
