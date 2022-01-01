@@ -99,7 +99,7 @@ return {
     },
 
     {
-        'akinsho/nvim-bufferline.lua',
+        'akinsho/bufferline.nvim',
         -- requires = 'kyazdani42/nvim-web-devicons',
         event = 'BufEnter',
         config = function()
