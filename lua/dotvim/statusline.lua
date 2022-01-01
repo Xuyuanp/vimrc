@@ -1,5 +1,4 @@
 local mode = vim.fn.mode
-local lsp = vim.lsp
 
 local galaxyline = require('galaxyline')
 local section = galaxyline.section
@@ -139,7 +138,7 @@ end
 -- end
 
 local function lsp_diagnostic_count(bufnr)
-    local cnt = #lsp.diagnostic.get(bufnr)
+    local cnt = #vim.diagnostic.get(bufnr)
     return cnt
 end
 
