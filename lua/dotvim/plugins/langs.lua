@@ -146,4 +146,17 @@ return {
         'baskerville/vim-sxhkdrc',
         ft = 'sxhkdrc',
     },
+
+    {
+        'towolf/vim-helm',
+        config = function()
+            vim.cmd([[
+            augroup dotvim_helm
+                autocmd!
+                autocmd BufReadPre _helpers.tpl setlocal nomodeline
+                autocmd BufReadPost _helpers.tpl set filetype=helm
+            augroup END
+            ]])
+        end
+    },
 }
