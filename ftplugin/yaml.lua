@@ -10,7 +10,9 @@ local function upper_dir(path)
 end
 
 local detect_helm_ft = a.wrap(function(bufnr, path)
-    if not bufnr or not path then return end
+    if not bufnr or not path then
+        return
+    end
 
     while path ~= '/' do
         path = upper_dir(path)
@@ -25,6 +27,5 @@ local detect_helm_ft = a.wrap(function(bufnr, path)
         a.schedule().await()
     end
 end)
-
 
 detect_helm_ft(api.nvim_get_current_buf(), vim.fn.expand('%'))

@@ -157,6 +157,6 @@ return {
                 autocmd BufReadPost _helpers.tpl set filetype=helm
             augroup END
             ]])
-        end
+        end,
     },
 }
