@@ -159,4 +159,10 @@ return {
             ]])
         end,
     },
+
+    {
+        'Fymyte/rasi.vim',
+        ft = 'rasi',
+        requires = { 'ap/vim-css-color' },
+    },
 }
