@@ -18,14 +18,13 @@ local detect_helm_ft = a.wrap(function(bufnr, path)
         path = upper_dir(path)
         if vim.endswith(path, 'templates') then
             path = upper_dir(path)
-            local _, stat = a.uv().fs_stat(path .. '/' .. 'Chart.yaml').await()
-            if stat then
+            local err, stat = a.uv().fs_stat(path .. '/' .. 'Chart.yaml').await()
+            if not err and stat then
                 api.nvim_buf_set_option(bufnr, 'filetype', 'helm')
             end
             return
         end
-        a.schedule().await()
     end
 end)
 
-detect_helm_ft(api.nvim_get_current_buf(), vim.fn.expand('%'))
+detect_helm_ft(api.nvim_get_current_buf(), vim.fn.expand('%:p'))
