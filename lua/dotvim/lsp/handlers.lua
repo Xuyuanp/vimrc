@@ -114,11 +114,18 @@ function M.symbol_handler(_err, result, ctx)
     fzf_run(wrapped)
 end
 
-function M.code_action(_err, actions, _ctx)
+function M.code_action(_err, actions, ctx)
     if not actions or vim.tbl_isempty(actions) then
         print('No code actions available')
         return
     end
+
+    local client_id = ctx.client_id
+    local client = vim.lsp.get_client_by_id(client_id)
+    if not client then
+        return
+    end
+    local offset_encoding = client.offset_encoding
 
     local source = {}
     local max_width = 0
@@ -169,7 +176,7 @@ function M.code_action(_err, actions, _ctx)
 
             if action_chosen.edit or type(action_chosen.command) == 'table' then
                 if action_chosen.edit then
-                    vim.lsp.util.apply_workspace_edit(action_chosen.edit)
+                    vim.lsp.util.apply_workspace_edit(action_chosen.edit, offset_encoding)
                 end
                 if type(action_chosen.command) == 'table' then
                     vim.lsp.buf.execute_command(action_chosen.command)
@@ -182,11 +189,19 @@ function M.code_action(_err, actions, _ctx)
     fzf_run(wrapped)
 end
 
-function M.references(_err, references, _ctx)
+function M.references(_err, references, ctx)
     if not references or vim.tbl_isempty(references) then
         print('No references available')
         return
     end
+
+    local client_id = ctx.client_id
+    local client = vim.lsp.get_client_by_id(client_id)
+    if not client then
+        return
+    end
+    local offset_encoding = client.offset_encoding
+
     local source = {}
     for i, ref in ipairs(references) do
         local fname = vim.uri_to_fname(ref.uri)
@@ -233,7 +248,7 @@ function M.references(_err, references, _ctx)
             local parts = vim.fn.split(line, '\t')
             local choice = tonumber(parts[4])
             local ref_chosen = references[choice]
-            vim.lsp.util.jump_to_location(ref_chosen)
+            vim.lsp.util.jump_to_location(ref_chosen, offset_encoding)
         end,
     })
 
@@ -243,23 +258,30 @@ end
 M.hover = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
 function M.gen_location_handler(name)
-    return function(_, result, _ctx)
+    return function(_, result, ctx)
         if result == nil or vim.tbl_isempty(result) then
             -- local _ = log.info() and log.info(method, 'No location found')
             return nil
         end
+
+        local client_id = ctx.client_id
+        local client = vim.lsp.get_client_by_id(client_id)
+        if not client then
+            return
+        end
+        local offset_encoding = client.offset_encoding
 
         -- textDocument/definition can return Location or Location[]
         -- https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_definition
 
         local util = vim.lsp.util
         if not vim.tbl_islist(result) then
-            util.jump_to_location(result)
+            util.jump_to_location(result, offset_encoding)
             return
         end
 
         if #result == 1 then
-            util.jump_to_location(result[1])
+            util.jump_to_location(result[1], offset_encoding)
             return
         end
 
@@ -311,7 +333,7 @@ function M.gen_location_handler(name)
                 local parts = vim.fn.split(line, '\t')
                 local choice = tonumber(parts[4])
                 local ref_chosen = result[choice]
-                util.jump_to_location(ref_chosen)
+                util.jump_to_location(ref_chosen, offset_encoding)
             end,
         })
 
