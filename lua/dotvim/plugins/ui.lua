@@ -121,8 +121,8 @@ return {
                 -- Magic buffer-picking mode
                 ['<A-s>'] = ':BufferLinePick<CR>',
                 -- Move to previous/next
-                ['<Tab>'] = ':BufferLineCyclePrev<CR>',
-                ['<S-Tab>'] = ':BufferLineCycleNext<CR>',
+                ['<Tab>'] = ':BufferLineCycleNext<CR>',
+                ['<S-Tab>'] = ':BufferLineCyclePrev<CR>',
                 -- Re-order to previous/next
                 ['<A-h>'] = ':BufferLineMovePrev<CR>',
                 ['<A-l>'] = ':BufferLineMoveNext<CR>',
