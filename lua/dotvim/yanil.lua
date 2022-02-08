@@ -173,7 +173,6 @@ end)
 function M.setup()
     yanil.setup()
 
-    local header = require('yanil/sections/header'):new()
     local tree = require('yanil/sections/tree'):new()
 
     tree:setup({
@@ -228,7 +227,6 @@ function M.setup()
 
     canvas.setup({
         sections = {
-            header,
             tree,
         },
         autocmds = {
